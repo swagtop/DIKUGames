@@ -22,4 +22,6 @@ public class Game : DIKUGame {
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
         // TODO: Send keyhandling til den aktive state i stateMachine
     }
+
+    // TODO: Tilføj håndtering af GameEvent.CloseWindow
 }
