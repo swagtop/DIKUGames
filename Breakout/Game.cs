@@ -23,5 +23,5 @@ public class Game : DIKUGame {
         // TODO: Send keyhandling til den aktive state i stateMachine
     }
 
-    // TODO: Tilføj håndtering af GameEvent.CloseWindow!
+    // TODO: Tilføj håndtering af GameEvent.CloseWindow
 }
