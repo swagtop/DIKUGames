@@ -9,7 +9,7 @@ public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = null;
     public StateMachine() {
         BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
-        //ActiveState = MainMenu.GetInstance();
+        ActiveState = MainMenu.GetInstance();
         //GameRunning.GetInstance();
         //GamePaused.GetInstance();
     }

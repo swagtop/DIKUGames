@@ -7,13 +7,15 @@ using Breakout.States;
 namespace Breakout;
 public class Game : DIKUGame {  
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    private StateMachine stateMachine = StateMachine.GetInstance();
+    private StateMachine stateMachine;
     
     public Game(WindowArgs windowArgs) : base(windowArgs) {
         window.SetKeyEventHandler(KeyHandler);
+        stateMachine = new StateMachine();
     }
 
     public override void Render() { 
+        stateMachine.ActiveState.RenderState();
         // TODO: Tilføj rendering fra den aktive state i stateMachine
     }
 
