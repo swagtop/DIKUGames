@@ -5,8 +5,8 @@ using System;
 
 namespace Breakout.States;
 public class StateMachine : IGameEventProcessor {
-    public IGameState ActiveState { get; private set; }
     private static StateMachine instance = null;
+    public IGameState ActiveState { get; private set; }
     public StateMachine() {
         BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
         ActiveState = MainMenu.GetInstance();
@@ -15,10 +15,7 @@ public class StateMachine : IGameEventProcessor {
     }
 
     public static StateMachine GetInstance() {
-        if (instance == null) {
-            instance = new StateMachine();
-        }
-        return instance;
+        return instance ?? (instance = new StateMachine());
     }
 
     public void SwitchState(GameStateType stateType) {
