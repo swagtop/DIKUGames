@@ -26,7 +26,8 @@ public class MainMenu : IGameState {
     public static MainMenu GetInstance() {
         if (MainMenu.instance == null) {
             MainMenu.instance = new MainMenu();
-            MainMenu.instance.ResetState();
+            foreach (Text button in instance.menuButtons) { button.SetColor(instance.grayButton); }
+            instance.menuButtons[instance.activeMenuButton].SetColor(instance.whiteButton);
         }
         return MainMenu.instance;
     }
@@ -39,10 +40,8 @@ public class MainMenu : IGameState {
     }
 
     public void ResetState() {
+        menuButtons[activeMenuButton].SetColor(grayButton);
         activeMenuButton = 0; 
-        foreach (Text button in menuButtons) {
-            button.SetColor(grayButton);
-        }
         menuButtons[activeMenuButton].SetColor(whiteButton);
     }
 
