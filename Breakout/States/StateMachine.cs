@@ -1,7 +1,8 @@
-using Breakout;
+using System;
 using DIKUArcade.Events;
 using DIKUArcade.State;
-using System;
+using Breakout;
+using Breakout.States;
 
 namespace Breakout.States;
 public class StateMachine : IGameEventProcessor {
@@ -9,7 +10,8 @@ public class StateMachine : IGameEventProcessor {
     public IGameState ActiveState { get; private set; }
     public StateMachine() {
         BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
-        ActiveState = MainMenu.GetInstance();
+        ActiveState = TestingGrounds.GetInstance();
+        //ActiveState = MainMenu.GetInstance();
         //GameRunning.GetInstance();
         //GamePaused.GetInstance();
     }
