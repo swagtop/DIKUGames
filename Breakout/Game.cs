@@ -5,27 +5,43 @@ using DIKUArcade.Input;
 using Breakout.States;
 
 namespace Breakout;
-public class Game : DIKUGame {  
-    private GameEventBus eventBus = BreakoutBus.GetBus();
+public class Game : DIKUGame, IGameEventProcessor {  
+    private GameEventBus eventBus;
     private StateMachine stateMachine;
     
     public Game(WindowArgs windowArgs) : base(windowArgs) {
+        eventBus = BreakoutBus.GetBus();
+        stateMachine = StateMachine.GetInstance();
+        
         window.SetKeyEventHandler(KeyHandler);
-        stateMachine = new StateMachine();
+        eventBus.InitializeEventBus(new List<GameEventType> {
+            GameEventType.WindowEvent
+        });
+        
+        eventBus.Subscribe(GameEventType.WindowEvent, this);
     }
 
     public override void Render() { 
         stateMachine.ActiveState.RenderState();
-        // TODO: Tilføj rendering fra den aktive state i stateMachine
     }
 
     public override void Update() {
-        // TODO: Tilføj updates af den aktive state i stateMachine
+        eventBus.ProcessEventsSequentially();
+        stateMachine.ActiveState.UpdateState();
     }
 
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
-        // TODO: Send keyhandling til den aktive state i stateMachine
+        stateMachine.ActiveState.HandleKeyEvent(action, key);
     }
 
-    // TODO: Tilføj håndtering af GameEvent.CloseWindow
+    public void ProcessEvent(GameEvent gameEvent) {
+        if (gameEvent.EventType == GameEventType.WindowEvent) {
+            switch (gameEvent.Message) {
+                case "CLOSE_WINDOW":
+                    window.CloseWindow();
+                    System.Environment.Exit(0);
+                    break;
+            }
+        } 
+    }
 }

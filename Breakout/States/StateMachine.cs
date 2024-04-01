@@ -19,9 +19,7 @@ public class StateMachine : IGameEventProcessor {
             instance = new StateMachine();
         }
         return instance;
-
     }
-
 
     public void SwitchState(GameStateType stateType) {
         /*

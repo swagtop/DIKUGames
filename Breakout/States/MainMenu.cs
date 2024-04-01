@@ -11,16 +11,16 @@ using Breakout.States;
 namespace Breakout.States;
 public class MainMenu : IGameState {
     private static MainMenu instance = null;
+    private GameEventBus eventBus = BreakoutBus.GetBus();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
         new Image(Path.Combine("Assets", "Images", "BreakoutTitleScreen.png"))
     );
+    private int activeMenuButton = 0;
     private Text[] menuButtons = {
         new Text("New Game", new Vec2F(0.5f, 0.5f), new Vec2F(0.3f, 0.3f)),
         new Text("Quit", new Vec2F(0.5f, 0.3f), new Vec2F(0.3f, 0.3f)),
     };
-    private int activeMenuButton = 0;
-    private int maxMenuButtons = 2;
     public static MainMenu GetInstance() {
         if (MainMenu.instance == null) {
             MainMenu.instance = new MainMenu();
@@ -35,22 +35,38 @@ public class MainMenu : IGameState {
             button.RenderText();
         }
     }
+
     public void ResetState() {
+        menuButtons[activeMenuButton].SetColor(new Vec3F(0.2f, 0.2f, 0.2f));
+        activeMenuButton = 0; 
+        menuButtons[activeMenuButton].SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
     }
+
     public void UpdateState() {
     }
+
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         switch ((action, key)) {
             case (KeyboardAction.KeyPress, KeyboardKey.Up):
-                if (activeMenuButton > 0) { activeMenuButton -= 1; }
+                if (activeMenuButton > 0) { 
+                    menuButtons[activeMenuButton].SetColor(new Vec3F(0.2f, 0.2f, 0.2f));
+                    activeMenuButton -= 1; 
+                    menuButtons[activeMenuButton].SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
+                }
                 break;
+
             case (KeyboardAction.KeyPress, KeyboardKey.Down):
-                if (activeMenuButton < maxMenuButtons - 1) { activeMenuButton += 1; }
+                if (activeMenuButton < menuButtons.Length - 1) { 
+                    menuButtons[activeMenuButton].SetColor(new Vec3F(0.2f, 0.2f, 0.2f));
+                    activeMenuButton += 1; 
+                    menuButtons[activeMenuButton].SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
+                }
                 break;
+
             case (KeyboardAction.KeyPress, KeyboardKey.Enter):
                 switch (activeMenuButton) {
                     case 0:
-                        BreakoutBus.GetBus().RegisterEvent(
+                        eventBus.RegisterEvent(
                             new GameEvent {
                                 EventType = GameEventType.GameStateEvent,
                                 Message = "CHANGE_STATE",
@@ -58,14 +74,17 @@ public class MainMenu : IGameState {
                         });
                         break;
                     case 1:
-                        BreakoutBus.GetBus().RegisterEvent(
+                        eventBus.RegisterEvent(
                             new GameEvent {
                                 EventType = GameEventType.WindowEvent,
                                 Message = "CLOSE_WINDOW",
                         });
                         break;
+                default:
+                    throw new ArgumentException($"Button number not implemented: {activeMenuButton}");
                 }
                 break;
+
             default:
                 break;
         }
