@@ -21,6 +21,8 @@ public class MainMenu : IGameState {
         new Text("New Game", new Vec2F(0.5f, 0.5f), new Vec2F(0.3f, 0.3f)),
         new Text("Quit", new Vec2F(0.5f, 0.3f), new Vec2F(0.3f, 0.3f)),
     };
+    private Vec3F whiteButton = new Vec3F(1.0f, 1.0f, 1.0f);
+    private Vec3F grayButton = new Vec3F(0.4f, 0.4f, 0.4f);
     public static MainMenu GetInstance() {
         if (MainMenu.instance == null) {
             MainMenu.instance = new MainMenu();
@@ -37,9 +39,11 @@ public class MainMenu : IGameState {
     }
 
     public void ResetState() {
-        menuButtons[activeMenuButton].SetColor(new Vec3F(0.2f, 0.2f, 0.2f));
         activeMenuButton = 0; 
-        menuButtons[activeMenuButton].SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
+        foreach (Text button in menuButtons) {
+            button.SetColor(grayButton);
+        }
+        menuButtons[activeMenuButton].SetColor(whiteButton);
     }
 
     public void UpdateState() {
@@ -49,17 +53,17 @@ public class MainMenu : IGameState {
         switch ((action, key)) {
             case (KeyboardAction.KeyPress, KeyboardKey.Up):
                 if (activeMenuButton > 0) { 
-                    menuButtons[activeMenuButton].SetColor(new Vec3F(0.2f, 0.2f, 0.2f));
+                    menuButtons[activeMenuButton].SetColor(grayButton);
                     activeMenuButton -= 1; 
-                    menuButtons[activeMenuButton].SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
+                    menuButtons[activeMenuButton].SetColor(whiteButton);
                 }
                 break;
 
             case (KeyboardAction.KeyPress, KeyboardKey.Down):
                 if (activeMenuButton < menuButtons.Length - 1) { 
-                    menuButtons[activeMenuButton].SetColor(new Vec3F(0.2f, 0.2f, 0.2f));
+                    menuButtons[activeMenuButton].SetColor(grayButton);
                     activeMenuButton += 1; 
-                    menuButtons[activeMenuButton].SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
+                    menuButtons[activeMenuButton].SetColor(whiteButton);
                 }
                 break;
 

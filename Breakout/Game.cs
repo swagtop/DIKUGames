@@ -10,12 +10,13 @@ public class Game : DIKUGame, IGameEventProcessor {
     private StateMachine stateMachine;
     
     public Game(WindowArgs windowArgs) : base(windowArgs) {
+        window.SetKeyEventHandler(KeyHandler);
+
         eventBus = BreakoutBus.GetBus();
         stateMachine = StateMachine.GetInstance();
         
-        window.SetKeyEventHandler(KeyHandler);
         eventBus.InitializeEventBus(new List<GameEventType> {
-            GameEventType.WindowEvent
+            GameEventType.WindowEvent,
         });
         
         eventBus.Subscribe(GameEventType.WindowEvent, this);
