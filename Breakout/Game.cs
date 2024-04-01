@@ -2,11 +2,13 @@ using DIKUArcade;
 using DIKUArcade.GUI;
 using DIKUArcade.Events;
 using DIKUArcade.Input;
+using Breakout.States;
 
 namespace Breakout;
 public class Game : DIKUGame {  
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    // TODO: Tilføj stateMachine
+    private StateMachine stateMachine = StateMachine.GetInstance();
+    
     public Game(WindowArgs windowArgs) : base(windowArgs) {
         window.SetKeyEventHandler(KeyHandler);
     }
