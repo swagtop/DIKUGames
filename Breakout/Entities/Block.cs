@@ -12,13 +12,13 @@ public class Block : Entity {
         get => hitpoints;
         set {
             if (value == maxHitpoints/2) { Image = damagedImage; } 
-            if (value >= 0) { hitpoints = value; }
+            if (value > 0) { hitpoints = value; }
             else { this.DeleteEntity(); }
         }
     }
-    public Block(IBaseImage normal, IBaseImage damaged, int startingHitpoints, StationaryShape shape) : base(shape, normal) {
+    public Block(int startHitpoints, IBaseImage normal, IBaseImage damaged, StationaryShape shape) : base(shape, normal) {
         damagedImage = damaged;
-        maxHitpoints = startingHitpoints;
+        maxHitpoints = startHitpoints;
         hitpoints = maxHitpoints;
     }
 }

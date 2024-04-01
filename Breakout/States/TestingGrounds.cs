@@ -19,6 +19,7 @@ public class TestingGrounds : IGameState {
     private static TestingGrounds instance = null;
     private GameEventBus eventBus;
     private EntityContainer<Block> blocks;
+    private EntityContainer<Ball> balls;
 
     public static TestingGrounds GetInstance() {
         if (TestingGrounds.instance == null) {
@@ -35,12 +36,20 @@ public class TestingGrounds : IGameState {
         
         blocks = new EntityContainer<Block>(1);
         blocks.AddEntity(new Block(
+            4, 
             blueBlock, 
             blueBlockDamaged, 
-            3, 
             new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.09f, 0.03f))
         ));
 
+        // BALLS
+        Image normalBall = new Image(Path.Combine("Assets", "Images", "ball.png"));
+
+        balls = new EntityContainer<Ball>(1);
+        balls.AddEntity(new Ball(
+            normalBall,
+            new DynamicShape(new Vec2F(0.2f, 0.2f), new Vec2F(0.03f, 0.03f))
+        ));
 
         // EVENT BUS
         eventBus = BreakoutBus.GetBus();
@@ -48,6 +57,7 @@ public class TestingGrounds : IGameState {
 
     public void RenderState() {
         blocks.RenderEntities();
+        balls.RenderEntities();
     }
 
     public void UpdateState() {
