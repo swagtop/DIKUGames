@@ -20,6 +20,7 @@ public class TestingGrounds : IGameState {
     private GameEventBus eventBus;
     private EntityContainer<Block> blocks;
     private EntityContainer<Ball> balls;
+    private EntityContainer<Powerup> powerups;
 
     public static TestingGrounds GetInstance() {
         if (TestingGrounds.instance == null) {

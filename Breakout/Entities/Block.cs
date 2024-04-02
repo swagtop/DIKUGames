@@ -18,7 +18,7 @@ public class Block : Entity {
             else { this.DeleteEntity(); }
         }
     }
-    public Block(int maxHp, IBaseImage normal, IBaseImage damaged, StationaryShape shape, bool unbreak=false) : base(shape, normal) {
+    public Block(int maxHp, IBaseImage image, IBaseImage damaged, StationaryShape shape, bool unbreak=false) : base(shape, image) {
         damagedImage = damaged;
         unbreakable = unbreak;
         maxHitpoints = maxHp;

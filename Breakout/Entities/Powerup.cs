@@ -4,8 +4,9 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 
 namespace Breakout.Entities;
-public class Ball : Entity {
-    public Ball(IBaseImage image, DynamicShape shape) : base(shape, image) {
+public class Powerup : Entity {
+    public Powerup(IBaseImage image, DynamicShape shape) : base(shape, image) {
+        Image = image;
     }
 
     public void Move() {
