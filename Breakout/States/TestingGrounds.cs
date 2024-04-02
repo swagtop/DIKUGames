@@ -35,13 +35,15 @@ public class TestingGrounds : IGameState {
         Image blueBlock = new Image(Path.Combine("Assets", "Images", "blue-block.png"));
         Image blueBlockDamaged = new Image(Path.Combine("Assets", "Images", "blue-block-damaged.png"));
         
-        blocks = new EntityContainer<Block>(1);
-        blocks.AddEntity(new Block(
-            4, 
-            blueBlock, 
-            blueBlockDamaged, 
-            new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.09f, 0.03f))
-        ));
+        blocks = new EntityContainer<Block>(12);
+        for (int i = 0; i < 12; i++) {
+            blocks.AddEntity(new Block(
+                4, 
+                blueBlock, 
+                blueBlockDamaged, 
+                new StationaryShape(new Vec2F(0.0f + i*0.06f, 0.0f), new Vec2F(0.06f, 0.02f))
+            ));
+        }
 
         // BALLS
         Image normalBall = new Image(Path.Combine("Assets", "Images", "ball.png"));
@@ -49,7 +51,7 @@ public class TestingGrounds : IGameState {
         balls = new EntityContainer<Ball>(1);
         balls.AddEntity(new Ball(
             normalBall,
-            new DynamicShape(new Vec2F(0.2f, 0.2f), new Vec2F(0.03f, 0.03f))
+            new DynamicShape(new Vec2F(0.2f, 0.2f), new Vec2F(0.02f, 0.02f))
         ));
 
         // EVENT BUS
