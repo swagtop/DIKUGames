@@ -12,13 +12,13 @@ public class Block : Entity {
     public int HitPoints {
         get => hitpoints;
         set {
-            if (unbreakable) { return; }
-            if (value == maxHitpoints/2) { Image = damagedImage; } 
+            if (unbreakable) { return; } // Hitpoints cannot be set if block is unbreakable.
+            if (value == maxHitpoints/2) { Image = damagedImage; }
             if (value > 0) { hitpoints = value; }
             else { this.DeleteEntity(); }
         }
     }
-    public Block(int maxHp, IBaseImage image, IBaseImage damaged, StationaryShape shape, bool unbreak=false) : base(shape, image) {
+    public Block(int maxHp, Image image, Image damaged, Shape shape, bool unbreak=false) : base(shape, image) {
         damagedImage = damaged;
         unbreakable = unbreak;
         maxHitpoints = maxHp;

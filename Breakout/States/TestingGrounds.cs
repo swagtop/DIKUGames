@@ -38,7 +38,7 @@ public class TestingGrounds : IGameState {
         blocks = new EntityContainer<Block>(12);
         for (int i = 0; i < 12; i++) {
             blocks.AddEntity(new Block(
-                4, 
+                200, 
                 blueBlock, 
                 blueBlockDamaged, 
                 new StationaryShape(new Vec2F(0.0f + i*0.06f, 0.0f), new Vec2F(0.06f, 0.02f))
@@ -64,6 +64,9 @@ public class TestingGrounds : IGameState {
     }
 
     public void UpdateState() {
+        if (blocks.CountEntities() > 0) {
+            blocks.Iterate(block => block.HitPoints -= 1);
+        }
     }
 
     private void KeyPress(KeyboardKey key) {
