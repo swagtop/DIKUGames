@@ -51,7 +51,11 @@ public class TestingGrounds : IGameState {
         balls = new EntityContainer<Ball>(1);
         balls.AddEntity(new Ball(
             normalBall,
-            new DynamicShape(new Vec2F(0.2f, 0.2f), new Vec2F(0.02f, 0.02f))
+            new DynamicShape(
+                new Vec2F(0.2f, 0.2f), 
+                new Vec2F(0.02f, 0.02f),
+                new Vec2F(0.02f, 0.01f)
+            )
         ));
 
         // EVENT BUS
@@ -67,6 +71,7 @@ public class TestingGrounds : IGameState {
         if (blocks.CountEntities() > 0) {
             blocks.Iterate(block => block.HitPoints -= 1);
         }
+        balls.Iterate(ball => ball.Move());
     }
 
     private void KeyPress(KeyboardKey key) {
