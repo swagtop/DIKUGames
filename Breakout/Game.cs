@@ -17,6 +17,8 @@ public class Game : DIKUGame, IGameEventProcessor {
         
         eventBus.InitializeEventBus(new List<GameEventType> {
             GameEventType.WindowEvent,
+            GameEventType.GameStateEvent,
+            GameEventType.PlayerEvent,
         });
         
         eventBus.Subscribe(GameEventType.WindowEvent, this);

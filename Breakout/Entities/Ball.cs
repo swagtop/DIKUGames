@@ -12,8 +12,8 @@ public class Ball : Entity {
     public void Move() {
         float newX = Shape.Position.X + Shape.AsDynamicShape().Direction.X;
         float newY = Shape.Position.Y + Shape.AsDynamicShape().Direction.Y;
-        if (newX > 1.0f) {
-            Shape.Position.X = 1.0f - (newX - 1.0f);
+        if (newX > 1.0f - Shape.Extent.X) {
+            Shape.Position.X = 1.0f - (newX - (1.0f - Shape.Extent.X));
             Shape.AsDynamicShape().ChangeDirection(
                 new Vec2F(
                     Shape.AsDynamicShape().Direction.X * -1.0f,
@@ -29,20 +29,15 @@ public class Ball : Entity {
         } else {
             Shape.Position.X = newX;
         }
-        if (newY > 1.0f) {
-            Shape.Position.Y = 1.0f - (newY - 1.0f);
+        if (newY > 1.0f - Shape.Extent.Y) {
+            Shape.Position.Y = 1.0f - (newY - (1.0f - Shape.Extent.Y));
             Shape.AsDynamicShape().ChangeDirection(
                 new Vec2F(
                     Shape.AsDynamicShape().Direction.X,
                     Shape.AsDynamicShape().Direction.Y * -1.0f
             ));
         } else if (newY < 0.0f) {
-            Shape.Position.Y = -newY;
-            Shape.AsDynamicShape().ChangeDirection(
-                new Vec2F(
-                    Shape.AsDynamicShape().Direction.X,
-                    Shape.AsDynamicShape().Direction.Y * -1.0f
-            ));
+            this.DeleteEntity();
         } else {
             Shape.Position.Y = newY;
         }
