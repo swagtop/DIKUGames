@@ -8,7 +8,8 @@ using Breakout.Entities;
 
 namespace Breakout;
 public static class LevelAssembler {
-    public static bool FromFile(string filepath) {
+    public static EntityContainer<Block> FromFile(string filepath) {
+        EntityContainer<Block> blocks = new EntityContainer<Block>();
         string levelName = "Unknown";
         int timeLimit = -1;
 
@@ -55,6 +56,7 @@ public static class LevelAssembler {
             pair = levelStrings[i].Split(") ");
             legendDict.Add(pair[0], pair[1]);
         }
-        return true;
+
+        return blocks;
     }
 }
