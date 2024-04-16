@@ -7,8 +7,9 @@ namespace Breakout.Entities;
 public class Block : Entity {
     private IBaseImage damagedImage;
     private bool unbreakable;
-    private int maxHitpoints;
+    private int maxHitpoints = 1;
     private int hitpoints;
+    public bool DropsPowerup;
     public int HitPoints {
         get => hitpoints;
         set {
@@ -18,10 +19,12 @@ public class Block : Entity {
             else { this.DeleteEntity(); }
         }
     }
-    public Block(int maxHp, Image image, Image damaged, Shape shape, bool unbreak=false) : base(shape, image) {
-        damagedImage = damaged;
-        unbreakable = unbreak;
-        maxHitpoints = maxHp;
-        hitpoints = maxHp;
+    public Block(Image image, Image damagedImage, Shape shape, bool hardened,
+                bool unbreakable, bool dropsPowerup) : base(shape, image) {
+        this.damagedImage = damagedImage;
+        this.unbreakable = unbreakable;
+        if (hardened) { this.maxHitpoints *= 2; }
+        this.hitpoints = this.maxHitpoints;
+        DropsPowerup = dropsPowerup;
     }
 }

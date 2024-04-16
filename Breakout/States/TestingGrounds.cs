@@ -44,13 +44,15 @@ public class TestingGrounds : IGameState {
         Image blueBlock = new Image(Path.Combine("Assets", "Images", "blue-block.png"));
         Image blueBlockDamaged = new Image(Path.Combine("Assets", "Images", "blue-block-damaged.png"));
         
-        blocks = new EntityContainer<Block>(12);
+        blocks = new EntityContainer<Block>();
         for (int i = 0; i < 12; i++) {
             blocks.AddEntity(new Block(
-                200, 
                 blueBlock, 
                 blueBlockDamaged, 
-                new StationaryShape(new Vec2F(0.0f + i*0.06f, 0.0f), new Vec2F(0.06f, 0.02f))
+                new StationaryShape(new Vec2F(0.0f + i*0.06f, 0.0f), new Vec2F(0.06f, 0.02f)),
+                true, // Hardened?
+                true, // Unbreakable?
+                true  // Drops powerup?
             ));
         }
 
@@ -79,9 +81,7 @@ public class TestingGrounds : IGameState {
     }
 
     public void UpdateState() {
-        if (blocks.CountEntities() > 0) {
-            blocks.Iterate(block => block.HitPoints -= 1);
-        }
+        blocks.Iterate(block => block.HitPoints -= 1);
         balls.Iterate(ball => ball.Move());
         player.Move();
     }
