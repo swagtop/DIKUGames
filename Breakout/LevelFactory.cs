@@ -7,7 +7,7 @@ using DIKUArcade.Math;
 using Breakout.Entities;
 
 namespace Breakout;
-public static class LevelAssembler {
+public static class LevelFactory {
     public static EntityContainer<Block> FromFile(string filepath) {
         EntityContainer<Block> blocks = new EntityContainer<Block>();
         string levelName = "Unknown";
