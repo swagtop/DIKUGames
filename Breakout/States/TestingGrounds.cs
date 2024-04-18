@@ -20,8 +20,6 @@ public class TestingGrounds : IGameState {
     private GameEventBus eventBus;
     private Player player;
     private EntityContainer<Block> blocks;
-    private EntityContainer<Ball> balls;
-    private EntityContainer<Powerup> powerups;
 
     public static TestingGrounds GetInstance() {
         if (TestingGrounds.instance == null) {
@@ -56,19 +54,6 @@ public class TestingGrounds : IGameState {
             ));
         }
 
-        // BALLS
-        Image normalBall = new Image(Path.Combine("Assets", "Images", "ball.png"));
-
-        balls = new EntityContainer<Ball>(1);
-        balls.AddEntity(new Ball(
-            normalBall,
-            new DynamicShape(
-                new Vec2F(0.2f, 0.2f), 
-                new Vec2F(0.02f, 0.02f),
-                new Vec2F(0.02f, 0.01f)
-            )
-        ));
-
         // EVENT BUS
         eventBus = BreakoutBus.GetBus();
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
@@ -76,13 +61,11 @@ public class TestingGrounds : IGameState {
 
     public void RenderState() {
         blocks.RenderEntities();
-        balls.RenderEntities();
         player.RenderEntity();
     }
 
     public void UpdateState() {
         blocks.Iterate(block => block.HitPoints -= 1);
-        balls.Iterate(ball => ball.Move());
         player.Move();
     }
 

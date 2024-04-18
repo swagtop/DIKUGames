@@ -20,8 +20,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private GameEventBus eventBus;
     private Player player;
     private EntityContainer<Block> blocks;
-    private EntityContainer<Ball> balls;
-    private EntityContainer<Powerup> powerups;
     private int timeLeft;
     private string levelName;
 
@@ -47,33 +45,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         Image blueBlockDamaged = new Image(Path.Combine("Assets", "Images", "blue-block-damaged.png"));
         
         blocks = LevelFactory.FromFile(Path.Combine("Assets", "Levels", "level1.txt"));
-        /*
-        for (int i = 0; i < 12; i++) {
-            blocks.AddEntity(new Block(
-                blueBlock, 
-                blueBlockDamaged, 
-                new StationaryShape(new Vec2F(0.0f + i*0.06f, 0.0f), new Vec2F(0.06f, 0.02f)),
-                true, // Hardened?
-                true, // Unbreakable?
-                true  // Drops powerup?
-            ));
-        }
-        */
-
-        /*
-        // BALLS
-        Image normalBall = new Image(Path.Combine("Assets", "Images", "ball.png"));
-
-        balls = new EntityContainer<Ball>(1);
-        balls.AddEntity(new Ball(
-            normalBall,
-            new DynamicShape(
-                new Vec2F(0.2f, 0.2f), 
-                new Vec2F(0.02f, 0.02f),
-                new Vec2F(0.02f, 0.01f)
-            )
-        ));
-        */
 
         // EVENT BUS
         eventBus = BreakoutBus.GetBus();
@@ -82,13 +53,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void RenderState() {
         blocks.RenderEntities();
-        // balls.RenderEntities();
         player.RenderEntity();
     }
 
     public void UpdateState() {
         // blocks.Iterate(block => block.HitPoints -= 1);
-        // balls.Iterate(ball => ball.Move());
         player.Move();
     }
 
