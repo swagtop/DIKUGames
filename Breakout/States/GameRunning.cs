@@ -46,7 +46,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         Image blueBlock = new Image(Path.Combine("Assets", "Images", "blue-block.png"));
         Image blueBlockDamaged = new Image(Path.Combine("Assets", "Images", "blue-block-damaged.png"));
         
-        blocks = LevelFactory.FromFile(Path.Combine("Assets", "Levels", "central-mass.txt"));
+        blocks = LevelFactory.FromFile(Path.Combine("Assets", "Levels", "level1.txt"));
         /*
         for (int i = 0; i < 12; i++) {
             blocks.AddEntity(new Block(

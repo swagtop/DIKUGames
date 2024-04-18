@@ -18,8 +18,7 @@ public static class LevelFactory {
         string levelName = "";
         int timeLimit = -1;
 
-        string fileContents = File.ReadAllText(filepath);
-        string[] levelStrings = fileContents.Split('\n');
+        string[] levelStrings = File.ReadAllText(filepath).Split('\n');
         for (int i = 0; i < levelStrings.Length; i++) {
             levelStrings[i] = levelStrings[i].Trim();
         }
@@ -34,7 +33,8 @@ public static class LevelFactory {
         Queue<string> blockRows = new Queue<string>();
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Map/") break;
-            Console.WriteLine(levelStrings[line]);
+            if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
+            
             blockRows.Enqueue(levelStrings[line]);
         }
         line += 2;
@@ -48,7 +48,8 @@ public static class LevelFactory {
         Dictionary<string, string> metaDict = new Dictionary<string, string>();
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Meta/") break;
-            Console.WriteLine(levelStrings[line]);
+            if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
+
             pair = levelStrings[line].Split(": ");
             switch (pair[0]) {
                 case "Name":
@@ -77,7 +78,8 @@ public static class LevelFactory {
         Dictionary<string, Tuple<Image, Image>> legendDict = new Dictionary<string, Tuple<Image, Image>>();
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Legend/") break;
-            Console.WriteLine(levelStrings[line]);
+            if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
+
             pair = levelStrings[line].Split(") ");
             legendDict.Add(
                 pair[0], 
@@ -93,7 +95,7 @@ public static class LevelFactory {
         int blockCount = blockRows.Count();
         for (int i = 0; i < blockCount; i++) {
             string row = blockRows.Dequeue();
-            for (int j = 0; j < 11; j++) {
+            for (int j = 0; j < row.Length; j++) {
                 if (row[j] != '-') {
                     blocks.AddEntity(new Block(
                         legendDict[Char.ToString(row[j])].Item1, 
