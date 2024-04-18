@@ -101,7 +101,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     StringArg1 = "GAME_PAUSED"
                 });
                 break;
-            case KeyboardKey.Left:
+            case KeyboardKey.Left: case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     To = player,
@@ -110,7 +110,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     StringArg2 = "START"
                 });
                 break;
-            case KeyboardKey.Right:
+            case KeyboardKey.Right: case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     To = player,
@@ -124,7 +124,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     private void KeyRelease(KeyboardKey key) {
         switch (key) {
-            case KeyboardKey.Left:
+            case KeyboardKey.Left: case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     To = player,
@@ -133,7 +133,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     StringArg2 = "STOP"
                 });
                 break;
-            case KeyboardKey.Right:
+            case KeyboardKey.Right: case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     To = player,
