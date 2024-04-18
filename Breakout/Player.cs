@@ -9,8 +9,6 @@ public class Player : IGameEventProcessor {
     private DynamicShape shape;
     private float moveLeft = 0.0f;
     private float moveRight = 0.0f;
-    private float moveUp = 0.0f;
-    private float moveDown = 0.0f;
     private const float MOVEMENT_SPEED = 0.01f;
 
     public Player(DynamicShape shape, IBaseImage image) {
