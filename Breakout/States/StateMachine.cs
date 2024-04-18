@@ -11,7 +11,6 @@ public class StateMachine : IGameEventProcessor {
     public StateMachine() {
         BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
         ActiveState = GameRunning.GetInstance();
-        //ActiveState = TestingGrounds.GetInstance();
         //ActiveState = MainMenu.GetInstance();
         //GameRunning.GetInstance();
         //GamePaused.GetInstance();
