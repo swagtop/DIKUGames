@@ -38,7 +38,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         Image playerImage = new Image(Path.Combine("Assets", "Images", "player.png"));
 
         player = new Player(
-            new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.07f, 0.01375f)),
+            new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
             playerImage
         );
 
@@ -83,7 +83,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void RenderState() {
         blocks.RenderEntities();
         // balls.RenderEntities();
-        player.Render();
+        player.RenderEntity();
     }
 
     public void UpdateState() {

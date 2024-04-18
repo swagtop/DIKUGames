@@ -77,7 +77,7 @@ public class TestingGrounds : IGameState {
     public void RenderState() {
         blocks.RenderEntities();
         balls.RenderEntities();
-        player.Render();
+        player.RenderEntity();
     }
 
     public void UpdateState() {
