@@ -13,25 +13,18 @@ public class Player : Entity, IGameEventProcessor {
     }
 
     private void UpdateDirection() {
-        //Shape.Direction.X = moveLeft + moveRight;
         Shape.AsDynamicShape().ChangeDirection(new Vec2F(moveLeft + moveRight, 0.0f));
     }
 
     private void SetMoveLeft(bool val) {
-        if (val) {
-            moveLeft = - MOVEMENT_SPEED;
-        } else {
-            moveLeft = 0f;
-        }
+        if (val) { moveLeft = - MOVEMENT_SPEED; } 
+        else { moveLeft = 0f; }
         UpdateDirection();
     }
 
     private void SetMoveRight(bool val) {
-        if (val) {
-            moveRight = MOVEMENT_SPEED;
-        } else {
-            moveRight = 0f;
-        }
+        if (val) { moveRight = MOVEMENT_SPEED; } 
+        else { moveRight = 0f; }
         UpdateDirection();
     }
 
@@ -39,10 +32,6 @@ public class Player : Entity, IGameEventProcessor {
         if (!(Shape.Position.X+moveLeft > 1.0f - Shape.Extent.X) && !(Shape.Position.X+moveRight < 0.0)) {
             Shape.Position.X += Shape.AsDynamicShape().Direction.X;
         }
-    }
-
-    public Vec2F GetPosition {
-        get { return Shape.Position; }
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
