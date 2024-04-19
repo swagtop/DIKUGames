@@ -6,11 +6,12 @@ using DIKUArcade.Events;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 using DIKUArcade.State;
+using Breakout;
 using Breakout.States;
 
 namespace Breakout.States;
-public class MainMenu : IGameState {
-    private static MainMenu instance = null;
+public class ChooseLevel : IGameState {
+    private static ChooseLevel instance = null;
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
@@ -19,17 +20,15 @@ public class MainMenu : IGameState {
     private int activeMenuButton = 0;
     private Vec3F whiteButton = new Vec3F(1.0f, 1.0f, 1.0f);
     private Vec3F grayButton = new Vec3F(0.4f, 0.4f, 0.4f);
-    private Text[] menuButtons = {
-        new Text("Choose Level", new Vec2F(0.1f, 0.5f), new Vec2F(0.3f, 0.3f)),
-        new Text("Quit", new Vec2F(0.1f, 0.3f), new Vec2F(0.3f, 0.3f)),
-    };
-    public static MainMenu GetInstance() {
-        if (MainMenu.instance == null) {
-            MainMenu.instance = new MainMenu();
-            foreach (Text button in instance.menuButtons) { button.SetColor(instance.grayButton); }
-            instance.menuButtons[instance.activeMenuButton].SetColor(instance.whiteButton);
+    private List<Text> menuButtons;
+    private List<string> levelFiles;
+    
+    public static ChooseLevel GetInstance() {
+        if (ChooseLevel.instance == null) {
+            ChooseLevel.instance = new ChooseLevel();
         }
-        return MainMenu.instance;
+        instance.ResetState();
+        return ChooseLevel.instance;
     }
     
     public void RenderState() {
@@ -40,9 +39,30 @@ public class MainMenu : IGameState {
     }
 
     public void ResetState() {
-        menuButtons[activeMenuButton].SetColor(grayButton);
-        activeMenuButton = 0; 
-        menuButtons[activeMenuButton].SetColor(whiteButton);
+        menuButtons = new List<Text>();
+        levelFiles = new List<string>();
+        
+        
+        string[] levelAssets = Directory.GetFiles(Path.Combine("Assets", "Levels"));
+        float buttonDistance = 0.5f / levelAssets.Length;
+        menuButtons.Add(new Text(
+            "< Main Menu", 
+            new Vec2F(0.1f, 0.5f), 
+            new Vec2F(0.3f, 0.3f)
+        ));
+
+        for (int i = 0; i < levelAssets.Length; i++) {
+            string fileName = levelAssets[i].Remove(0, 14);
+            menuButtons.Add(new Text(
+                fileName, 
+                new Vec2F(0.1f, 0.5f - ((i + 1) * buttonDistance)), 
+                new Vec2F(0.3f, 0.3f)
+            ));
+            levelFiles.Add(fileName);
+        }
+        activeMenuButton = 0;
+        foreach (Text button in instance.menuButtons) { button.SetColor(instance.grayButton); }
+        instance.menuButtons[instance.activeMenuButton].SetColor(instance.whiteButton);
     }
 
     public void UpdateState() {
@@ -59,7 +79,7 @@ public class MainMenu : IGameState {
                 break;
 
             case (KeyboardAction.KeyPress, KeyboardKey.Down):
-                if (activeMenuButton < menuButtons.Length - 1) { 
+                if (activeMenuButton < menuButtons.Count - 1) { 
                     menuButtons[activeMenuButton].SetColor(grayButton);
                     activeMenuButton += 1; 
                     menuButtons[activeMenuButton].SetColor(whiteButton);
@@ -74,18 +94,19 @@ public class MainMenu : IGameState {
                                 EventType = GameEventType.GameStateEvent,
                                 To = StateMachine.GetInstance(),
                                 Message = "CHANGE_STATE",
-                                StringArg1 = "CHOOSE_LEVEL"
+                                StringArg1 = "MAIN_MENU"
                         });
                         break;
-                    case 1:
+                    default:
+                        LevelFactory.LoadFromFile(Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1]));
                         eventBus.RegisterEvent(
                             new GameEvent {
-                                EventType = GameEventType.WindowEvent,
-                                Message = "CLOSE_WINDOW",
+                                EventType = GameEventType.GameStateEvent,
+                                To = StateMachine.GetInstance(),
+                                Message = "CHANGE_STATE",
+                                StringArg1 = "GAME_RUNNING"
                         });
                         break;
-                default:
-                    throw new ArgumentException($"Button number not implemented: {activeMenuButton}");
                 }
                 break;
 

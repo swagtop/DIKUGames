@@ -10,10 +10,10 @@ public class StateMachine : IGameEventProcessor {
     public IGameState ActiveState { get; private set; }
     public StateMachine() { 
         BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
-        //ActiveState = GameRunning.GetInstance();
         ActiveState = MainMenu.GetInstance();
-        //GameRunning.GetInstance();
-        //GamePaused.GetInstance();
+        GameRunning.GetInstance();
+        GamePaused.GetInstance();
+        ChooseLevel.GetInstance();
     }
 
     public static StateMachine GetInstance() {
@@ -21,7 +21,6 @@ public class StateMachine : IGameEventProcessor {
     }
 
     public void SwitchState(GameStateType stateType) {
-        /*
         switch (stateType) {
             case GameStateType.GameRunning:
                 ActiveState = GameRunning.GetInstance();
@@ -32,14 +31,15 @@ public class StateMachine : IGameEventProcessor {
             case GameStateType.MainMenu:
                 ActiveState = MainMenu.GetInstance();
                 break;
+            case GameStateType.ChooseLevel:
+                ActiveState = ChooseLevel.GetInstance();
+                break;
             default:
                 throw new ArgumentException($"Unrecognized GameStateType: {stateType}");
         }
-        */
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        /*
         if (gameEvent.EventType == GameEventType.GameStateEvent) {
             if (gameEvent.Message == "CHANGE_STATE") {
                 if (gameEvent.StringArg2 == "RESET_GAME") {
@@ -49,6 +49,5 @@ public class StateMachine : IGameEventProcessor {
                 SwitchState(StateTransformer.TransformStringToState(gameEvent.StringArg1));
             }
         }
-        */
     }
 }

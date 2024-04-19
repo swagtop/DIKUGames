@@ -9,8 +9,8 @@ using DIKUArcade.State;
 using Breakout.States;
 
 namespace Breakout.States;
-public class MainMenu : IGameState {
-    private static MainMenu instance = null;
+public class GamePaused : IGameState {
+    private static GamePaused instance = null;
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
@@ -20,16 +20,16 @@ public class MainMenu : IGameState {
     private Vec3F whiteButton = new Vec3F(1.0f, 1.0f, 1.0f);
     private Vec3F grayButton = new Vec3F(0.4f, 0.4f, 0.4f);
     private Text[] menuButtons = {
-        new Text("Choose Level", new Vec2F(0.1f, 0.5f), new Vec2F(0.3f, 0.3f)),
-        new Text("Quit", new Vec2F(0.1f, 0.3f), new Vec2F(0.3f, 0.3f)),
+        new Text("Choose Level", new Vec2F(0.5f, 0.5f), new Vec2F(0.3f, 0.3f)),
+        new Text("Quit", new Vec2F(0.5f, 0.3f), new Vec2F(0.3f, 0.3f)),
     };
-    public static MainMenu GetInstance() {
-        if (MainMenu.instance == null) {
-            MainMenu.instance = new MainMenu();
+    public static GamePaused GetInstance() {
+        if (GamePaused.instance == null) {
+            GamePaused.instance = new GamePaused();
             foreach (Text button in instance.menuButtons) { button.SetColor(instance.grayButton); }
             instance.menuButtons[instance.activeMenuButton].SetColor(instance.whiteButton);
         }
-        return MainMenu.instance;
+        return GamePaused.instance;
     }
     
     public void RenderState() {
@@ -72,7 +72,6 @@ public class MainMenu : IGameState {
                         eventBus.RegisterEvent(
                             new GameEvent {
                                 EventType = GameEventType.GameStateEvent,
-                                To = StateMachine.GetInstance(),
                                 Message = "CHANGE_STATE",
                                 StringArg1 = "CHOOSE_LEVEL"
                         });

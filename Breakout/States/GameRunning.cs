@@ -65,11 +65,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private void KeyPress(KeyboardKey key) {
         switch (key) {
             case KeyboardKey.Escape:
-                LevelFactory.LoadFromFile(Path.Combine("Assets", "Levels", "level1.txt"));
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
-                    StringArg1 = "GAME_PAUSED"
+                    StringArg1 = "MAIN_MENU"
                 });
                 break;
             case KeyboardKey.Left: case KeyboardKey.A:
