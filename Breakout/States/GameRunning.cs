@@ -28,6 +28,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
             GameRunning.instance = new GameRunning();
             GameRunning.instance.ResetState();
         }
+        
         return GameRunning.instance;
     }
 
@@ -44,15 +45,15 @@ public class GameRunning : IGameState, IGameEventProcessor {
         Image blueBlock = new Image(Path.Combine("Assets", "Images", "blue-block.png"));
         Image blueBlockDamaged = new Image(Path.Combine("Assets", "Images", "blue-block-damaged.png"));
         
-        blocks = LevelFactory.FromFile(Path.Combine("Assets", "Levels", "level1.txt"));
 
         // EVENT BUS
         eventBus = BreakoutBus.GetBus();
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
+        eventBus.Subscribe(GameEventType.GameStateEvent, this);
     }
 
     public void RenderState() {
-        blocks.RenderEntities();
+        if (blocks != null) { blocks.RenderEntities(); }
         player.RenderEntity();
     }
 
@@ -64,6 +65,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private void KeyPress(KeyboardKey key) {
         switch (key) {
             case KeyboardKey.Escape:
+                LevelFactory.LoadFromFile(Path.Combine("Assets", "Levels", "level1.txt"));
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     Message = "CHANGE_STATE",
@@ -130,11 +132,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
         if (gameEvent.EventType == GameEventType.GameStateEvent) {
             if (gameEvent.Message == "LOAD_LEVEL") {
                 this.ResetState();
-                /*
-                blocks = gameEvent.ObjectArg1;
-                timeLeft = gameEvent.IntArg1;
                 levelName = gameEvent.StringArg1;
-                */
+                blocks = (EntityContainer<Block>)gameEvent.ObjectArg1;
+                timeLeft = gameEvent.IntArg1;
             }
         }
     }

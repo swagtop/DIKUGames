@@ -8,8 +8,9 @@ namespace Breakout.States;
 public class StateMachine : IGameEventProcessor {
     private static StateMachine instance;
     public IGameState ActiveState { get; private set; }
-    public StateMachine() {
+    public StateMachine() { 
         BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+        BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, GameRunning.GetInstance());
         ActiveState = GameRunning.GetInstance();
         //ActiveState = MainMenu.GetInstance();
         //GameRunning.GetInstance();

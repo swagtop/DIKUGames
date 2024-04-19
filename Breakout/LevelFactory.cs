@@ -7,10 +7,11 @@ using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 using Breakout.Entities;
+using Breakout.States;
 
 namespace Breakout;
 public static class LevelFactory {
-    public static EntityContainer<Block> FromFile(string filepath) {
+    public static void LoadFromFile(string filepath) {
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
 
@@ -108,6 +109,17 @@ public static class LevelFactory {
             }
         }
 
-        return blocks;
+        //object boxedBlocks = blocks;
+
+        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
+            EventType = GameEventType.GameStateEvent,
+            To = GameRunning.GetInstance(),
+            Message = "LOAD_LEVEL",
+            StringArg1 = levelName,
+            ObjectArg1 = (object)blocks,
+            IntArg1 = timeLimit
+        });
+
+        //return blocks;
     }
 }
