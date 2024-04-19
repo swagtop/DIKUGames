@@ -102,8 +102,8 @@ public static class LevelFactory {
                         legendDict[Char.ToString(row[j])].Item1, 
                         legendDict[Char.ToString(row[j])].Item2, 
                         new StationaryShape(new Vec2F((j * xRatio), 1.0f - (i*yRatio)), new Vec2F(xRatio, yRatio)),
-                        true, // Hardened?
-                        true  // Unbreakable?
+                        false, // Hardened?
+                        false  // Unbreakable?
                     ));
                 }
             }

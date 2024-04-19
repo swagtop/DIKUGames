@@ -58,7 +58,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void UpdateState() {
-        // blocks.Iterate(block => block.HitPoints -= 1);
         player.Move();
     }
 
@@ -89,6 +88,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     StringArg1 = "RIGHT",
                     StringArg2 = "START"
                 });
+                break;
+            case KeyboardKey.Space:
+                Console.WriteLine("LOL");
+                blocks.Iterate(block => block.HitPoints -= 1);
                 break;
         }
     }

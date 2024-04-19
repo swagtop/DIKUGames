@@ -14,7 +14,7 @@ public class Block : Entity {
         set {
             if (unbreakable) { return; } // Hitpoints cannot be set if block is unbreakable.
             if (value <= maxHitpoints/2 && hitpoints > maxHitpoints/2) { Image = damagedImage; }
-            if (value > 1) { hitpoints = value; }
+            if (value > 0) { hitpoints = value; }
             else { this.DeleteEntity(); }
         }
     }
