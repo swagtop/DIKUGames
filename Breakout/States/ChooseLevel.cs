@@ -42,7 +42,6 @@ public class ChooseLevel : IGameState {
         menuButtons = new List<Text>();
         levelFiles = new List<string>();
         
-        
         string[] levelAssets = Directory.GetFiles(Path.Combine("Assets", "Levels"));
         float buttonDistance = 0.5f / levelAssets.Length;
         menuButtons.Add(new Text(
@@ -99,7 +98,10 @@ public class ChooseLevel : IGameState {
                         break;
                     default:
                         try {
-                            LevelFactory.LoadFromFile(Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1]));
+                            LevelFactory.LoadFromFile(
+                                Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1]), 
+                                GameRunning.GetInstance()
+                            );
                             eventBus.RegisterEvent(
                                 new GameEvent {
                                     EventType = GameEventType.GameStateEvent,

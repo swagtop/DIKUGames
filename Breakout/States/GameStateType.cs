@@ -22,6 +22,7 @@ public static class StateTransformer {
                 throw new ArgumentException($"Unrecognized GameStateType: {state}");
         }
     }
+
     public static string TransformStateToString(GameStateType state) {
         switch (state) {
             case GameStateType.GameRunning:

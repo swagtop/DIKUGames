@@ -11,7 +11,8 @@ using Breakout.States;
 
 namespace Breakout;
 public static class LevelFactory {
-    public static void LoadFromFile(string filepath) {
+    public static void LoadFromFile(string filepath, IGameEventProcessor to) {
+        string[] pair = new string[2];
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
 
@@ -45,7 +46,6 @@ public static class LevelFactory {
             throw new Exception("Level file has invalid placement for 'Meta:'");
         } 
         
-        string[] pair = new string[2];
         Dictionary<string, string> metaDict = new Dictionary<string, string>();
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Meta/") break;
@@ -109,17 +109,14 @@ public static class LevelFactory {
             }
         }
 
-        //object boxedBlocks = blocks;
-
+        // SEND OFF BLOCKS TO GAMERUNNING
         BreakoutBus.GetBus().RegisterEvent(new GameEvent {
             EventType = GameEventType.GameStateEvent,
-            To = GameRunning.GetInstance(),
+            To = to,
             Message = "LOAD_LEVEL",
             StringArg1 = levelName,
             ObjectArg1 = (object)blocks,
             IntArg1 = timeLimit
         });
-
-        //return blocks;
     }
 }

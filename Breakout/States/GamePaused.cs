@@ -23,6 +23,7 @@ public class GamePaused : IGameState {
         new Text("Choose Level", new Vec2F(0.5f, 0.5f), new Vec2F(0.3f, 0.3f)),
         new Text("Quit", new Vec2F(0.5f, 0.3f), new Vec2F(0.3f, 0.3f)),
     };
+
     public static GamePaused GetInstance() {
         if (GamePaused.instance == null) {
             GamePaused.instance = new GamePaused();

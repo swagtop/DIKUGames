@@ -23,6 +23,7 @@ public class MainMenu : IGameState {
         new Text("Choose Level", new Vec2F(0.1f, 0.5f), new Vec2F(0.3f, 0.3f)),
         new Text("Quit", new Vec2F(0.1f, 0.3f), new Vec2F(0.3f, 0.3f)),
     };
+
     public static MainMenu GetInstance() {
         if (MainMenu.instance == null) {
             MainMenu.instance = new MainMenu();
