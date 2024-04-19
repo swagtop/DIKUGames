@@ -9,7 +9,6 @@ public class Block : Entity {
     private bool unbreakable;
     private int maxHitpoints = 2;
     private int hitpoints;
-    public bool DropsPowerup;
     public int HitPoints {
         get => hitpoints;
         set {
@@ -20,11 +19,10 @@ public class Block : Entity {
         }
     }
     public Block(Image image, Image damagedImage, Shape shape, bool hardened,
-                bool unbreakable, bool dropsPowerup) : base(shape, image) {
+                bool unbreakable) : base(shape, image) {
         this.damagedImage = damagedImage;
         this.unbreakable = unbreakable;
         if (hardened) { this.maxHitpoints *= 2; }
         this.hitpoints = this.maxHitpoints;
-        DropsPowerup = dropsPowerup;
     }
 }
