@@ -90,7 +90,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 });
                 break;
             case KeyboardKey.Space:
-                Console.WriteLine("LOL");
+                Console.WriteLine("DEBUG: All blocks take one hit.");
                 blocks.Iterate(block => block.HitPoints -= 1);
                 break;
         }

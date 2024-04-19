@@ -98,14 +98,18 @@ public class ChooseLevel : IGameState {
                         });
                         break;
                     default:
-                        LevelFactory.LoadFromFile(Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1]));
-                        eventBus.RegisterEvent(
-                            new GameEvent {
-                                EventType = GameEventType.GameStateEvent,
-                                To = StateMachine.GetInstance(),
-                                Message = "CHANGE_STATE",
-                                StringArg1 = "GAME_RUNNING"
-                        });
+                        try {
+                            LevelFactory.LoadFromFile(Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1]));
+                            eventBus.RegisterEvent(
+                                new GameEvent {
+                                    EventType = GameEventType.GameStateEvent,
+                                    To = StateMachine.GetInstance(),
+                                    Message = "CHANGE_STATE",
+                                    StringArg1 = "GAME_RUNNING"
+                            });
+                        } catch (Exception e) {
+                            Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
+                        }
                         break;
                 }
                 break;
