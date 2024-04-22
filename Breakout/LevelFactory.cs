@@ -15,6 +15,8 @@ public static class LevelFactory {
         string[] pair = new string[2];
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
+        Image defaultNormalImage = new Image(Path.Combine("Assets", "Images", "grey-block.png"));
+        Image defaultDamagedImage = new Image(Path.Combine("Assets", "Images", "grey-block-damaged.png"));
 
         EntityContainer<Block> blocks = new EntityContainer<Block>();
         string levelName = "";
@@ -83,13 +85,12 @@ public static class LevelFactory {
 
             pair = levelStrings[line].Split(") ");
             legendDict.Add(
-                pair[0], 
-                new Tuple<Image, Image>(
-                    new Image(Path.Combine("Assets", "Images", pair[1])),
-                    new Image(Path.Combine("Assets", "Images", pair[1]
-                        .Substring(0, pair[1].Length - 4) + "-damaged.png"))
-                )
-            );
+            pair[0], 
+            new Tuple<Image, Image>(
+                new Image(Path.Combine("Assets", "Images", pair[1])),
+                new Image(Path.Combine("Assets", "Images", pair[1]
+                    .Substring(0, pair[1].Length - 4) + "-damaged.png"))
+            ));
         }
 
         // MANUFACTURE BLOCKS
@@ -98,10 +99,21 @@ public static class LevelFactory {
             string row = blockRows.Dequeue();
             for (int j = 0; j < row.Length; j++) {
                 if (row[j] != '-') {
+                    Image normalImage;
+                    Image damagedImage;
+
+                    try {
+                        normalImage = legendDict[Char.ToString(row[j])].Item1;
+                        damagedImage = legendDict[Char.ToString(row[j])].Item2;
+                    } catch (System.Collections.Generic.KeyNotFoundException e) {
+                        normalImage = defaultNormalImage;
+                        damagedImage = defaultDamagedImage;
+                    }
+
                     blocks.AddEntity(new Block(
-                        legendDict[Char.ToString(row[j])].Item1, 
-                        legendDict[Char.ToString(row[j])].Item2, 
-                        new StationaryShape(new Vec2F((j * xRatio), 1.0f - (i*yRatio)), new Vec2F(xRatio, yRatio)),
+                        normalImage,
+                        damagedImage,
+                        new StationaryShape(new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), new Vec2F(xRatio, yRatio)),
                         false, // Hardened?
                         false  // Unbreakable?
                     ));
