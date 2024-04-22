@@ -51,7 +51,7 @@ public class ChooseLevel : IGameState {
         ));
 
         for (int i = 0; i < levelAssets.Length; i++) {
-            string fileName = levelAssets[i].Remove(0, 14);
+            string fileName = levelAssets[levelAssets.Length - 1 - i].Remove(0, 14);
             menuButtons.Add(new Text(
                 fileName, 
                 new Vec2F(0.1f, 0.5f - ((i + 1) * buttonDistance)), 
