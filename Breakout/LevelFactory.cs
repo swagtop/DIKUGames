@@ -95,6 +95,8 @@ public static class LevelFactory {
 
         // MANUFACTURE BLOCKS
         int blockCount = blockRows.Count();
+        if (blockCount > 30) { blockCount = 30; }
+        
         for (int i = 0; i < blockCount; i++) {
             string row = blockRows.Dequeue();
             for (int j = 0; j < row.Length; j++) {
