@@ -15,6 +15,7 @@ public static class LevelFactory {
         string[] pair = new string[2];
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
+        int maxBlockRows = 30;
         Image defaultNormalImage = new Image(Path.Combine("Assets", "Images", "grey-block.png"));
         Image defaultDamagedImage = new Image(Path.Combine("Assets", "Images", "grey-block-damaged.png"));
 
@@ -37,6 +38,7 @@ public static class LevelFactory {
         Queue<string> blockRows = new Queue<string>();
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Map/") break;
+            if (blockRows.Count >= maxBlockRows) continue; // Ignore blocks after row 30.
             if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
             
             blockRows.Enqueue(levelStrings[line]);
@@ -95,7 +97,6 @@ public static class LevelFactory {
 
         // MANUFACTURE BLOCKS
         int blockCount = blockRows.Count();
-        if (blockCount > 30) { blockCount = 30; }
         
         for (int i = 0; i < blockCount; i++) {
             string row = blockRows.Dequeue();
