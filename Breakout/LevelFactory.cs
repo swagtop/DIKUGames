@@ -17,8 +17,18 @@ public static class LevelFactory {
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
 
-        Image defaultNormalImage = new Image(Path.Combine("Assets", "Images", "grey-block.png"));
-        Image defaultDamagedImage = new Image(Path.Combine("Assets", "Images", "grey-block-damaged.png"));
+        Image defaultNormalImage = new Image(
+            Path.Combine(
+                "Assets", 
+                "Images", 
+                "grey-block.png"
+        ));
+        Image defaultDamagedImage = new Image(
+            Path.Combine(
+                "Assets", 
+                "Images", 
+                "grey-block-damaged.png"
+        ));
 
         // LEVEL DATA
         EntityContainer<Block> blocks = new EntityContainer<Block>();
@@ -32,8 +42,7 @@ public static class LevelFactory {
         char hardenedChar = '-';
         char unbreakableChar = '-';
         char powerupChar = '-';
-        Dictionary<char, Image[]> legendDict = new Dictionary<char, Image[]>();
-
+        Dictionary<char, Image[]> legendDictionary = new Dictionary<char, Image[]>();
         int rowsInQueue;
 
         // BREAK UP FILE CONTENTS INTO LINES
@@ -98,12 +107,12 @@ public static class LevelFactory {
             if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
 
             stringPair = levelStrings[line].Split(") ");
-            legendDict.Add(
-            char.Parse(stringPair[0]), 
-            new Image[2] {
-                new Image(Path.Combine("Assets", "Images", stringPair[1])),
-                new Image(Path.Combine("Assets", "Images", stringPair[1]
-                    .Substring(0, stringPair[1].Length - 4) + "-damaged.png"))
+            legendDictionary.Add(
+                char.Parse(stringPair[0]), 
+                new Image[2] {
+                    new Image(Path.Combine("Assets", "Images", stringPair[1])),
+                    new Image(Path.Combine("Assets", "Images", stringPair[1]
+                        .Substring(0, stringPair[1].Length - 4) + "-damaged.png"))
             });
         }
 
@@ -117,8 +126,8 @@ public static class LevelFactory {
                     Image damagedImage;
 
                     try {
-                        normalImage = legendDict[row[j]][0];
-                        damagedImage = legendDict[row[j]][1];
+                        normalImage = legendDictionary[row[j]][0];
+                        damagedImage = legendDictionary[row[j]][1];
                     } catch (System.Collections.Generic.KeyNotFoundException) {
                         normalImage = defaultNormalImage;
                         damagedImage = defaultDamagedImage;
