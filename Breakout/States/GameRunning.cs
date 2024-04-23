@@ -44,7 +44,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         // BLOCKS
         Image blueBlock = new Image(Path.Combine("Assets", "Images", "blue-block.png"));
         Image blueBlockDamaged = new Image(Path.Combine("Assets", "Images", "blue-block-damaged.png"));
-        
 
         // EVENT BUS
         eventBus = BreakoutBus.GetBus();
