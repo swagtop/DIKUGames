@@ -12,33 +12,39 @@ using Breakout.States;
 namespace Breakout;
 public static class LevelFactory {
     public static void LoadFromFile(string filepath, IGameEventProcessor to) {
-        string[] pair = new string[2];
+        // BLOCK POSITIONS
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
+
         Image defaultNormalImage = new Image(Path.Combine("Assets", "Images", "grey-block.png"));
         Image defaultDamagedImage = new Image(Path.Combine("Assets", "Images", "grey-block-damaged.png"));
 
+        // LEVEL DATA
         EntityContainer<Block> blocks = new EntityContainer<Block>();
         string levelName = "";
         int timeLimit = -1;
+
+        // OBJECTS NEEDED FOR READING LINES
+        int line = 0;
+        string[] pair = new string[2];
+        Queue<string> blockRows = new Queue<string>();
+        Dictionary<string, string> metaDict = new Dictionary<string, string>();
+        Dictionary<string, Tuple<Image, Image>> legendDict = new Dictionary<string, Tuple<Image, Image>>();
 
         string[] levelStrings = File.ReadAllText(filepath).Split('\n');
         for (int i = 0; i < levelStrings.Length; i++) {
             levelStrings[i] = levelStrings[i].Trim();
         }
-        
-        int line = 0;
 
         // READ MAP LINES
         if (levelStrings[line] != "Map:") {
             throw new Exception("Level file does not start with 'Map:'");
         } 
         
-        Queue<string> blockRows = new Queue<string>();
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Map/") break;
-            if (blockRows.Count >= maxBlockRows) continue; // Ignore blocks after row 30.
+            if (blockRows.Count() >= maxBlockRows) continue; // Ignore blocks after row 30.
             if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
             
             blockRows.Enqueue(levelStrings[line]);
@@ -50,7 +56,6 @@ public static class LevelFactory {
             throw new Exception("Level file has invalid placement for 'Meta:'");
         } 
         
-        Dictionary<string, string> metaDict = new Dictionary<string, string>();
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Meta/") break;
             if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
@@ -80,7 +85,6 @@ public static class LevelFactory {
             throw new Exception("Level file has invalid placement for 'Legend:'");
         } 
 
-        Dictionary<string, Tuple<Image, Image>> legendDict = new Dictionary<string, Tuple<Image, Image>>();
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Legend/") break;
             if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
@@ -96,9 +100,7 @@ public static class LevelFactory {
         }
 
         // MANUFACTURE BLOCKS
-        int blockCount = blockRows.Count();
-        
-        for (int i = 0; i < blockCount; i++) {
+        for (int i = 0; i < blockRows.Count(); i++) {
             string row = blockRows.Dequeue();
             for (int j = 0; j < row.Length; j++) {
                 if (row[j] != '-') {
