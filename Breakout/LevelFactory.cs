@@ -31,7 +31,9 @@ public static class LevelFactory {
         Queue<string> blockRows = new Queue<string>();
         Dictionary<string, string> metaDict = new Dictionary<string, string>();
         Dictionary<string, Tuple<Image, Image>> legendDict = new Dictionary<string, Tuple<Image, Image>>();
+        int rowsInQueue;
 
+        // BREAK UP FILE CONTENTS INTO LINES
         string[] levelStrings = File.ReadAllText(filepath).Split('\n');
         for (int i = 0; i < levelStrings.Length; i++) {
             levelStrings[i] = levelStrings[i].Trim();
@@ -44,7 +46,7 @@ public static class LevelFactory {
         
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Map/") break;
-            if (blockRows.Count() >= maxBlockRows) continue; // Ignore blocks after row 30.
+            if (blockRows.Count() > maxBlockRows - 1) continue; // Ignore blocks after row 30.
             if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
             
             blockRows.Enqueue(levelStrings[line]);
@@ -83,7 +85,7 @@ public static class LevelFactory {
         // READ LEGEND LINES
         if (levelStrings[line] != "Legend:") {
             throw new Exception("Level file has invalid placement for 'Legend:'");
-        } 
+        }
 
         for (line = line + 1; line < levelStrings.Length; line++) {
             if (levelStrings[line] == "Legend/") break;
@@ -100,7 +102,8 @@ public static class LevelFactory {
         }
 
         // MANUFACTURE BLOCKS
-        for (int i = 0; i < blockRows.Count(); i++) {
+        rowsInQueue = blockRows.Count();
+        for (int i = 0; i < rowsInQueue; i++) {
             string row = blockRows.Dequeue();
             for (int j = 0; j < row.Length; j++) {
                 if (row[j] != '-') {
@@ -110,7 +113,7 @@ public static class LevelFactory {
                     try {
                         normalImage = legendDict[Char.ToString(row[j])].Item1;
                         damagedImage = legendDict[Char.ToString(row[j])].Item2;
-                    } catch (System.Collections.Generic.KeyNotFoundException e) {
+                    } catch (System.Collections.Generic.KeyNotFoundException) {
                         normalImage = defaultNormalImage;
                         damagedImage = defaultDamagedImage;
                     }
@@ -118,7 +121,10 @@ public static class LevelFactory {
                     blocks.AddEntity(new Block(
                         normalImage,
                         damagedImage,
-                        new StationaryShape(new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), new Vec2F(xRatio, yRatio)),
+                        new StationaryShape(
+                            new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
+                            new Vec2F(xRatio, yRatio)
+                        ),
                         false, // Hardened?
                         false  // Unbreakable?
                     ));
