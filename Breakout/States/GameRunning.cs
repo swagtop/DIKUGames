@@ -144,10 +144,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
         if (gameEvent.EventType == GameEventType.GameStateEvent) {
             if (gameEvent.Message == "LOAD_LEVEL") {
                 this.ResetState();
-                LevelData levelData = (LevelData)gameEvent.ObjectArg1;
-                levelName = levelData.LevelName;
-                timeLeft = levelData.TimeLimit;
-                blocks = levelData.Blocks;
+                Level level = (Level)gameEvent.ObjectArg1;
+                levelName = level.Metadata.LevelName;
+                timeLeft = level.Metadata.TimeLimit;
+                blocks = level.Blocks;
             }
         } 
     }

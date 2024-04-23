@@ -8,12 +8,64 @@ using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
 public static class LevelFactory {
-    public static LevelData LoadFromFile(string filepath) {
-        // BLOCK POSITIONS
+    public static LevelMetadata ParseMetaStrings(string[] strings) {
+        LevelMetadata levelMetadata = new LevelMetadata();
+        string[] itemPair = new string[2]; 
+
+        for (int i = 0; i < strings.Length; i++) {
+            itemPair = strings[i].Split(": ");
+            switch (itemPair[0]) {
+                case "Name":
+                    levelMetadata.LevelName = itemPair[1];
+                    break;
+                case "Time":
+                    levelMetadata.TimeLimit = Int32.Parse(itemPair[1]);
+                    break;
+                case "Powerup":
+                    levelMetadata.PowerupChar = char.Parse(itemPair[1]);
+                    break;
+                case "Hardened":
+                    levelMetadata.HardenedChar = char.Parse(itemPair[1]);
+                    break;
+                case "Unbreakable":
+                    levelMetadata.UnbreakableChar = char.Parse(itemPair[1]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return levelMetadata;
+    }
+
+    public static Dictionary<char, Image[]> ParseLegendStrings(string[] strings) {
+        Dictionary<char, Image[]> legendDictionary = new Dictionary<char, Image[]>();
+        string[] itemPair = new string[2]; 
+
+        for (int i = 0; i < strings.Length; i++) {
+            itemPair = strings[i].Split(") ");
+            legendDictionary.Add(
+                char.Parse(itemPair[0]), 
+                new Image[2] {
+                    new Image(Path.Combine("Assets", "Images", itemPair[1])),
+                    new Image(Path.Combine("Assets", "Images", itemPair[1]
+                        .Substring(0, itemPair[1].Length - 4) + "-damaged.png"))
+            });
+        }
+        return legendDictionary;
+    }
+
+    public static EntityContainer<Block> ParseMapStrings(string[] strings, LevelMetadata levelMetadata, Dictionary<char, Image[]> legendDictionary) {
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
 
+        int rowsInQueue;
+        
+        foreach (string str in strings) {
+            Console.WriteLine(str);
+        }
+        
+        
         Image defaultNormalImage = new Image(
             Path.Combine(
                 "Assets", 
@@ -26,92 +78,15 @@ public static class LevelFactory {
                 "Images", 
                 "grey-block-damaged.png"
         ));
-
-        // LEVEL DATA
-        LevelData levelData = new LevelData();
-
-        // OBJECTS NEEDED FOR READING LINES
-        int line = 0;
-        string[] stringPair = new string[2];
+        
+        EntityContainer<Block> blocks = new EntityContainer<Block>();
         Queue<string> blockRows = new Queue<string>();
-        char hardenedChar = '-';
-        char unbreakableChar = '-';
-        char powerupChar = '-';
-        Dictionary<char, Image[]> legendDictionary = new Dictionary<char, Image[]>();
-        int rowsInQueue;
-
-        // BREAK UP FILE CONTENTS INTO LINES
-        string[] levelStrings = File.ReadAllText(filepath).Split('\n');
-        for (int i = 0; i < levelStrings.Length; i++) {
-            levelStrings[i] = levelStrings[i].Trim();
-        }
-
-        // READ MAP LINES
-        if (levelStrings[line] != "Map:") {
-            throw new Exception("Level file does not start with 'Map:'");
-        } 
         
-        for (line = line + 1; line < levelStrings.Length; line++) {
-            if (levelStrings[line] == "Map/") break;
-            if (blockRows.Count() > maxBlockRows - 1) continue; // Ignore blocks after row 30.
-            if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
-            
-            blockRows.Enqueue(levelStrings[line]);
+        for (int i = 0; i < strings.Length; i++) {
+            if (blockRows.Count() > maxBlockRows - 1) continue; // Ignore rows after maxBlockRows.
+            blockRows.Enqueue(strings[i]);
         }
-        line += 2;
-
-        // READ META LINES
-        if (levelStrings[line] != "Meta:") {
-            throw new Exception("Level file has invalid placement for 'Meta:'");
-        } 
         
-        for (line = line + 1; line < levelStrings.Length; line++) {
-            if (levelStrings[line] == "Meta/") break;
-            if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
-
-            stringPair = levelStrings[line].Split(": ");
-            switch (stringPair[0]) {
-                case "Name":
-                    levelData.LevelName = stringPair[1];
-                    break;
-                case "Time":
-                    levelData.TimeLimit = Int32.Parse(stringPair[1]);
-                    break;
-                case "Powerup":
-                    powerupChar = char.Parse(stringPair[1]);
-                    break;
-                case "Hardened":
-                    hardenedChar = char.Parse(stringPair[1]);
-                    break;
-                case "Unbreakable":
-                    unbreakableChar = char.Parse(stringPair[1]);
-                    break;
-                default:
-                    break;
-            }
-        }
-        line += 2;
-
-        // READ LEGEND LINES
-        if (levelStrings[line] != "Legend:") {
-            throw new Exception("Level file has invalid placement for 'Legend:'");
-        }
-
-        for (line = line + 1; line < levelStrings.Length; line++) {
-            if (levelStrings[line] == "Legend/") break;
-            if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
-
-            stringPair = levelStrings[line].Split(") ");
-            legendDictionary.Add(
-                char.Parse(stringPair[0]), 
-                new Image[2] {
-                    new Image(Path.Combine("Assets", "Images", stringPair[1])),
-                    new Image(Path.Combine("Assets", "Images", stringPair[1]
-                        .Substring(0, stringPair[1].Length - 4) + "-damaged.png"))
-            });
-        }
-
-        // MANUFACTURE BLOCKS
         rowsInQueue = blockRows.Count();
         for (int i = 0; i < rowsInQueue; i++) {
             string row = blockRows.Dequeue();
@@ -129,19 +104,61 @@ public static class LevelFactory {
                     damagedImage = defaultDamagedImage;
                 }
 
-                levelData.Blocks.AddEntity(new Block(
+                blocks.AddEntity(new Block(
                     normalImage,
                     damagedImage,
                     new StationaryShape(
                         new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                         new Vec2F(xRatio, yRatio)
                     ),
-                    row[j] == hardenedChar,
-                    row[j] == unbreakableChar
+                    row[j] == levelMetadata.HardenedChar,
+                    row[j] == levelMetadata.UnbreakableChar
                 ));
             }
         }
-        
-        return levelData;
+        return blocks;
+    }
+
+    public static Level LoadFromFile(string filepath) {
+        int mapStart, mapEnd;
+        int metaStart, metaEnd;
+        int legendStart, legendEnd;
+
+        string[] levelStrings = File.ReadAllText(filepath).Split('\n');
+        for (int i = 0; i < levelStrings.Length; i++) {
+            levelStrings[i] = levelStrings[i].Trim();
+        }
+
+        int index = 1;
+        mapStart = index;
+        while (levelStrings[index + 1] != "Map/") {
+            index++;
+        }
+        mapEnd = index - mapStart + 1;
+        index += 4;
+
+        metaStart = index;
+        while (levelStrings[index + 1] != "Meta/") {
+            index++;
+        }
+        metaEnd = index - metaStart + 1;
+        index += 4;
+
+        legendStart = index;
+        legendEnd = levelStrings.Length - 1 - legendStart;
+
+        LevelMetadata levelMetadata = ParseMetaStrings(
+            new ArraySegment<string>(levelStrings, metaStart, metaEnd).ToArray()
+        );
+        Dictionary<char, Image[]> legendDictionary = ParseLegendStrings(
+            new ArraySegment<string>(levelStrings, legendStart, legendEnd).ToArray()
+        );
+        EntityContainer<Block> blocks = ParseMapStrings(new ArraySegment<string>(
+            levelStrings, mapStart, mapEnd).ToArray(), 
+            levelMetadata, 
+            legendDictionary
+        );
+
+        return new Level(levelMetadata, blocks);
     }
 }

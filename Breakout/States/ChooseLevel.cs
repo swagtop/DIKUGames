@@ -101,14 +101,14 @@ public class ChooseLevel : IGameState {
                         break;
                     default:
                         try {
-                            LevelData levelData = LevelFactory.LoadFromFile(
+                            Level level = LevelFactory.LoadFromFile(
                                 Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1])
                             );
                             eventBus.RegisterEvent(new GameEvent {
                                 EventType = GameEventType.GameStateEvent,
                                 To = GameRunning.GetInstance(),
                                 Message = "LOAD_LEVEL",
-                                ObjectArg1 = (object)levelData
+                                ObjectArg1 = (object)level
                             });
                             eventBus.RegisterEvent(new GameEvent {
                                 EventType = GameEventType.GameStateEvent,
@@ -117,7 +117,7 @@ public class ChooseLevel : IGameState {
                                 StringArg1 = "GAME_RUNNING"
                             });
                         } catch (Exception e) {
-                            Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
+                            Console.WriteLine("Cannot load level: " + e.ToString()/*.Split('\n')[0]*/);
                         }
                         break;
                 }
