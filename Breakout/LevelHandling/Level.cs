@@ -3,16 +3,16 @@ using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
 public class Level {
-    public LevelMetadata Metadata;
+    public LevelMeta Meta;
     public EntityContainer<Block> Blocks;
 
     public Level() {
-        Metadata = new LevelMetadata(); 
+        Meta = new LevelMeta(); 
         Blocks = new EntityContainer<Block>();
     }
 
-    public Level(LevelMetadata metadata, EntityContainer<Block> blocks) {
-        Metadata = metadata; 
+    public Level(LevelMeta meta, EntityContainer<Block> blocks) {
+        Meta = meta; 
         Blocks = blocks;
     }
 }

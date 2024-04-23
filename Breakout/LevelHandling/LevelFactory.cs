@@ -8,42 +8,42 @@ using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
 public static class LevelFactory {
-    public static LevelMetadata ParseMetaStrings(string[] strings) {
-        LevelMetadata levelMetadata = new LevelMetadata();
+    public static LevelMeta ParseMetaStrings(string[] strings) {
+        LevelMeta levelMeta = new LevelMeta();
         string[] itemPair = new string[2]; 
 
         for (int i = 0; i < strings.Length; i++) {
             itemPair = strings[i].Split(": ");
             switch (itemPair[0]) {
                 case "Name":
-                    levelMetadata.LevelName = itemPair[1];
+                    levelMeta.LevelName = itemPair[1];
                     break;
                 case "Time":
-                    levelMetadata.TimeLimit = Int32.Parse(itemPair[1]);
+                    levelMeta.TimeLimit = Int32.Parse(itemPair[1]);
                     break;
                 case "Powerup":
-                    levelMetadata.PowerupChar = char.Parse(itemPair[1]);
+                    levelMeta.PowerupChar = char.Parse(itemPair[1]);
                     break;
                 case "Hardened":
-                    levelMetadata.HardenedChar = char.Parse(itemPair[1]);
+                    levelMeta.HardenedChar = char.Parse(itemPair[1]);
                     break;
                 case "Unbreakable":
-                    levelMetadata.UnbreakableChar = char.Parse(itemPair[1]);
+                    levelMeta.UnbreakableChar = char.Parse(itemPair[1]);
                     break;
                 default:
                     break;
             }
         }
-        return levelMetadata;
+        return levelMeta;
     }
 
     public static Dictionary<char, Image[]> ParseLegendStrings(string[] strings) {
-        Dictionary<char, Image[]> legendDictionary = new Dictionary<char, Image[]>();
+        Dictionary<char, Image[]> levelLegend = new Dictionary<char, Image[]>();
         string[] itemPair = new string[2]; 
 
         for (int i = 0; i < strings.Length; i++) {
             itemPair = strings[i].Split(") ");
-            legendDictionary.Add(
+            levelLegend.Add(
                 char.Parse(itemPair[0]), 
                 new Image[2] {
                     new Image(Path.Combine("Assets", "Images", itemPair[1])),
@@ -51,20 +51,15 @@ public static class LevelFactory {
                         .Substring(0, itemPair[1].Length - 4) + "-damaged.png"))
             });
         }
-        return legendDictionary;
+        return levelLegend;
     }
 
-    public static EntityContainer<Block> ParseMapStrings(string[] strings, LevelMetadata levelMetadata, Dictionary<char, Image[]> legendDictionary) {
+    public static EntityContainer<Block> ParseMapStrings(string[] strings, LevelMeta levelMeta, Dictionary<char, Image[]> legendDictionary) {
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
-
         int rowsInQueue;
-        
-        foreach (string str in strings) {
-            Console.WriteLine(str);
-        }
-        
+
         
         Image defaultNormalImage = new Image(
             Path.Combine(
@@ -111,8 +106,8 @@ public static class LevelFactory {
                         new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                         new Vec2F(xRatio, yRatio)
                     ),
-                    row[j] == levelMetadata.HardenedChar,
-                    row[j] == levelMetadata.UnbreakableChar
+                    row[j] == levelMeta.HardenedChar,
+                    row[j] == levelMeta.UnbreakableChar
                 ));
             }
         }
@@ -147,18 +142,18 @@ public static class LevelFactory {
         legendStart = index;
         legendEnd = levelStrings.Length - 1 - legendStart;
 
-        LevelMetadata levelMetadata = ParseMetaStrings(
+        LevelMeta levelMeta = ParseMetaStrings(
             new ArraySegment<string>(levelStrings, metaStart, metaEnd).ToArray()
         );
-        Dictionary<char, Image[]> legendDictionary = ParseLegendStrings(
+        Dictionary<char, Image[]> levelLegend = ParseLegendStrings(
             new ArraySegment<string>(levelStrings, legendStart, legendEnd).ToArray()
         );
         EntityContainer<Block> blocks = ParseMapStrings(new ArraySegment<string>(
             levelStrings, mapStart, mapEnd).ToArray(), 
-            levelMetadata, 
-            legendDictionary
+            levelMeta, 
+            levelLegend
         );
 
-        return new Level(levelMetadata, blocks);
+        return new Level(levelMeta, blocks);
     }
 }
