@@ -54,7 +54,7 @@ public static class LevelFactory {
         return levelLegend;
     }
 
-    public static EntityContainer<Block> ParseMapLinesWithMetaAndLegend(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> legendDictionary) {
+    public static EntityContainer<Block> ParseMapLinesWithMetaAndLegend(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> levelLegend) {
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
@@ -90,8 +90,8 @@ public static class LevelFactory {
                 Image damagedImage;
 
                 try {
-                    normalImage = legendDictionary[row[j]][0];
-                    damagedImage = legendDictionary[row[j]][1];
+                    normalImage = levelLegend[row[j]][0];
+                    damagedImage = levelLegend[row[j]][1];
                 } catch (System.Collections.Generic.KeyNotFoundException) {
                     normalImage = defaultNormalImage;
                     damagedImage = defaultDamagedImage;
