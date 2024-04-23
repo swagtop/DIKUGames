@@ -146,8 +146,8 @@ public static class LevelFactory {
         Dictionary<char, Image[]> levelLegend = ParseLegendStrings(
             new ArraySegment<string>(levelStrings, legendStart, legendEnd).ToArray()
         );
-        EntityContainer<Block> blocks = ParseMapStrings(new ArraySegment<string>(
-            levelStrings, mapStart, mapEnd).ToArray(), 
+        EntityContainer<Block> blocks = ParseMapStrings(
+            new ArraySegment<string>(levelStrings, mapStart, mapEnd).ToArray(),
             levelMeta, 
             levelLegend
         );
