@@ -8,12 +8,12 @@ using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
 public static class LevelFactory {
-    public static LevelMeta ParseMetaLines(string[] strings) {
+    public static LevelMeta ParseMetaLines(string[] lines) {
         LevelMeta levelMeta = new LevelMeta();
         string[] itemPair = new string[2]; 
 
-        for (int i = 0; i < strings.Length; i++) {
-            itemPair = strings[i].Split(": ");
+        for (int i = 0; i < lines.Length; i++) {
+            itemPair = lines[i].Split(": ");
             switch (itemPair[0]) {
                 case "Name":
                     levelMeta.LevelName = itemPair[1];
@@ -37,12 +37,12 @@ public static class LevelFactory {
         return levelMeta;
     }
 
-    public static Dictionary<char, Image[]> ParseLegendLines(string[] strings) {
+    public static Dictionary<char, Image[]> ParseLegendLines(string[] lines) {
         Dictionary<char, Image[]> levelLegend = new Dictionary<char, Image[]>();
         string[] itemPair = new string[2]; 
 
-        for (int i = 0; i < strings.Length; i++) {
-            itemPair = strings[i].Split(") ");
+        for (int i = 0; i < lines.Length; i++) {
+            itemPair = lines[i].Split(") ");
             levelLegend.Add(
                 char.Parse(itemPair[0]), 
                 new Image[2] {
@@ -54,7 +54,7 @@ public static class LevelFactory {
         return levelLegend;
     }
 
-    public static EntityContainer<Block> ParseMapLinesWithMetaAndLegend(string[] strings, LevelMeta levelMeta, Dictionary<char, Image[]> legendDictionary) {
+    public static EntityContainer<Block> ParseMapLinesWithMetaAndLegend(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> legendDictionary) {
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
@@ -75,9 +75,9 @@ public static class LevelFactory {
                 "grey-block-damaged.png"
         ));
         
-        for (int i = 0; i < strings.Length; i++) {
+        for (int i = 0; i < lines.Length; i++) {
             if (rowQueue.Count() > maxBlockRows - 1) continue; // Ignore rows after maxBlockRows.
-            rowQueue.Enqueue(strings[i]);
+            rowQueue.Enqueue(lines[i]);
         }
         
         rowsInQueue = rowQueue.Count();
@@ -117,37 +117,37 @@ public static class LevelFactory {
         int metaStart, metaEnd;
         int legendStart, legendEnd;
 
-        string[] levelStrings = File.ReadAllText(filepath).Split('\n');
-        for (int i = 0; i < levelStrings.Length; i++) {
-            levelStrings[i] = levelStrings[i].Trim();
+        string[] levellines = File.ReadAllText(filepath).Split('\n');
+        for (int i = 0; i < levellines.Length; i++) {
+            levellines[i] = levellines[i].Trim();
         }
 
         int index = 1;
         mapStart = index;
-        while (levelStrings[index + 1] != "Map/") {
+        while (levellines[index + 1] != "Map/") {
             index++;
         }
         mapEnd = index - mapStart + 1;
         index += 4;
 
         metaStart = index;
-        while (levelStrings[index + 1] != "Meta/") {
+        while (levellines[index + 1] != "Meta/") {
             index++;
         }
         metaEnd = index - metaStart + 1;
         index += 4;
 
         legendStart = index;
-        legendEnd = levelStrings.Length - legendStart - 1 ;
+        legendEnd = levellines.Length - legendStart - 1 ;
 
         LevelMeta levelMeta = ParseMetaLines(
-            new ArraySegment<string>(levelStrings, metaStart, metaEnd).ToArray()
+            new ArraySegment<string>(levellines, metaStart, metaEnd).ToArray()
         );
         Dictionary<char, Image[]> levelLegend = ParseLegendLines(
-            new ArraySegment<string>(levelStrings, legendStart, legendEnd).ToArray()
+            new ArraySegment<string>(levellines, legendStart, legendEnd).ToArray()
         );
         EntityContainer<Block> blocks = ParseMapLinesWithMetaAndLegend(
-            new ArraySegment<string>(levelStrings, mapStart, mapEnd).ToArray(),
+            new ArraySegment<string>(levellines, mapStart, mapEnd).ToArray(),
             levelMeta, 
             levelLegend
         );
