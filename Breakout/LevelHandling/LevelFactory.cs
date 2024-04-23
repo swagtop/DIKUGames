@@ -59,7 +59,8 @@ public static class LevelFactory {
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
         int rowsInQueue;
-
+        EntityContainer<Block> blocks = new EntityContainer<Block>();
+        Queue<string> rowQueue = new Queue<string>();
         
         Image defaultNormalImage = new Image(
             Path.Combine(
@@ -74,17 +75,14 @@ public static class LevelFactory {
                 "grey-block-damaged.png"
         ));
         
-        EntityContainer<Block> blocks = new EntityContainer<Block>();
-        Queue<string> blockRows = new Queue<string>();
-        
         for (int i = 0; i < strings.Length; i++) {
-            if (blockRows.Count() > maxBlockRows - 1) continue; // Ignore rows after maxBlockRows.
-            blockRows.Enqueue(strings[i]);
+            if (rowQueue.Count() > maxBlockRows - 1) continue; // Ignore rows after maxBlockRows.
+            rowQueue.Enqueue(strings[i]);
         }
         
-        rowsInQueue = blockRows.Count();
+        rowsInQueue = rowQueue.Count();
         for (int i = 0; i < rowsInQueue; i++) {
-            string row = blockRows.Dequeue();
+            string row = rowQueue.Dequeue();
             for (int j = 0; j < row.Length; j++) {
                 if (row[j] == '-') continue;
                 
