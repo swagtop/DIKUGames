@@ -14,12 +14,14 @@ using Breakout;
 using Breakout.Entities;
 using Breakout.States;
 using Breakout.LevelHandling;
+using Breakout.HitStrategies;
 
 namespace Breakout.States;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = null;
     private GameEventBus eventBus;
     private Player player;
+    private IHitStrategy hitStrategy;
     private EntityContainer<Block> blocks;
     private int timeLeft;
     private string levelName;
@@ -53,6 +55,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
         // EVENT BUS
         eventBus = BreakoutBus.GetBus();
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
+
+        // HITSTRATEGY
+        hitStrategy = new StandardHit();
     }
 
     public void RenderState() {
@@ -95,7 +100,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 break;
             case KeyboardKey.Space:
                 Console.WriteLine("DEBUG: All blocks take one hit.");
-                blocks.Iterate(block => block.HitPoints -= 1);
+                blocks.Iterate(block => hitStrategy.Hit(block));
                 break;
         }
     }

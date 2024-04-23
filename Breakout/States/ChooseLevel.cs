@@ -101,7 +101,6 @@ public class ChooseLevel : IGameState {
                         break;
                     default:
                         try {
-                            Console.WriteLine("HER!!");
                             LevelData levelData = LevelFactory.LoadFromFile(
                                 Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1])
                             );

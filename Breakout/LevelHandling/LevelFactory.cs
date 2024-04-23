@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using DIKUArcade;
-using DIKUArcade.Events;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 using Breakout.Entities;
-using Breakout.States;
-using Breakout.LevelHandling;
 
 namespace Breakout.LevelHandling;
 public static class LevelFactory {
@@ -120,29 +116,29 @@ public static class LevelFactory {
         for (int i = 0; i < rowsInQueue; i++) {
             string row = blockRows.Dequeue();
             for (int j = 0; j < row.Length; j++) {
-                if (row[j] != '-') {
-                    Image normalImage;
-                    Image damagedImage;
+                if (row[j] == '-') continue;
+                
+                Image normalImage;
+                Image damagedImage;
 
-                    try {
-                        normalImage = legendDictionary[row[j]][0];
-                        damagedImage = legendDictionary[row[j]][1];
-                    } catch (System.Collections.Generic.KeyNotFoundException) {
-                        normalImage = defaultNormalImage;
-                        damagedImage = defaultDamagedImage;
-                    }
-
-                    levelData.Blocks.AddEntity(new Block(
-                        normalImage,
-                        damagedImage,
-                        new StationaryShape(
-                            new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
-                            new Vec2F(xRatio, yRatio)
-                        ),
-                        row[j] == hardenedChar,
-                        row[j] == unbreakableChar
-                    ));
+                try {
+                    normalImage = legendDictionary[row[j]][0];
+                    damagedImage = legendDictionary[row[j]][1];
+                } catch (System.Collections.Generic.KeyNotFoundException) {
+                    normalImage = defaultNormalImage;
+                    damagedImage = defaultDamagedImage;
                 }
+
+                levelData.Blocks.AddEntity(new Block(
+                    normalImage,
+                    damagedImage,
+                    new StationaryShape(
+                        new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
+                        new Vec2F(xRatio, yRatio)
+                    ),
+                    row[j] == hardenedChar,
+                    row[j] == unbreakableChar
+                ));
             }
         }
         
