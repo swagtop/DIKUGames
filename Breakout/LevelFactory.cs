@@ -27,7 +27,7 @@ public static class LevelFactory {
 
         // OBJECTS NEEDED FOR READING LINES
         int line = 0;
-        string[] pair = new string[2];
+        string[] stringPair = new string[2];
         Queue<string> blockRows = new Queue<string>();
         Dictionary<string, string> metaDict = new Dictionary<string, string>();
         Dictionary<string, Image[]> legendDict = new Dictionary<string, Image[]>();
@@ -62,13 +62,13 @@ public static class LevelFactory {
             if (levelStrings[line] == "Meta/") break;
             if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
 
-            pair = levelStrings[line].Split(": ");
-            switch (pair[0]) {
+            stringPair = levelStrings[line].Split(": ");
+            switch (stringPair[0]) {
                 case "Name":
-                    levelName = pair[1];
+                    levelName = stringPair[1];
                     break;
                 case "Time":
-                    timeLimit = Int32.Parse(pair[1]);
+                    timeLimit = Int32.Parse(stringPair[1]);
                     break;
                 case "Powerup":
                     break;
@@ -91,13 +91,13 @@ public static class LevelFactory {
             if (levelStrings[line] == "Legend/") break;
             if (line == levelStrings.Length - 1) throw new Exception("Level file corrupted.");
 
-            pair = levelStrings[line].Split(") ");
+            stringPair = levelStrings[line].Split(") ");
             legendDict.Add(
-            pair[0], 
+            stringPair[0], 
             new Image[2] {
-                new Image(Path.Combine("Assets", "Images", pair[1])),
-                new Image(Path.Combine("Assets", "Images", pair[1]
-                    .Substring(0, pair[1].Length - 4) + "-damaged.png"))
+                new Image(Path.Combine("Assets", "Images", stringPair[1])),
+                new Image(Path.Combine("Assets", "Images", stringPair[1]
+                    .Substring(0, stringPair[1].Length - 4) + "-damaged.png"))
             });
         }
 
