@@ -20,7 +20,7 @@ public class ChooseLevel : IGameState {
     private int activeMenuButton = 0;
     private Vec3F whiteButton = new Vec3F(1.0f, 1.0f, 1.0f);
     private Vec3F grayButton = new Vec3F(0.4f, 0.4f, 0.4f);
-    private List<Text> menuButtons;
+    private List<Text> menuButtons = new List<Text>();
     private List<string> levelFiles;
     
     public static ChooseLevel GetInstance() {
