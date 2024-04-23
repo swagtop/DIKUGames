@@ -30,10 +30,12 @@ Map:
 #%#%#%#%#%#%
 %#%#%#%#%#%#
 #%#%#%#%#%#%
+%#%#%#%#%#%#
 Map/
 
 Meta:
 Name: A Nightmare
+Hardened: #
 Meta/
 
 Legend:
