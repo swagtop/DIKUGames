@@ -15,19 +15,19 @@ public class ChooseLevel : IGameState {
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
-        new Image(Path.Combine("Assets", "Images", "BreakoutTitleScreen.png"))
+        new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
     private int activeMenuButton = 0;
-    private Vec3F whiteButton = new Vec3F(1.0f, 1.0f, 1.0f);
-    private Vec3F grayButton = new Vec3F(0.4f, 0.4f, 0.4f);
+    private Vec3F whiteColor = new Vec3F(1.0f, 1.0f, 1.0f);
+    private Vec3F greyColor = new Vec3F(0.4f, 0.4f, 0.4f);
     private List<Text> menuButtons = new List<Text>();
     private List<string> levelFiles;
     
     public static ChooseLevel GetInstance() {
         if (ChooseLevel.instance == null) {
             ChooseLevel.instance = new ChooseLevel();
+            ChooseLevel.instance.ResetState();
         }
-        instance.ResetState();
         return ChooseLevel.instance;
     }
     
@@ -45,7 +45,7 @@ public class ChooseLevel : IGameState {
         string[] levelAssets = Directory.GetFiles(Path.Combine("Assets", "Levels"));
         float buttonDistance = 0.5f / levelAssets.Length;
         menuButtons.Add(new Text(
-            "< Main Menu", 
+            "Main Menu", 
             new Vec2F(0.1f, 0.5f), 
             new Vec2F(0.3f, 0.3f)
         ));
@@ -60,8 +60,10 @@ public class ChooseLevel : IGameState {
             levelFiles.Add(fileName);
         }
         activeMenuButton = 0;
-        foreach (Text button in instance.menuButtons) { button.SetColor(instance.grayButton); }
-        instance.menuButtons[instance.activeMenuButton].SetColor(instance.whiteButton);
+        foreach (Text button in menuButtons) { 
+            button.SetColor(greyColor); 
+        }
+        menuButtons[activeMenuButton].SetColor(whiteColor);
     }
 
     public void UpdateState() {
@@ -71,17 +73,17 @@ public class ChooseLevel : IGameState {
         switch ((action, key)) {
             case (KeyboardAction.KeyPress, KeyboardKey.Up):
                 if (activeMenuButton > 0) { 
-                    menuButtons[activeMenuButton].SetColor(grayButton);
+                    menuButtons[activeMenuButton].SetColor(greyColor);
                     activeMenuButton -= 1; 
-                    menuButtons[activeMenuButton].SetColor(whiteButton);
+                    menuButtons[activeMenuButton].SetColor(whiteColor);
                 }
                 break;
 
             case (KeyboardAction.KeyPress, KeyboardKey.Down):
                 if (activeMenuButton < menuButtons.Count - 1) { 
-                    menuButtons[activeMenuButton].SetColor(grayButton);
+                    menuButtons[activeMenuButton].SetColor(greyColor);
                     activeMenuButton += 1; 
-                    menuButtons[activeMenuButton].SetColor(whiteButton);
+                    menuButtons[activeMenuButton].SetColor(whiteColor);
                 }
                 break;
 
