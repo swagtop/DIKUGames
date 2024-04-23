@@ -30,7 +30,7 @@ public static class LevelFactory {
         string[] pair = new string[2];
         Queue<string> blockRows = new Queue<string>();
         Dictionary<string, string> metaDict = new Dictionary<string, string>();
-        Dictionary<string, Tuple<Image, Image>> legendDict = new Dictionary<string, Tuple<Image, Image>>();
+        Dictionary<string, Image[]> legendDict = new Dictionary<string, Image[]>();
         int rowsInQueue;
 
         // BREAK UP FILE CONTENTS INTO LINES
@@ -94,11 +94,11 @@ public static class LevelFactory {
             pair = levelStrings[line].Split(") ");
             legendDict.Add(
             pair[0], 
-            new Tuple<Image, Image>(
+            new Image[2] {
                 new Image(Path.Combine("Assets", "Images", pair[1])),
                 new Image(Path.Combine("Assets", "Images", pair[1]
                     .Substring(0, pair[1].Length - 4) + "-damaged.png"))
-            ));
+            });
         }
 
         // MANUFACTURE BLOCKS
@@ -111,8 +111,8 @@ public static class LevelFactory {
                     Image damagedImage;
 
                     try {
-                        normalImage = legendDict[Char.ToString(row[j])].Item1;
-                        damagedImage = legendDict[Char.ToString(row[j])].Item2;
+                        normalImage = legendDict[Char.ToString(row[j])][0];
+                        damagedImage = legendDict[Char.ToString(row[j])][1];
                     } catch (System.Collections.Generic.KeyNotFoundException) {
                         normalImage = defaultNormalImage;
                         damagedImage = defaultDamagedImage;
