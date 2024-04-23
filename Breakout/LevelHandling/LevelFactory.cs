@@ -8,7 +8,7 @@ using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
 public static class LevelFactory {
-    public static LevelMeta ParseMetaStrings(string[] strings) {
+    public static LevelMeta ParseMetaLines(string[] strings) {
         LevelMeta levelMeta = new LevelMeta();
         string[] itemPair = new string[2]; 
 
@@ -37,7 +37,7 @@ public static class LevelFactory {
         return levelMeta;
     }
 
-    public static Dictionary<char, Image[]> ParseLegendStrings(string[] strings) {
+    public static Dictionary<char, Image[]> ParseLegendLines(string[] strings) {
         Dictionary<char, Image[]> levelLegend = new Dictionary<char, Image[]>();
         string[] itemPair = new string[2]; 
 
@@ -54,7 +54,7 @@ public static class LevelFactory {
         return levelLegend;
     }
 
-    public static EntityContainer<Block> ParseMapStrings(string[] strings, LevelMeta levelMeta, Dictionary<char, Image[]> legendDictionary) {
+    public static EntityContainer<Block> ParseMapLinesWithMetaAndLegend(string[] strings, LevelMeta levelMeta, Dictionary<char, Image[]> legendDictionary) {
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
@@ -140,13 +140,13 @@ public static class LevelFactory {
         legendStart = index;
         legendEnd = levelStrings.Length - legendStart - 1 ;
 
-        LevelMeta levelMeta = ParseMetaStrings(
+        LevelMeta levelMeta = ParseMetaLines(
             new ArraySegment<string>(levelStrings, metaStart, metaEnd).ToArray()
         );
-        Dictionary<char, Image[]> levelLegend = ParseLegendStrings(
+        Dictionary<char, Image[]> levelLegend = ParseLegendLines(
             new ArraySegment<string>(levelStrings, legendStart, legendEnd).ToArray()
         );
-        EntityContainer<Block> blocks = ParseMapStrings(
+        EntityContainer<Block> blocks = ParseMapLinesWithMetaAndLegend(
             new ArraySegment<string>(levelStrings, mapStart, mapEnd).ToArray(),
             levelMeta, 
             levelLegend
