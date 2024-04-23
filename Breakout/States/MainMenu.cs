@@ -87,7 +87,7 @@ public class MainMenu : IGameState {
                         });
                         break;
                 default:
-                    throw new ArgumentException($"Button number not implemented: {activeMenuButton}");
+                    throw new ArgumentException($"Button not implemented: {activeMenuButton}");
                 }
                 break;
 
