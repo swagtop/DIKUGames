@@ -48,7 +48,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         // EVENT BUS
         eventBus = BreakoutBus.GetBus();
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
-        eventBus.Subscribe(GameEventType.GameStateEvent, this);
     }
 
     public void RenderState() {
@@ -138,6 +137,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 blocks = (EntityContainer<Block>)gameEvent.ObjectArg1;
                 timeLeft = gameEvent.IntArg1;
             }
-        }
+        } 
     }
 }

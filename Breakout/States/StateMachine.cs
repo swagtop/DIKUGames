@@ -7,11 +7,16 @@ using Breakout.States;
 namespace Breakout.States;
 public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = null;
+    private GameEventBus eventBus = BreakoutBus.GetBus();
     public IGameState ActiveState { get; private set; }
     public StateMachine() { 
-        BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+        eventBus.Subscribe(GameEventType.GameStateEvent, this);
+        
         ActiveState = MainMenu.GetInstance();
-        GameRunning.GetInstance();
+        
+        eventBus.Subscribe(GameEventType.PlayerEvent, GameRunning.GetInstance());
+        eventBus.Subscribe(GameEventType.GameStateEvent, GameRunning.GetInstance());
+        
         GamePaused.GetInstance();
         ChooseLevel.GetInstance();
     }
