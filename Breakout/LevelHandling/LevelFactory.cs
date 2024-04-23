@@ -138,7 +138,7 @@ public static class LevelFactory {
         index += 4;
 
         legendStart = index;
-        legendEnd = levelStrings.Length - 1 - legendStart;
+        legendEnd = levelStrings.Length - legendStart - 1 ;
 
         LevelMeta levelMeta = ParseMetaStrings(
             new ArraySegment<string>(levelStrings, metaStart, metaEnd).ToArray()
