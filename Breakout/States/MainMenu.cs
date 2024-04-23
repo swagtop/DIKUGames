@@ -17,8 +17,8 @@ public class MainMenu : IGameState {
         new Image(Path.Combine("Assets", "Images", "BreakoutTitleScreen.png"))
     );
     private int activeMenuButton = 0;
-    private Vec3F whiteButton = new Vec3F(1.0f, 1.0f, 1.0f);
-    private Vec3F grayButton = new Vec3F(0.4f, 0.4f, 0.4f);
+    private Vec3F whiteColor = new Vec3F(1.0f, 1.0f, 1.0f);
+    private Vec3F greyColor = new Vec3F(0.4f, 0.4f, 0.4f);
     private Text[] menuButtons = {
         new Text("Choose Level", new Vec2F(0.1f, 0.5f), new Vec2F(0.3f, 0.3f)),
         new Text("Quit", new Vec2F(0.1f, 0.3f), new Vec2F(0.3f, 0.3f)),
@@ -27,8 +27,7 @@ public class MainMenu : IGameState {
     public static MainMenu GetInstance() {
         if (MainMenu.instance == null) {
             MainMenu.instance = new MainMenu();
-            foreach (Text button in instance.menuButtons) { button.SetColor(instance.grayButton); }
-            instance.menuButtons[instance.activeMenuButton].SetColor(instance.whiteButton);
+            MainMenu.instance.ResetState();
         }
         return MainMenu.instance;
     }
@@ -41,9 +40,11 @@ public class MainMenu : IGameState {
     }
 
     public void ResetState() {
-        menuButtons[activeMenuButton].SetColor(grayButton);
         activeMenuButton = 0; 
-        menuButtons[activeMenuButton].SetColor(whiteButton);
+        foreach (Text button in instance.menuButtons) { 
+            button.SetColor(instance.greyColor); 
+        }
+        menuButtons[activeMenuButton].SetColor(whiteColor);
     }
 
     public void UpdateState() {
@@ -53,17 +54,17 @@ public class MainMenu : IGameState {
         switch ((action, key)) {
             case (KeyboardAction.KeyPress, KeyboardKey.Up):
                 if (activeMenuButton > 0) { 
-                    menuButtons[activeMenuButton].SetColor(grayButton);
+                    menuButtons[activeMenuButton].SetColor(greyColor);
                     activeMenuButton -= 1; 
-                    menuButtons[activeMenuButton].SetColor(whiteButton);
+                    menuButtons[activeMenuButton].SetColor(whiteColor);
                 }
                 break;
 
             case (KeyboardAction.KeyPress, KeyboardKey.Down):
                 if (activeMenuButton < menuButtons.Length - 1) { 
-                    menuButtons[activeMenuButton].SetColor(grayButton);
+                    menuButtons[activeMenuButton].SetColor(greyColor);
                     activeMenuButton += 1; 
-                    menuButtons[activeMenuButton].SetColor(whiteButton);
+                    menuButtons[activeMenuButton].SetColor(whiteColor);
                 }
                 break;
 
