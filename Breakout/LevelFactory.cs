@@ -29,8 +29,11 @@ public static class LevelFactory {
         int line = 0;
         string[] stringPair = new string[2];
         Queue<string> blockRows = new Queue<string>();
-        Dictionary<string, string> metaDict = new Dictionary<string, string>();
-        Dictionary<string, Image[]> legendDict = new Dictionary<string, Image[]>();
+        char hardenedChar = '-';
+        char unbreakableChar = '-';
+        char powerupChar = '-';
+        Dictionary<char, Image[]> legendDict = new Dictionary<char, Image[]>();
+
         int rowsInQueue;
 
         // BREAK UP FILE CONTENTS INTO LINES
@@ -71,10 +74,13 @@ public static class LevelFactory {
                     timeLimit = Int32.Parse(stringPair[1]);
                     break;
                 case "Powerup":
+                    powerupChar = char.Parse(stringPair[1]);
                     break;
                 case "Hardened":
+                    hardenedChar = char.Parse(stringPair[1]);
                     break;
                 case "Unbreakable":
+                    unbreakableChar = char.Parse(stringPair[1]);
                     break;
                 default:
                     break;
@@ -93,7 +99,7 @@ public static class LevelFactory {
 
             stringPair = levelStrings[line].Split(") ");
             legendDict.Add(
-            stringPair[0], 
+            char.Parse(stringPair[0]), 
             new Image[2] {
                 new Image(Path.Combine("Assets", "Images", stringPair[1])),
                 new Image(Path.Combine("Assets", "Images", stringPair[1]
@@ -111,8 +117,8 @@ public static class LevelFactory {
                     Image damagedImage;
 
                     try {
-                        normalImage = legendDict[Char.ToString(row[j])][0];
-                        damagedImage = legendDict[Char.ToString(row[j])][1];
+                        normalImage = legendDict[row[j]][0];
+                        damagedImage = legendDict[row[j]][1];
                     } catch (System.Collections.Generic.KeyNotFoundException) {
                         normalImage = defaultNormalImage;
                         damagedImage = defaultDamagedImage;
@@ -125,8 +131,8 @@ public static class LevelFactory {
                             new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                             new Vec2F(xRatio, yRatio)
                         ),
-                        false, // Hardened?
-                        false  // Unbreakable?
+                        row[j] == hardenedChar,
+                        row[j] == unbreakableChar
                     ));
                 }
             }
