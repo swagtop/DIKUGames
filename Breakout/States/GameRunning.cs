@@ -68,7 +68,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
-                    StringArg1 = "MAIN_MENU"
+                    StringArg1 = "GAME_PAUSED"
                 });
                 break;
             case KeyboardKey.Left: case KeyboardKey.A:
