@@ -117,7 +117,7 @@ public class ChooseLevel : IGameState {
                                 StringArg1 = "GAME_RUNNING"
                             });
                         } catch (Exception e) {
-                            Console.WriteLine("Cannot load level: " + e.ToString()/*.Split('\n')[0]*/);
+                            Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
                         }
                         break;
                 }
