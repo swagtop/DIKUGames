@@ -8,6 +8,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.State;
 using Breakout;
 using Breakout.States;
+using Breakout.LevelHandling;
 
 namespace Breakout.States;
 public class ChooseLevel : IGameState {
@@ -100,16 +101,21 @@ public class ChooseLevel : IGameState {
                         break;
                     default:
                         try {
-                            LevelFactory.LoadFromFile(
-                                Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1]), 
-                                GameRunning.GetInstance()
+                            Console.WriteLine("HER!!");
+                            LevelData levelData = LevelFactory.LoadFromFile(
+                                Path.Combine("Assets", "Levels", levelFiles[activeMenuButton - 1])
                             );
-                            eventBus.RegisterEvent(
-                                new GameEvent {
-                                    EventType = GameEventType.GameStateEvent,
-                                    To = StateMachine.GetInstance(),
-                                    Message = "CHANGE_STATE",
-                                    StringArg1 = "GAME_RUNNING"
+                            eventBus.RegisterEvent(new GameEvent {
+                                EventType = GameEventType.GameStateEvent,
+                                To = GameRunning.GetInstance(),
+                                Message = "LOAD_LEVEL",
+                                ObjectArg1 = (object)levelData
+                            });
+                            eventBus.RegisterEvent(new GameEvent {
+                                EventType = GameEventType.GameStateEvent,
+                                To = StateMachine.GetInstance(),
+                                Message = "CHANGE_STATE",
+                                StringArg1 = "GAME_RUNNING"
                             });
                         } catch (Exception e) {
                             Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);

@@ -8,10 +8,11 @@ using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 using Breakout.Entities;
 using Breakout.States;
+using Breakout.LevelHandling;
 
-namespace Breakout;
+namespace Breakout.LevelHandling;
 public static class LevelFactory {
-    public static void LoadFromFile(string filepath, IGameEventProcessor to) {
+    public static LevelData LoadFromFile(string filepath) {
         // BLOCK POSITIONS
         float xRatio = 1.0f/12.0f;
         float yRatio = xRatio/3.0f;
@@ -31,9 +32,7 @@ public static class LevelFactory {
         ));
 
         // LEVEL DATA
-        EntityContainer<Block> blocks = new EntityContainer<Block>();
-        string levelName = "";
-        int timeLimit = -1;
+        LevelData levelData = new LevelData();
 
         // OBJECTS NEEDED FOR READING LINES
         int line = 0;
@@ -77,10 +76,10 @@ public static class LevelFactory {
             stringPair = levelStrings[line].Split(": ");
             switch (stringPair[0]) {
                 case "Name":
-                    levelName = stringPair[1];
+                    levelData.LevelName = stringPair[1];
                     break;
                 case "Time":
-                    timeLimit = Int32.Parse(stringPair[1]);
+                    levelData.TimeLimit = Int32.Parse(stringPair[1]);
                     break;
                 case "Powerup":
                     powerupChar = char.Parse(stringPair[1]);
@@ -133,7 +132,7 @@ public static class LevelFactory {
                         damagedImage = defaultDamagedImage;
                     }
 
-                    blocks.AddEntity(new Block(
+                    levelData.Blocks.AddEntity(new Block(
                         normalImage,
                         damagedImage,
                         new StationaryShape(
@@ -146,15 +145,7 @@ public static class LevelFactory {
                 }
             }
         }
-
-        // SEND OFF BLOCKS TO GAMERUNNING
-        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
-            EventType = GameEventType.GameStateEvent,
-            To = to,
-            Message = "LOAD_LEVEL",
-            StringArg1 = levelName,
-            ObjectArg1 = (object)blocks,
-            IntArg1 = timeLimit
-        });
+        
+        return levelData;
     }
 }

@@ -13,6 +13,7 @@ using DIKUArcade.Physics;
 using Breakout;
 using Breakout.Entities;
 using Breakout.States;
+using Breakout.LevelHandling;
 
 namespace Breakout.States;
 public class GameRunning : IGameState, IGameEventProcessor {
@@ -138,9 +139,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
         if (gameEvent.EventType == GameEventType.GameStateEvent) {
             if (gameEvent.Message == "LOAD_LEVEL") {
                 this.ResetState();
-                levelName = gameEvent.StringArg1;
-                blocks = (EntityContainer<Block>)gameEvent.ObjectArg1;
-                timeLeft = gameEvent.IntArg1;
+                LevelData levelData = (LevelData)gameEvent.ObjectArg1;
+                levelName = levelData.LevelName;
+                timeLeft = levelData.TimeLimit;
+                blocks = levelData.Blocks;
             }
         } 
     }
