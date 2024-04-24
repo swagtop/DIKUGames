@@ -9,50 +9,56 @@ using Breakout.Entities;
 namespace Breakout.LevelHandling;
 public static class LevelFactory {
     public static Level LoadFromFile(string filepath) {
-        int mapStart, mapEnd;
-        int metaStart, metaEnd;
-        int legendStart, legendEnd;
+        LevelFileSections levelFileSections;
+        LevelMeta levelMeta;
+        Dictionary<char, Image[]> levelLegend;
+        EntityContainer<Block> blocks;
 
         string[] fileLines = File.ReadAllText(filepath).Split('\n');
         for (int i = 0; i < fileLines.Length; i++) {
             fileLines[i] = fileLines[i].Trim();
         }
 
+        levelFileSections = GetLevelFileSections(fileLines);
+
+        levelMeta = ParseMetaSection(levelFileSections.Meta);
+        levelLegend = ParseLegendSection(levelFileSections.Legend);
+        blocks = ParseMapSection(levelFileSections.Map, levelMeta, levelLegend);
+
+        return new Level(levelMeta, blocks);
+    }
+
+    public static LevelFileSections GetLevelFileSections(string[] lines) {
+        int mapStart, mapEnd;
+        int metaStart, metaEnd;
+        int legendStart, legendEnd;
+
         int index = 1;
         mapStart = index;
-        while (fileLines[index + 1] != "Map/") {
+        while (lines[index + 1] != "Map/") {
             index++;
         }
         mapEnd = index - mapStart + 1;
         index += 4;
 
         metaStart = index;
-        while (fileLines[index + 1] != "Meta/") {
+        while (lines[index + 1] != "Meta/") {
             index++;
         }
         metaEnd = index - metaStart + 1;
         index += 4;
 
         legendStart = index;
-        legendEnd = fileLines.Length - legendStart - 1 ;
+        legendEnd = lines.Length - legendStart - 1 ;
 
-        LevelMeta levelMeta = ParseMetaLines(
-            new ArraySegment<string>(fileLines, metaStart, metaEnd).ToArray()
-        );
-        Dictionary<char, Image[]> levelLegend = ParseLegendLines(
-            new ArraySegment<string>(fileLines, legendStart, legendEnd).ToArray()
-        );
-        EntityContainer<Block> blocks = ParseMapLinesWithMetaAndLegend(
-            new ArraySegment<string>(fileLines, mapStart, mapEnd).ToArray(),
-            levelMeta, 
-            levelLegend
-        );
+        string[] mapSection = new ArraySegment<string>(lines, mapStart, mapEnd).ToArray();
+        string[] metaSection = new ArraySegment<string>(lines, metaStart, metaEnd).ToArray();
+        string[] legendSection = new ArraySegment<string>(lines, legendStart, legendEnd).ToArray();
 
-        return new Level(levelMeta, blocks);
+        return new LevelFileSections(mapSection, metaSection, legendSection);
     }
-        
 
-    public static LevelMeta ParseMetaLines(string[] lines) {
+    public static LevelMeta ParseMetaSection(string[] lines) {
         LevelMeta levelMeta = new LevelMeta();
         string[] itemPair = new string[2]; 
 
@@ -81,7 +87,7 @@ public static class LevelFactory {
         return levelMeta;
     }
 
-    public static Dictionary<char, Image[]> ParseLegendLines(string[] lines) {
+    public static Dictionary<char, Image[]> ParseLegendSection(string[] lines) {
         Dictionary<char, Image[]> levelLegend = new Dictionary<char, Image[]>();
         string[] itemPair = new string[2]; 
 
@@ -98,7 +104,7 @@ public static class LevelFactory {
         return levelLegend;
     }
 
-    public static EntityContainer<Block> ParseMapLinesWithMetaAndLegend(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> levelLegend) {
+    public static EntityContainer<Block> ParseMapSection(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> levelLegend) {
         int maxNumberOfBlocksInRow = 12;
         float xRatio = 1.0f/maxNumberOfBlocksInRow;
         float yRatio = xRatio/3.0f;
