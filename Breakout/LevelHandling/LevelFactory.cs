@@ -23,6 +23,7 @@ public static class LevelFactory {
 
         levelMeta = ParseMetaSection(levelFileSections.Meta);
         levelLegend = ParseLegendSection(levelFileSections.Legend);
+
         blocks = ParseMapSection(levelFileSections.Map, levelMeta, levelLegend);
 
         return new Level(levelMeta, blocks);
@@ -135,7 +136,7 @@ public static class LevelFactory {
         for (int i = 0; i < rowsInQueue; i++) {
             string row = rowQueue.Dequeue();
             for (int j = 0; j < row.Length; j++) {
-                if (row[j] == '-' || j > maxNumberOfBlocksInRow - 1) continue;
+                if ((row[j] == '-') || (j > maxNumberOfBlocksInRow - 1)) continue;
                 
                 Image normalImage;
                 Image damagedImage;
