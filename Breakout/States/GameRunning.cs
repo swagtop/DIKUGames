@@ -22,9 +22,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private GameEventBus eventBus;
     private Player player;
     private IHitStrategy hitStrategy;
-    private EntityContainer<Block> blocks;
-    private int timeLeft;
-    private string levelName;
+    private Level level;
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
@@ -47,11 +45,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
             new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
             playerImage
         );
-
-        // BLOCKS
-        Image blueBlock = new Image(Path.Combine("Assets", "Images", "blue-block.png"));
-        Image blueBlockDamaged = new Image(Path.Combine("Assets", "Images", "blue-block-damaged.png"));
-
+        
         // EVENT BUS
         eventBus = BreakoutBus.GetBus();
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
@@ -62,7 +56,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void RenderState() {
         backGroundImage.RenderEntity();
-        if (blocks != null) { blocks.RenderEntities(); }
+        level.Blocks.RenderEntities();
         player.RenderEntity();
     }
 
@@ -100,7 +94,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 break;
             case KeyboardKey.Space:
                 Console.WriteLine("DEBUG: All blocks take one hit.");
-                blocks.Iterate(block => hitStrategy.Hit(block));
+                level.Blocks.Iterate(block => hitStrategy.Hit(block));
                 break;
         }
     }
@@ -144,10 +138,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         if (gameEvent.EventType == GameEventType.GameStateEvent) {
             if (gameEvent.Message == "LOAD_LEVEL") {
                 this.ResetState();
-                Level level = (Level)gameEvent.ObjectArg1;
-                levelName = level.Meta.LevelName;
-                timeLeft = level.Meta.TimeLimit;
-                blocks = level.Blocks;
+                level = (Level)gameEvent.ObjectArg1;
             }
         } 
     }
