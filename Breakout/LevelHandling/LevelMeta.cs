@@ -1,6 +1,3 @@
-using DIKUArcade.Entities;
-using Breakout.Entities;
-
 namespace Breakout.LevelHandling;
 public class LevelMeta {
     public string LevelName;
