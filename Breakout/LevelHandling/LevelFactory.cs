@@ -8,7 +8,48 @@ using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
 public static class LevelFactory {
-    //public static string[][] ParseLevelLines(string[] lines) {
+    public static Level LoadFromFile(string filepath) {
+        int mapStart, mapEnd;
+        int metaStart, metaEnd;
+        int legendStart, legendEnd;
+
+        string[] fileLines = File.ReadAllText(filepath).Split('\n');
+        for (int i = 0; i < fileLines.Length; i++) {
+            fileLines[i] = fileLines[i].Trim();
+        }
+
+        int index = 1;
+        mapStart = index;
+        while (fileLines[index + 1] != "Map/") {
+            index++;
+        }
+        mapEnd = index - mapStart + 1;
+        index += 4;
+
+        metaStart = index;
+        while (fileLines[index + 1] != "Meta/") {
+            index++;
+        }
+        metaEnd = index - metaStart + 1;
+        index += 4;
+
+        legendStart = index;
+        legendEnd = fileLines.Length - legendStart - 1 ;
+
+        LevelMeta levelMeta = ParseMetaLines(
+            new ArraySegment<string>(fileLines, metaStart, metaEnd).ToArray()
+        );
+        Dictionary<char, Image[]> levelLegend = ParseLegendLines(
+            new ArraySegment<string>(fileLines, legendStart, legendEnd).ToArray()
+        );
+        EntityContainer<Block> blocks = ParseMapLinesWithMetaAndLegend(
+            new ArraySegment<string>(fileLines, mapStart, mapEnd).ToArray(),
+            levelMeta, 
+            levelLegend
+        );
+
+        return new Level(levelMeta, blocks);
+    }
         
 
     public static LevelMeta ParseMetaLines(string[] lines) {
@@ -114,48 +155,5 @@ public static class LevelFactory {
             }
         }
         return blocks;
-    }
-
-    public static Level LoadFromFile(string filepath) {
-        int mapStart, mapEnd;
-        int metaStart, metaEnd;
-        int legendStart, legendEnd;
-
-        string[] fileLines = File.ReadAllText(filepath).Split('\n');
-        for (int i = 0; i < fileLines.Length; i++) {
-            fileLines[i] = fileLines[i].Trim();
-        }
-
-        int index = 1;
-        mapStart = index;
-        while (fileLines[index + 1] != "Map/") {
-            index++;
-        }
-        mapEnd = index - mapStart + 1;
-        index += 4;
-
-        metaStart = index;
-        while (fileLines[index + 1] != "Meta/") {
-            index++;
-        }
-        metaEnd = index - metaStart + 1;
-        index += 4;
-
-        legendStart = index;
-        legendEnd = fileLines.Length - legendStart - 1 ;
-
-        LevelMeta levelMeta = ParseMetaLines(
-            new ArraySegment<string>(fileLines, metaStart, metaEnd).ToArray()
-        );
-        Dictionary<char, Image[]> levelLegend = ParseLegendLines(
-            new ArraySegment<string>(fileLines, legendStart, legendEnd).ToArray()
-        );
-        EntityContainer<Block> blocks = ParseMapLinesWithMetaAndLegend(
-            new ArraySegment<string>(fileLines, mapStart, mapEnd).ToArray(),
-            levelMeta, 
-            levelLegend
-        );
-
-        return new Level(levelMeta, blocks);
     }
 }
