@@ -8,6 +8,9 @@ using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
 public static class LevelFactory {
+    //public static string[][] ParseLevelLines(string[] lines) {
+        
+
     public static LevelMeta ParseMetaLines(string[] lines) {
         LevelMeta levelMeta = new LevelMeta();
         string[] itemPair = new string[2]; 
@@ -55,7 +58,8 @@ public static class LevelFactory {
     }
 
     public static EntityContainer<Block> ParseMapLinesWithMetaAndLegend(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> levelLegend) {
-        float xRatio = 1.0f/12.0f;
+        int maxNumberOfBlocksInRow = 12;
+        float xRatio = 1.0f/maxNumberOfBlocksInRow;
         float yRatio = xRatio/3.0f;
         int maxBlockRows = 30;
         int rowsInQueue;
@@ -84,7 +88,7 @@ public static class LevelFactory {
         for (int i = 0; i < rowsInQueue; i++) {
             string row = rowQueue.Dequeue();
             for (int j = 0; j < row.Length; j++) {
-                if (row[j] == '-') continue;
+                if (row[j] == '-' || j > maxNumberOfBlocksInRow - 1) continue;
                 
                 Image normalImage;
                 Image damagedImage;
