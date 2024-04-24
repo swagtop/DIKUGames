@@ -19,10 +19,13 @@ using Breakout.HitStrategies;
 namespace Breakout.States;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = null;
-    private GameEventBus eventBus;
-    private Player player;
-    private IHitStrategy hitStrategy;
-    private Level level;
+    private GameEventBus eventBus = BreakoutBus.GetBus();
+    private Player player = new Player(
+        new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
+        new Image(Path.Combine("Assets", "Images", "player.png"))
+    );
+    private IHitStrategy hitStrategy = new StandardHit();
+    private Level level = new Level();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
@@ -39,15 +42,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void ResetState() {
         // PLAYER
-        Image playerImage = new Image(Path.Combine("Assets", "Images", "player.png"));
+        player.Reset();       
 
-        player = new Player(
-            new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
-            playerImage
-        );
-        
         // EVENT BUS
-        eventBus = BreakoutBus.GetBus();
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
 
         // HITSTRATEGY

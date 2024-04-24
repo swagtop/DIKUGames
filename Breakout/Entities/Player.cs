@@ -33,6 +33,10 @@ public class Player : Entity, IGameEventProcessor {
             Shape.Move();
         }
     }
+    
+    public void Reset() {
+        Shape.Position = new Vec2F((1.0f - 0.07f)/2.0f, 0.0f);
+    }
 
     public void ProcessEvent(GameEvent gameEvent) {
         if (gameEvent.Message != "MOVE") return;

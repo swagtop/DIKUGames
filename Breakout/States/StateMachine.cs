@@ -6,7 +6,7 @@ using Breakout.States;
 
 namespace Breakout.States;
 public class StateMachine : IGameEventProcessor {
-    private static StateMachine instance = null;
+    private static StateMachine instance = new StateMachine();
     private GameEventBus eventBus = BreakoutBus.GetBus();
     public IGameState ActiveState { get; private set; }
     public StateMachine() { 

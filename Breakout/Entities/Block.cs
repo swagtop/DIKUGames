@@ -9,7 +9,6 @@ public class Block : Entity {
     private int value;
     private int maxHealth = 2;
     private int health;
-    private bool hardened;
     private bool unbreakable;
     
     public int Health {

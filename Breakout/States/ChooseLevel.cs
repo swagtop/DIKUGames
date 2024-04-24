@@ -22,7 +22,7 @@ public class ChooseLevel : IGameState {
     private Vec3F whiteColor = new Vec3F(1.0f, 1.0f, 1.0f);
     private Vec3F greyColor = new Vec3F(0.4f, 0.4f, 0.4f);
     private List<Text> menuButtons = new List<Text>();
-    private List<string> levelFiles;
+    private List<string> levelFiles = new List<string>();
     
     public static ChooseLevel GetInstance() {
         if (ChooseLevel.instance == null) {
@@ -40,8 +40,8 @@ public class ChooseLevel : IGameState {
     }
 
     public void ResetState() {
-        menuButtons = new List<Text>();
-        levelFiles = new List<string>();
+        menuButtons.Clear();
+        levelFiles.Clear();
         
         string[] levelAssets = Directory.GetFiles(Path.Combine("Assets", "Levels"));
         float buttonDistance = 0.5f / levelAssets.Length;
