@@ -35,15 +35,15 @@ public class Player : Entity, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.Message == "MOVE") {
-            switch (gameEvent.StringArg1) {
-                case "LEFT":
-                    SetMoveLeft(gameEvent.StringArg2 == "START");
-                    break;
-                case "RIGHT":
-                    SetMoveRight(gameEvent.StringArg2 == "START");
-                    break;
-            }
+        if (gameEvent.Message != "MOVE") return;
+        
+        switch (gameEvent.StringArg1) {
+            case "LEFT":
+                SetMoveLeft(gameEvent.StringArg2 == "START");
+                break;
+            case "RIGHT":
+                SetMoveRight(gameEvent.StringArg2 == "START");
+                break;
         }
     }
 }
