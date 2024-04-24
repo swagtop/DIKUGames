@@ -30,7 +30,7 @@ public class Player : Entity, IGameEventProcessor {
 
     public void Move() {
         if (!(Shape.Position.X+moveLeft > 1.0f - Shape.Extent.X) && !(Shape.Position.X+moveRight < 0.0)) {
-            Shape.Position.X += Shape.AsDynamicShape().Direction.X;
+            Shape.Move();
         }
     }
 

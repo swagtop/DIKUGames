@@ -141,10 +141,10 @@ public static class LevelFactory {
                 Image normalImage;
                 Image damagedImage;
 
-                try {
+                if (levelLegend.ContainsKey(row[j])) {
                     normalImage = levelLegend[row[j]][0];
                     damagedImage = levelLegend[row[j]][1];
-                } catch (System.Collections.Generic.KeyNotFoundException) {
+                } else {
                     normalImage = defaultNormalImage;
                     damagedImage = defaultDamagedImage;
                 }
