@@ -48,14 +48,10 @@ public class StateMachine : IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.EventType == GameEventType.GameStateEvent) {
-            if (gameEvent.Message == "CHANGE_STATE") {
-                if (gameEvent.StringArg2 == "RESET_GAME") {
-                    Console.WriteLine("Resetting game");
-                    GameRunning.GetInstance().ResetState();
-                }
-                SwitchState(StateTransformer.TransformStringToState(gameEvent.StringArg1));
-            }
+        if (gameEvent.EventType != GameEventType.GameStateEvent) return;
+        
+        if (gameEvent.Message == "CHANGE_STATE") {
+            SwitchState(StateTransformer.TransformStringToState(gameEvent.StringArg1));
         }
     }
 }
