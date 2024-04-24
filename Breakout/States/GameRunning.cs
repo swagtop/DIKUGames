@@ -135,11 +135,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.EventType == GameEventType.GameStateEvent) {
-            if (gameEvent.Message == "LOAD_LEVEL") {
-                this.ResetState();
-                level = (Level)gameEvent.ObjectArg1;
-            }
-        } 
+        if (gameEvent.EventType != GameEventType.GameStateEvent) return;
+        
+        if (gameEvent.Message == "LOAD_LEVEL") {
+            this.ResetState();
+            level = (Level)gameEvent.ObjectArg1;
+        }
     }
 }

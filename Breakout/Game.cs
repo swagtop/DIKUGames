@@ -38,13 +38,13 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.EventType == GameEventType.WindowEvent) {
-            switch (gameEvent.Message) {
-                case "CLOSE_WINDOW":
-                    window.CloseWindow();
-                    System.Environment.Exit(0);
-                    break;
-            }
-        } 
+        if (gameEvent.EventType != GameEventType.WindowEvent) return;
+        
+        switch (gameEvent.Message) {
+            case "CLOSE_WINDOW":
+                window.CloseWindow();
+                System.Environment.Exit(0);
+                break;
+        }
     }
 }
