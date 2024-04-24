@@ -13,4 +13,12 @@ public class LevelMeta {
         UnbreakableChar = '-';
         PowerupChar = '-';
     }
+
+    public LevelMeta(string levelName, int timeLimit, char hardenedChar, char unbreakableChar, char powerupChar) {
+        LevelName = levelName;
+        TimeLimit = timeLimit;
+        HardenedChar = hardenedChar;
+        UnbreakableChar = unbreakableChar;
+        PowerupChar = powerupChar;
+    }
 }
