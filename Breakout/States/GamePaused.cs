@@ -22,8 +22,8 @@ public class GamePaused : IGameState {
     private Vec3F whiteColor = new Vec3F(1.0f, 1.0f, 1.0f);
     private Vec3F greyColor = new Vec3F(0.4f, 0.4f, 0.4f);
     private Text[] menuButtons = {
-        new Text("Resume", new Vec2F(0.5f, 0.5f), new Vec2F(0.3f, 0.3f)),
-        new Text("Main Menu", new Vec2F(0.5f, 0.3f), new Vec2F(0.3f, 0.3f)),
+        new Text("Resume", new Vec2F(0.35f, 0.5f), new Vec2F(0.3f, 0.3f)),
+        new Text("Main Menu", new Vec2F(0.35f, 0.3f), new Vec2F(0.3f, 0.3f)),
     };
 
     public static GamePaused GetInstance() {

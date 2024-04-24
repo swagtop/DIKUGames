@@ -47,7 +47,7 @@ public class ChooseLevel : IGameState {
         float buttonDistance = 0.5f / levelAssets.Length;
         menuButtons.Add(new Text(
             "Main Menu", 
-            new Vec2F(0.1f, 0.5f), 
+            new Vec2F(0.12f, 0.5f), 
             new Vec2F(0.3f, 0.3f)
         ));
 
@@ -55,7 +55,7 @@ public class ChooseLevel : IGameState {
             string fileName = levelAssets[levelAssets.Length - 1 - i].Remove(0, 14);
             menuButtons.Add(new Text(
                 fileName, 
-                new Vec2F(0.1f, 0.5f - ((i + 1) * buttonDistance)), 
+                new Vec2F(0.12f, 0.5f - ((i + 1) * buttonDistance)), 
                 new Vec2F(0.3f, 0.3f)
             ));
             levelFiles.Add(fileName);
@@ -86,6 +86,17 @@ public class ChooseLevel : IGameState {
                     activeMenuButton += 1; 
                     menuButtons[activeMenuButton].SetColor(whiteColor);
                 }
+                break;
+            
+            case (KeyboardAction.KeyPress, KeyboardKey.Escape):
+                ResetState();
+                eventBus.RegisterEvent(
+                    new GameEvent {
+                        EventType = GameEventType.GameStateEvent,
+                        To = StateMachine.GetInstance(),
+                        Message = "CHANGE_STATE",
+                        StringArg1 = "MAIN_MENU"
+                });
                 break;
 
             case (KeyboardAction.KeyPress, KeyboardKey.Enter):

@@ -20,8 +20,8 @@ public class MainMenu : IGameState {
     private Vec3F whiteColor = new Vec3F(1.0f, 1.0f, 1.0f);
     private Vec3F greyColor = new Vec3F(0.4f, 0.4f, 0.4f);
     private Text[] menuButtons = {
-        new Text("Choose Level", new Vec2F(0.1f, 0.5f), new Vec2F(0.3f, 0.3f)),
-        new Text("Quit", new Vec2F(0.1f, 0.3f), new Vec2F(0.3f, 0.3f)),
+        new Text("Choose Level", new Vec2F(0.12f, 0.43f), new Vec2F(0.3f, 0.3f)),
+        new Text("Quit", new Vec2F(0.12f, 0.3f), new Vec2F(0.3f, 0.3f)),
     };
 
     public static MainMenu GetInstance() {
