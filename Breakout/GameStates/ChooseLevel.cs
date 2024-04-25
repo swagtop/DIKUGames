@@ -47,60 +47,55 @@ public class ChooseLevel : IGameState {
     }
 
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        if ((action == KeyboardAction.KeyPress) && (key == KeyboardKey.Enter)) {
-            switch (menuButtons.GetValue()) {
-                case "MAIN_MENU":
-                    eventBus.RegisterEvent(new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
-                        Message = "CHANGE_STATE",
-                        StringArg1 = "MAIN_MENU"
-                    });
-                    break;
-                default:
-                    try {
-                        Level level = LevelFactory.LoadFromFile(
-                            Path.Combine("Assets", "Levels", menuButtons.GetValue())
-                        );
-                        eventBus.RegisterEvent(new GameEvent {
-                            EventType = GameEventType.GameStateEvent,
-                            To = GameRunning.GetInstance(),
-                            Message = "LOAD_LEVEL",
-                            ObjectArg1 = (object)level
-                        });
-                        eventBus.RegisterEvent(new GameEvent {
-                            EventType = GameEventType.GameStateEvent,
-                            To = StateMachine.GetInstance(),
-                            Message = "CHANGE_STATE",
-                            StringArg1 = "GAME_RUNNING"
-                        });
-                    } catch (Exception e) {
-                        Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
-                    }
-                    break;
-            }
-        } else {
-            switch ((action, key)) {
-                case (KeyboardAction.KeyPress, KeyboardKey.Up):
-                    menuButtons.GoUp();
-                    break;
+        if (action != KeyboardAction.KeyPress) return;
 
-                case (KeyboardAction.KeyPress, KeyboardKey.Down):
-                    menuButtons.GoDown();
-                    break;
-                
-                case (KeyboardAction.KeyPress, KeyboardKey.Escape):
-                    ResetState();
+        switch ((key, menuButtons.GetValue())) {
+            case (KeyboardKey.Up, _):
+                menuButtons.GoUp();
+                break;
+            case (KeyboardKey.Down, _):
+                menuButtons.GoDown();
+                break;
+            case (KeyboardKey.Enter, "MAIN_MENU"):
+                eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "MAIN_MENU"
+                });
+                break;
+            case (KeyboardKey.Enter, _):
+                try {
+                    Level level = LevelFactory.LoadFromFile(
+                        Path.Combine("Assets", "Levels", menuButtons.GetValue())
+                    );
+                    eventBus.RegisterEvent(new GameEvent {
+                        EventType = GameEventType.GameStateEvent,
+                        To = GameRunning.GetInstance(),
+                        Message = "LOAD_LEVEL",
+                        ObjectArg1 = (object)level
+                    });
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
                         To = StateMachine.GetInstance(),
                         Message = "CHANGE_STATE",
-                        StringArg1 = "MAIN_MENU"
+                        StringArg1 = "GAME_RUNNING"
                     });
-                    break;
-                default:
-                    break;
-                } 
+                } catch (Exception e) {
+                    Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
+                }
+                break;
+            case (KeyboardKey.Escape, _):
+                ResetState();
+                eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "MAIN_MENU"
+                });
+                break;
+            default:
+                break;
         }
     }
 }
