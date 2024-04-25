@@ -33,27 +33,23 @@ public static class LevelFactory {
         int mapStart, mapEnd;
         int metaStart, metaEnd;
         int legendStart, legendEnd;
-
+        
         int index = 1;
+
+        while(lines[index - 1] != "Map:") index++;
         mapStart = index;
-        while (lines[index + 1] != "Map/") {
-            index++;
-        }
-        mapEnd = index - mapStart + 1;
-        index += 4;
+        while (lines[index] != "Map/") index++;
+        mapEnd = index - mapStart;
 
+        while(lines[index - 1] != "Meta:") index++;
         metaStart = index;
-        while (lines[index + 1] != "Meta/") {
-            index++;
-        }
-        metaEnd = index - metaStart + 1;
-        index += 4;
+        while (lines[index] != "Meta/") index++;
+        metaEnd = index - metaStart;
 
+        while(lines[index - 1] != "Legend:") index++;
         legendStart = index;
-        while (lines[index + 1] != "Legend/") {
-            index++;
-        }
-        legendEnd = index - legendStart + 1;
+        while (lines[index] != "Legend/") index++;
+        legendEnd = index - legendStart;
 
         string[] mapSection = new ArraySegment<string>(lines, mapStart, mapEnd).ToArray();
         string[] metaSection = new ArraySegment<string>(lines, metaStart, metaEnd).ToArray();
