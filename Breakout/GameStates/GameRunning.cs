@@ -59,6 +59,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
         switch (key) {
             case KeyboardKey.Escape:
                 eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.PlayerEvent,
+                    To = player,
+                    Message = "STOP",
+                });
+                eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
