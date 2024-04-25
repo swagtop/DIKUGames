@@ -97,6 +97,7 @@ public static class LevelFactory {
         } catch {
             throw new Exception("Level meta section invalid or corrupted.");
         }
+
         return levelMeta;
     }
 
