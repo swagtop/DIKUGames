@@ -12,7 +12,7 @@ public class StateMachine : IGameEventProcessor {
         ChooseLevel.GetInstance().ResetState();
         GameRunning.GetInstance().ResetState();
         GamePaused.GetInstance().ResetState();
-        
+
         ActiveState = MainMenu.GetInstance();
         
         BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
