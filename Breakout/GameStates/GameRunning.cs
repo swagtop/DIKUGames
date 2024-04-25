@@ -35,13 +35,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ResetState() {
-        // PLAYER
         player.Reset();       
-
-        // EVENT BUS
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
-
-        // HITSTRATEGY
         hitStrategy = new StandardHit();
     }
 

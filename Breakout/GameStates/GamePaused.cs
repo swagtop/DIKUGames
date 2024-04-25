@@ -56,32 +56,29 @@ public class GamePaused : IGameState {
 
             case (KeyboardKey.Escape, _):
                 ResetState();
-                eventBus.RegisterEvent(
-                    new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
-                        Message = "CHANGE_STATE",
-                        StringArg1 = "GAME_RUNNING"
+                eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "GAME_RUNNING"
                 });
                 break;
             case (KeyboardKey.Enter, "RESUME_GAME"):
                 ResetState();
-                eventBus.RegisterEvent(
-                    new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
-                        Message = "CHANGE_STATE",
-                        StringArg1 = "GAME_RUNNING"
+                eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "GAME_RUNNING"
                 });
                 break;
             case (KeyboardKey.Enter, "MAIN_MENU"):
                 ResetState();
-                eventBus.RegisterEvent(
-                    new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
-                        Message = "CHANGE_STATE",
-                        StringArg1 = "MAIN_MENU"
+                eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "MAIN_MENU"
                 });
                 break;
             case (KeyboardKey.Enter, _):
