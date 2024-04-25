@@ -34,6 +34,7 @@ public class StateMachine : IGameEventProcessor {
                 ActiveState = MainMenu.GetInstance();
                 break;
             case GameStateType.ChooseLevel:
+                ChooseLevel.GetInstance().ResetState();
                 ActiveState = ChooseLevel.GetInstance();
                 break;
             default:
