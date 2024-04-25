@@ -19,9 +19,6 @@ public class StateMachine : IGameEventProcessor {
     }
 
     public static StateMachine GetInstance() {
-        if (instance == null) {
-            instance = new StateMachine();
-        }
         return instance;
     }
 
