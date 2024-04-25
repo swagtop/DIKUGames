@@ -16,7 +16,6 @@ public class GamePaused : IGameState {
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
         new Image(Path.Combine("Assets", "Images", "BreakoutTitleScreen.png"))
     );
-    private int activeMenuButton = 0;
     private Vec3F redColor = new Vec3F(1.0f, 0.0f, 0.0f);
     private Text gamePausedText = new Text("GAME PAUSED!", new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f));
     private Menu menu = new Menu(

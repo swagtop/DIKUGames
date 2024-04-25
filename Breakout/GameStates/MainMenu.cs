@@ -66,7 +66,6 @@ public class MainMenu : IGameState {
                 break;
             case (KeyboardKey.Enter, _):
                 throw new ArgumentException($"Button not implemented: {menu.GetText()}");
-                break;
             default:
                 break;
         }
