@@ -9,7 +9,7 @@ using DIKUArcade.State;
 
 namespace Breakout.GameStates;
 public class MainMenu : IGameState {
-    private static MainMenu instance = null;
+    private static MainMenu instance = new MainMenu();
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
@@ -24,10 +24,6 @@ public class MainMenu : IGameState {
     };
 
     public static MainMenu GetInstance() {
-        if (MainMenu.instance == null) {
-            MainMenu.instance = new MainMenu();
-            MainMenu.instance.ResetState();
-        }
         return MainMenu.instance;
     }
     

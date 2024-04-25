@@ -11,7 +11,7 @@ using Breakout.LevelHandling;
 
 namespace Breakout.GameStates;
 public class ChooseLevel : IGameState {
-    private static ChooseLevel instance = null;
+    private static ChooseLevel instance = new ChooseLevel();
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
@@ -24,10 +24,6 @@ public class ChooseLevel : IGameState {
     private List<string> levelFiles = new List<string>();
     
     public static ChooseLevel GetInstance() {
-        if (ChooseLevel.instance == null) {
-            ChooseLevel.instance = new ChooseLevel();
-            ChooseLevel.instance.ResetState();
-        }
         return ChooseLevel.instance;
     }
     

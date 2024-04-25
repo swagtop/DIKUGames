@@ -17,7 +17,7 @@ using Breakout.HitStrategies;
 
 namespace Breakout.GameStates;
 public class GameRunning : IGameState, IGameEventProcessor {
-    private static GameRunning instance = null;
+    private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private Player player = new Player(
         new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
@@ -31,11 +31,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     );
 
     public static GameRunning GetInstance() {
-        if (GameRunning.instance == null) {
-            GameRunning.instance = new GameRunning();
-            GameRunning.instance.ResetState();
-        }
-        
         return GameRunning.instance;
     }
 

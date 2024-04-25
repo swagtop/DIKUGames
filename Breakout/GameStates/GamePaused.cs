@@ -9,7 +9,7 @@ using DIKUArcade.State;
 
 namespace Breakout.GameStates;
 public class GamePaused : IGameState {
-    private static GamePaused instance = null;
+    private static GamePaused instance = new GamePaused();
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
@@ -26,10 +26,6 @@ public class GamePaused : IGameState {
     };
 
     public static GamePaused GetInstance() {
-        if (GamePaused.instance == null) {
-            GamePaused.instance = new GamePaused();
-            GamePaused.instance.ResetState();
-        }
         return GamePaused.instance;
     }
     

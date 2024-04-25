@@ -123,10 +123,10 @@ public static class LevelFactory {
     }
 
     public static EntityContainer<Block> ParseMapSection(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> levelLegend) {
+        int maxBlockRows = 30;
         int maxNumberOfBlocksInRow = 12;
         float xRatio = 1.0f/maxNumberOfBlocksInRow;
         float yRatio = xRatio/3.0f;
-        int maxBlockRows = 30;
         int rowsInQueue;
         EntityContainer<Block> blocks = new EntityContainer<Block>();
         Queue<string> rowQueue = new Queue<string>();

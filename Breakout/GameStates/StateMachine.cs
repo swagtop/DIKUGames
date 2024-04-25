@@ -8,11 +8,12 @@ public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = new StateMachine();
     public IGameState ActiveState { get; private set; }
     public StateMachine() { 
-        ActiveState = MainMenu.GetInstance();
+        MainMenu.GetInstance().ResetState();
+        ChooseLevel.GetInstance().ResetState();
+        GameRunning.GetInstance().ResetState();
+        GamePaused.GetInstance().ResetState();
         
-        ChooseLevel.GetInstance();
-        GameRunning.GetInstance();
-        GamePaused.GetInstance();
+        ActiveState = MainMenu.GetInstance();
         
         BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
     }
