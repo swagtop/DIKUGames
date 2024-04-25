@@ -85,8 +85,10 @@ public class GamePaused : IGameState {
                         StringArg1 = "MAIN_MENU"
                 });
                 break;
-            default:
+            case (KeyboardKey.Enter, _):
                 throw new ArgumentException($"Button number not implemented: {menu.GetText()}");
+            default:
+                break;
         }
     }
 }

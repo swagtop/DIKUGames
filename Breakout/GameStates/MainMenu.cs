@@ -39,35 +39,33 @@ public class MainMenu : IGameState {
     }
 
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        switch ((action, key)) {
-            case (KeyboardAction.KeyPress, KeyboardKey.Up):
+        if (action != KeyboardAction.KeyPress) return;
+
+        switch ((key, menu.GetValue())) {
+            case (KeyboardKey.Up, _):
                 menu.GoUp();
                 break;
 
-            case (KeyboardAction.KeyPress, KeyboardKey.Down):
+            case (KeyboardKey.Down, _):
                 menu.GoDown();
                 break;
 
-            case (KeyboardAction.KeyPress, KeyboardKey.Enter):
-                switch(menu.GetValue()) {
-                    case "CHOOSE_LEVEL":
-                        eventBus.RegisterEvent(new GameEvent {
-                            EventType = GameEventType.GameStateEvent,
-                            To = StateMachine.GetInstance(),
-                            Message = "CHANGE_STATE",
-                            StringArg1 = "CHOOSE_LEVEL"
-                        });
-                        break;
-                    case "CLOSE_WINDOW":
-                        eventBus.RegisterEvent(new GameEvent {
-                            EventType = GameEventType.WindowEvent,
-                            Message = "CLOSE_WINDOW",
-                        });
-                        break;
-                    default:
-                        throw new ArgumentException($"Button not implemented: {menu.GetText()}");
-                        break;
-                }
+            case (KeyboardKey.Enter, "CHOOSE_LEVEL"):
+                eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "CHOOSE_LEVEL"
+                });
+                break;
+            case (KeyboardKey.Enter, "CLOSE_WINDOW"):
+                eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.WindowEvent,
+                    Message = "CLOSE_WINDOW",
+                });
+                break;
+            case (KeyboardKey.Enter, _):
+                throw new ArgumentException($"Button not implemented: {menu.GetText()}");
                 break;
             default:
                 break;
