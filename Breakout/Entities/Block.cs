@@ -11,7 +11,7 @@ public class Block : Entity {
     private int health;
     private bool unbreakable;
     
-    public int Health {
+    public virtual int Health {
         get => health;
         set {
             if (unbreakable) { return; } // Hitpoints cannot be set if block is unbreakable.

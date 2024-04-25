@@ -50,7 +50,10 @@ public static class LevelFactory {
         index += 4;
 
         legendStart = index;
-        legendEnd = lines.Length - legendStart - 1 ;
+        while (lines[index + 1] != "Legend/") {
+            index++;
+        }
+        legendEnd = index - legendStart + 1;
 
         string[] mapSection = new ArraySegment<string>(lines, mapStart, mapEnd).ToArray();
         string[] metaSection = new ArraySegment<string>(lines, metaStart, metaEnd).ToArray();
