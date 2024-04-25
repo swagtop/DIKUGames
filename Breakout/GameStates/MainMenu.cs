@@ -16,16 +16,7 @@ public class MainMenu : IGameState {
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
         new Image(Path.Combine("Assets", "Images", "BreakoutTitleScreen.png"))
     );
-    /*
-    private int activeMenuButton = 0;
-    private Vec3F whiteColor = new Vec3F(1.0f, 1.0f, 1.0f);
-    private Vec3F greyColor = new Vec3F(0.4f, 0.4f, 0.4f);
-    private Text[] menuButtons = {
-        new Text("Choose Level", new Vec2F(0.12f, 0.43f), new Vec2F(0.3f, 0.3f)),
-        new Text("Quit", new Vec2F(0.12f, 0.3f), new Vec2F(0.3f, 0.3f)),
-    };
-    */
-    private MenuButtonContainer menuButtons = new MenuButtonContainer(
+    private Menu menu = new Menu(
         0.4f,
         ("Choose Level", "CHOOSE_LEVEL"),
         ("Quit", "CLOSE_WINDOW")
@@ -37,22 +28,11 @@ public class MainMenu : IGameState {
     
     public void RenderState() {
         backGroundImage.RenderEntity();
-        /*
-        foreach (Text button in menuButtons) {
-            button.RenderText();
-        }
-        */
-        menuButtons.RenderButtons();
+        menu.RenderButtons();
     }
 
     public void ResetState() {
-        /*
-        activeMenuButton = 0; 
-        foreach (Text button in instance.menuButtons) { 
-            button.SetColor(instance.greyColor); 
-        }
-        menuButtons[activeMenuButton].SetColor(whiteColor);
-        */
+        menu.Reset();
     }
 
     public void UpdateState() {
@@ -61,15 +41,15 @@ public class MainMenu : IGameState {
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         switch ((action, key)) {
             case (KeyboardAction.KeyPress, KeyboardKey.Up):
-                menuButtons.GoUp();
+                menu.GoUp();
                 break;
 
             case (KeyboardAction.KeyPress, KeyboardKey.Down):
-                menuButtons.GoDown();
+                menu.GoDown();
                 break;
 
             case (KeyboardAction.KeyPress, KeyboardKey.Enter):
-                switch(menuButtons.GetValue()) {
+                switch(menu.GetValue()) {
                     case "CHOOSE_LEVEL":
                         eventBus.RegisterEvent(new GameEvent {
                             EventType = GameEventType.GameStateEvent,
@@ -85,7 +65,7 @@ public class MainMenu : IGameState {
                         });
                         break;
                     default:
-                        throw new ArgumentException($"Button not implemented: {menuButtons.GetText()}");
+                        throw new ArgumentException($"Button not implemented: {menu.GetText()}");
                         break;
                 }
                 break;

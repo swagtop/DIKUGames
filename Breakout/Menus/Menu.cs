@@ -3,18 +3,18 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
 namespace Breakout.Menus;
-public class MenuButtonContainer {
+public class Menu {
     private float topButtonPosition;
     private Vec3F activeColor = new Vec3F(1.0f, 1.0f, 1.0f);
     private Vec3F passiveColor = new Vec3F(0.4f, 0.4f, 0.4f);
     private int activeButton = 0;
     public List<MenuButton> Buttons = new List<MenuButton>();
 
-    public MenuButtonContainer(float topButtonPosition) {
+    public Menu(float topButtonPosition) {
         this.topButtonPosition = topButtonPosition;
     }
     
-    public MenuButtonContainer(float topButtonPosition, params (string text, string value)[] pairs) {
+    public Menu(float topButtonPosition, params (string text, string value)[] pairs) {
         this.topButtonPosition = topButtonPosition;
         foreach ((string text, string value) in pairs) {
             AddButton(text, value);

@@ -18,29 +18,29 @@ public class ChooseLevel : IGameState {
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
-    private MenuButtonContainer menuButtons = new MenuButtonContainer(0.6f);
+    private Menu menu = new Menu(0.6f);
     public static ChooseLevel GetInstance() {
         return ChooseLevel.instance;
     }
     
     public void RenderState() {
         backGroundImage.RenderEntity();
-        menuButtons.RenderButtons();
+        menu.RenderButtons();
     }
 
     public void ResetState() {
-        menuButtons.Clear();
-        menuButtons.AddButton("Main Menu", "MAIN_MENU");
+        menu.Clear();
+        menu.AddButton("Main Menu", "MAIN_MENU");
 
         string[] levelAssets = Directory.GetFiles(Path.Combine("Assets", "Levels"));
         float buttonDistance = 0.5f / levelAssets.Length;
 
         for (int i = 0; i < levelAssets.Length; i++) {
             string fileName = levelAssets[levelAssets.Length - 1 - i].Remove(0, 14);
-            menuButtons.AddButton(fileName, fileName);
+            menu.AddButton(fileName, fileName);
         }
 
-        menuButtons.Reset();
+        menu.Reset();
     }
 
     public void UpdateState() {
@@ -49,12 +49,12 @@ public class ChooseLevel : IGameState {
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         if (action != KeyboardAction.KeyPress) return;
 
-        switch ((key, menuButtons.GetValue())) {
+        switch ((key, menu.GetValue())) {
             case (KeyboardKey.Up, _):
-                menuButtons.GoUp();
+                menu.GoUp();
                 break;
             case (KeyboardKey.Down, _):
-                menuButtons.GoDown();
+                menu.GoDown();
                 break;
             case (KeyboardKey.Enter, "MAIN_MENU"):
                 eventBus.RegisterEvent(new GameEvent {
@@ -67,7 +67,7 @@ public class ChooseLevel : IGameState {
             case (KeyboardKey.Enter, _):
                 try {
                     Level level = LevelFactory.LoadFromFile(
-                        Path.Combine("Assets", "Levels", menuButtons.GetValue())
+                        Path.Combine("Assets", "Levels", menu.GetValue())
                     );
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
