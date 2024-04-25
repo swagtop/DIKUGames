@@ -2,7 +2,7 @@ using DIKUArcade;
 using DIKUArcade.GUI;
 using DIKUArcade.Events;
 using DIKUArcade.Input;
-using Breakout.States;
+using Breakout.GameStates;
 
 namespace Breakout;
 public class Game : DIKUGame, IGameEventProcessor {  

@@ -2,9 +2,8 @@ using System;
 using DIKUArcade.Events;
 using DIKUArcade.State;
 using Breakout;
-using Breakout.States;
 
-namespace Breakout.States;
+namespace Breakout.GameStates;
 public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = new StateMachine();
     public IGameState ActiveState { get; private set; }

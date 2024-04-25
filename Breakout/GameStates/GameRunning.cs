@@ -12,11 +12,10 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Physics;
 using Breakout;
 using Breakout.Entities;
-using Breakout.States;
 using Breakout.LevelHandling;
 using Breakout.HitStrategies;
 
-namespace Breakout.States;
+namespace Breakout.GameStates;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = null;
     private GameEventBus eventBus = BreakoutBus.GetBus();

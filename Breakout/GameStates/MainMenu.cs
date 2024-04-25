@@ -6,9 +6,8 @@ using DIKUArcade.Events;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 using DIKUArcade.State;
-using Breakout.States;
 
-namespace Breakout.States;
+namespace Breakout.GameStates;
 public class MainMenu : IGameState {
     private static MainMenu instance = null;
     private GameEventBus eventBus = BreakoutBus.GetBus();
