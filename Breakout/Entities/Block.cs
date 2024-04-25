@@ -14,10 +14,10 @@ public class Block : Entity {
     public virtual int Health {
         get => health;
         set {
-            if (unbreakable) { return; } // Hitpoints cannot be set if block is unbreakable.
-            if (value <= maxHealth/2 && health > maxHealth/2) { Image = damagedImage; }
-            if (value > 0) { health = value; }
-            else { this.DeleteEntity(); }
+            if (unbreakable) return; // Hitpoints cannot be set if block is unbreakable.
+            if (value <= maxHealth/2 && health > maxHealth/2) Image = damagedImage;
+            if (value > 0) health = value;
+            else this.DeleteEntity();
         }
     }
 
@@ -25,7 +25,7 @@ public class Block : Entity {
         this.damagedImage = damagedImage;
         this.value = value;
         this.unbreakable = unbreakable;
-        if (hardened) { this.maxHealth *= 2; }
+        if (hardened) this.maxHealth *= 2;
         this.health = this.maxHealth;
     }
 }
