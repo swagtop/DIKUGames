@@ -40,6 +40,7 @@ public static class LevelFactory {
         int legendStart, legendEnd;
         
         int index = 1;
+
         try {
             while(lines[index - 1] != "Map:") index++;
             mapStart = index;
@@ -102,6 +103,7 @@ public static class LevelFactory {
     public static Dictionary<char, Image[]> ParseLegendSection(string[] lines) {
         Dictionary<char, Image[]> levelLegend = new Dictionary<char, Image[]>();
         string[] itemPair = new string[2]; 
+
         try {
             for (int i = 0; i < lines.Length; i++) {
                 itemPair = lines[i].Split(") ");
@@ -116,6 +118,7 @@ public static class LevelFactory {
         } catch {
             throw new Exception("Level legend section invalid or corrupted.");
         }
+
         return levelLegend;
     }
 
@@ -179,6 +182,7 @@ public static class LevelFactory {
         } catch {
             throw new Exception("Level map section invalid or corrupted.");
         }
+
         return blocks;
     }
 }
