@@ -100,4 +100,28 @@ public class TestingBlocks {
         }
         Assert.AreEqual(blocks.CountEntities(), 360);
     }
+
+    [Test]
+    public void BlocksDieAtZeroHpTest() {
+        for (int i = 0; i < 30; i++) {
+            for (int j = 0; j < 12; j++) {
+                blocks.AddEntity(new Block(
+                    noImage,
+                    noImage,
+                    new StationaryShape(
+                        new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
+                        new Vec2F(xRatio, yRatio)
+                    ),
+                    false,
+                    false
+                ));
+            }
+        }
+        
+        Assert.AreEqual(blocks.CountEntities(), 360);
+        for (int i = 0; i < 10000; i++) {
+            blocks.Iterate(block => block.Health = 0);
+        }
+        Assert.AreEqual(blocks.CountEntities(), 0);
+    }
 }
