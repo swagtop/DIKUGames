@@ -81,8 +81,8 @@ public static class LevelFactory {
                     case "Time":
                         levelMeta.TimeLimit = Int32.Parse(itemPair[1]);
                         break;
-                    case "Powerup":
-                        levelMeta.PowerupChar = char.Parse(itemPair[1]);
+                    case "PowerUp":
+                        levelMeta.PowerUpChar = char.Parse(itemPair[1]);
                         break;
                     case "Hardened":
                         levelMeta.HardenedChar = char.Parse(itemPair[1]);

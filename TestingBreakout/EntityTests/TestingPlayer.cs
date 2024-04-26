@@ -2,12 +2,14 @@ using NUnit.Framework;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using DIKUArcade.Entities;
+using DIKUArcade.Graphics;
 using Breakout;
 using Breakout.Entities;
 
 namespace BreakoutTests;
 public class TestsPlayer {
     private Player player;
+    private IBaseImage noImage = new NoImage();
     private GameEvent moveLeftStart = new GameEvent { 
         Message = "MOVE",
         StringArg1 = "LEFT",
@@ -33,10 +35,10 @@ public class TestsPlayer {
     public void Setup() {
         player = new Player(
             new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
-            new DIKUArcade.Graphics.NoImage()
+            noImage
         );
     }
-
+    
     [Test]
     public void OutOfBoundsLeftTest() {
         player.ProcessEvent(moveLeftStart);
@@ -74,5 +76,20 @@ public class TestsPlayer {
         player.ProcessEvent(moveLeftStop);
 
         Assert.AreEqual(player.Shape.Position.Y, originalY);
+    }
+
+    [Test]
+    public void IsEntityTest() {
+        Assert.That(player, Is.InstanceOf<Entity>());
+    }
+    
+    [Test]
+    public void IsRectangularTest() {
+        Assert.IsTrue(player.Shape.Extent.X > player.Shape.Extent.Y);
+    }
+    
+    [Test]
+    public void InBottomHalfTest() {
+        Assert.IsTrue(player.Shape.Position.Y < 0.5f);
     }
 }

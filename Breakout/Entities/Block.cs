@@ -21,7 +21,7 @@ public class Block : Entity {
         }
     }
 
-    public Block(Image image, Image damagedImage, Shape shape, bool hardened, bool unbreakable, int value=0) : base(shape, image) {
+    public Block(IBaseImage image, IBaseImage damagedImage, Shape shape, bool hardened, bool unbreakable, int value=0) : base(shape, image) {
         this.damagedImage = damagedImage;
         this.value = value;
         this.unbreakable = unbreakable;

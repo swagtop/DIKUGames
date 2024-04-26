@@ -4,21 +4,21 @@ public class LevelMeta {
     public int TimeLimit;
     public char HardenedChar;
     public char UnbreakableChar;
-    public char PowerupChar;
+    public char PowerUpChar;
 
     public LevelMeta() {
         LevelName = "";
         TimeLimit = -1;
         HardenedChar = '-';
         UnbreakableChar = '-';
-        PowerupChar = '-';
+        PowerUpChar = '-';
     }
 
-    public LevelMeta(string levelName, int timeLimit, char hardenedChar, char unbreakableChar, char powerupChar) {
+    public LevelMeta(string levelName, int timeLimit, char hardenedChar, char unbreakableChar, char powerUpChar) {
         LevelName = levelName;
         TimeLimit = timeLimit;
         HardenedChar = hardenedChar;
         UnbreakableChar = unbreakableChar;
-        PowerupChar = powerupChar;
+        PowerUpChar = powerUpChar;
     }
 }
