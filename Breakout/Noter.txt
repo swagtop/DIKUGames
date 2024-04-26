@@ -1,1 +1,0 @@
-Boldene kolliderer ikke med hinanden, kun med blokkene og spilleren.
