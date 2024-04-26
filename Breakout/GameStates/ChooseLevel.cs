@@ -33,7 +33,6 @@ public class ChooseLevel : IGameState {
         menu.AddButton("Main Menu", "MAIN_MENU");
 
         string[] levelAssets = Directory.GetFiles(Path.Combine("Assets", "Levels"));
-        float buttonDistance = 0.5f / levelAssets.Length;
 
         for (int i = 0; i < levelAssets.Length; i++) {
             string fileName = levelAssets[levelAssets.Length - 1 - i].Remove(0, 14);
