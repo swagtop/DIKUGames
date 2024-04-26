@@ -118,7 +118,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardAction.KeyPress:
                 KeyPress(key);
                 break;
-
             case KeyboardAction.KeyRelease:
                 KeyRelease(key);
                 break;

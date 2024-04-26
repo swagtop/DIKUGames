@@ -49,11 +49,9 @@ public class GamePaused : IGameState {
             case (KeyboardKey.Up, _):
                 menu.GoUp();
                 break;
-
             case (KeyboardKey.Down, _):
                 menu.GoDown();
                 break;
-
             case (KeyboardKey.Escape, _):
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent {

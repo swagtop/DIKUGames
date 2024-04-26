@@ -45,11 +45,9 @@ public class MainMenu : IGameState {
             case (KeyboardKey.Up, _):
                 menu.GoUp();
                 break;
-
             case (KeyboardKey.Down, _):
                 menu.GoDown();
                 break;
-
             case (KeyboardKey.Enter, "CHOOSE_LEVEL"):
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
