@@ -174,9 +174,7 @@ public static class LevelFactory {
                         new StationaryShape(
                             new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                             new Vec2F(xRatio, yRatio)
-                        ),
-                        row[j] == levelMeta.HardenedChar,
-                        row[j] == levelMeta.UnbreakableChar
+                        )
                     ));
                 }
             }

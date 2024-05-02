@@ -13,7 +13,6 @@ using DIKUArcade.Physics;
 using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
-using Breakout.HitStrategies;
 using Breakout.MovementStrategies;
 
 namespace Breakout.GameStates;
@@ -24,7 +23,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
         new Image(Path.Combine("Assets", "Images", "player.png"))
     );
-    private IHitStrategy hitStrategy = new StandardHit();
     private Level level = new Level();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
@@ -40,7 +38,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void ResetState() {
         player.Reset();       
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
-        hitStrategy = new StandardHit();
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),
             new DynamicShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.025f, 0.025f), new Vec2F(0.02f, 0.01f))
@@ -94,7 +91,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 break;
             case KeyboardKey.Space:
                 Console.WriteLine("DEBUG: All blocks take one hit.");
-                level.Blocks.Iterate(block => hitStrategy.Hit(block));
+                level.Blocks.Iterate(block => block.Hit());
                 break;
         }
     }
