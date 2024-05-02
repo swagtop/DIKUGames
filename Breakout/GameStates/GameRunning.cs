@@ -14,6 +14,7 @@ using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
 using Breakout.HitStrategies;
+using Breakout.MovementStrategies;
 
 namespace Breakout.GameStates;
 public class GameRunning : IGameState, IGameEventProcessor {
@@ -29,6 +30,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
+    private EntityContainer<Ball> balls = new EntityContainer<Ball>();
+    private IMovementStrategy movementStrategy= new StandardMove();
 
     public static GameRunning GetInstance() {
         return GameRunning.instance;
@@ -38,16 +41,22 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.Reset();       
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         hitStrategy = new StandardHit();
+        balls.AddEntity(new Ball(
+            new Image(Path.Combine("Assets", "Images", "ball.png")),
+            new DynamicShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.2f, 0.2f), new Vec2F(0.0f, 0.01f))
+        ));
     }
 
     public void RenderState() {
         backGroundImage.RenderEntity();
         level.Blocks.RenderEntities();
         player.RenderEntity();
+        balls.RenderEntities();
     }
 
     public void UpdateState() {
         player.Move();
+        balls.Iterate(ball => movementStrategy.Move(ball));
     }
 
     private void KeyPress(KeyboardKey key) {
