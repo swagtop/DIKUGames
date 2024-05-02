@@ -43,7 +43,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         hitStrategy = new StandardHit();
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),
-            new DynamicShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.2f, 0.2f), new Vec2F(0.0f, 0.01f))
+            new DynamicShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.025f, 0.025f), new Vec2F(0.02f, 0.01f))
         ));
     }
 
