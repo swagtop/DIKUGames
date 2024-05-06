@@ -41,7 +41,7 @@ public class Game : DIKUGame, IGameEventProcessor {
         if (gameEvent.EventType != GameEventType.WindowEvent) return;
         
         switch (gameEvent.Message) {
-            case "CLOSE_WINDOW":
+            case "QUIT_GAME":
                 window.CloseWindow();
                 System.Environment.Exit(0);
                 break;

@@ -6,7 +6,9 @@ using DIKUArcade.Events;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 using DIKUArcade.State;
+using Breakout.LevelHandling;
 using Breakout.Menus;
+
 
 namespace Breakout.GameStates;
 public class MainMenu : IGameState {
@@ -18,8 +20,9 @@ public class MainMenu : IGameState {
     );
     private Menu menu = new Menu(
         0.4f,
+        ("Play Campaign", "PLAY_CAMPAIGN"),
         ("Choose Level", "CHOOSE_LEVEL"),
-        ("Quit", "CLOSE_WINDOW")
+        ("Quit", "QUIT_GAME")
     );
 
     public static MainMenu GetInstance() {
@@ -36,6 +39,46 @@ public class MainMenu : IGameState {
     }
 
     public void UpdateState() {
+    }
+
+    public void SelectMenuItem(string value) {
+        switch (value) {
+            case ("PLAY_CAMPAIGN"):
+                Queue<Level> levelQueue = new Queue<Level>();
+                string[] levelFilenames = Directory.GetFiles(Path.Combine("Assets", "Levels"));
+
+                for (int i = 0; i < levelFilenames.Length; i++) {
+                    levelFilenames[i] = levelFilenames[i].Remove(0, 14);
+                }
+
+                foreach (string filename in levelFilenames) {
+                    try {
+                        levelQueue.Enqueue(LevelFactory.LoadFromFile(
+                            Path.Combine("Assets", "Levels", filename)
+                        ));
+                    } catch (Exception e) {
+                        Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
+                    }
+                }
+
+                if (levelQueue.Count > 0) {
+                    eventBus.RegisterEvent(new GameEvent {
+                        EventType = GameEventType.GameStateEvent,
+                        To = GameRunning.GetInstance(),
+                        Message = "QUEUE_LEVELS",
+                        ObjectArg1 = (object)levelQueue
+                    });
+                    eventBus.RegisterEvent(new GameEvent {
+                        EventType = GameEventType.GameStateEvent,
+                        To = StateMachine.GetInstance(),
+                        Message = "CHANGE_STATE",
+                        StringArg1 = "GAME_RUNNING"
+                    });
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
@@ -56,11 +99,14 @@ public class MainMenu : IGameState {
                     StringArg1 = "CHOOSE_LEVEL"
                 });
                 break;
-            case (KeyboardKey.Enter, "CLOSE_WINDOW"):
+            case (KeyboardKey.Enter, "QUIT_GAME"):
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.WindowEvent,
-                    Message = "CLOSE_WINDOW",
+                    Message = "QUIT_GAME",
                 });
+                break;
+            case (KeyboardKey.Enter, "PLAY_CAMPAIGN"):
+                SelectMenuItem("PLAY_CAMPAIGN");
                 break;
             case (KeyboardKey.Enter, _):
                 throw new ArgumentException($"Button not implemented: {menu.GetText()}");

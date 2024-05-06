@@ -24,6 +24,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         new Image(Path.Combine("Assets", "Images", "player.png"))
     );
     private Level level = new Level();
+    private Queue<Level> levelQueue = new Queue<Level>();
     private Entity backGroundImage = new Entity(
         new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
@@ -36,8 +37,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ResetState() {
-        player.Reset();       
+        player.Reset();
+        balls.ClearContainer();
+        
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
+        
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),
             new DynamicShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.025f, 0.025f), new Vec2F(0.02f, 0.01f))
@@ -54,6 +58,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void UpdateState() {
         player.Move();
         balls.Iterate(ball => movementStrategy.Move(ball));
+    }
+
+    public void DumpQueue() {
+        levelQueue.Clear();
     }
 
     private void KeyPress(KeyboardKey key) {
@@ -93,6 +101,23 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 Console.WriteLine("DEBUG: All blocks take one hit.");
                 level.Blocks.Iterate(block => block.Hit());
                 break;
+            case KeyboardKey.Tab:
+                if (levelQueue.Any()) {
+                    Console.WriteLine("DEBUG: Skipping to next level in queue.");
+                    ResetState();
+                    level = levelQueue.Dequeue();
+                } else {
+                    Console.WriteLine("DEBUG: No more levels in queue, going back to main menu.");
+                    ResetState();
+                    eventBus.RegisterEvent(new GameEvent {
+                        EventType = GameEventType.GameStateEvent,
+                        To = StateMachine.GetInstance(),
+                        Message = "CHANGE_STATE",
+                        StringArg1 = "MAIN_MENU"
+                    });
+                }
+                break;
+
         }
     }
 
@@ -133,9 +158,18 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void ProcessEvent(GameEvent gameEvent) {
         if (gameEvent.EventType != GameEventType.GameStateEvent) return;
         
-        if (gameEvent.Message == "LOAD_LEVEL") {
-            this.ResetState();
-            level = (Level)gameEvent.ObjectArg1;
+        switch (gameEvent.Message) {
+            case "LOAD_LEVEL":
+                ResetState();
+                level = (Level)gameEvent.ObjectArg1;
+                break;
+            case "QUEUE_LEVELS":
+                ResetState();
+                levelQueue = (Queue<Level>)gameEvent.ObjectArg1;
+                level = levelQueue.Dequeue();
+                break;
+            default:
+                break;
         }
     }
 }
