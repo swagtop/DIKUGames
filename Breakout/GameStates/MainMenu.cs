@@ -22,7 +22,7 @@ public class MainMenu : IGameState {
         0.4f,
         ("Play Campaign", "PLAY_CAMPAIGN"),
         ("Choose Level", "CHOOSE_LEVEL"),
-        ("Quit", "QUIT_GAME")
+        ("Quit Game", "QUIT_GAME")
     );
 
     public static MainMenu GetInstance() {

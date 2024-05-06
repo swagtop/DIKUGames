@@ -21,6 +21,7 @@ public class Block : Entity {
 
     public Block(IBaseImage image, IBaseImage damagedImage, Shape shape, int maxHealth=2) : base(shape, image) {
         this.damagedImage = damagedImage;
+        this.maxHealth = maxHealth;
         this.health = this.maxHealth;
     }
 
