@@ -44,18 +44,10 @@ public class ChooseLevel : IGameState {
 
     public void UpdateState() {
     }
-
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        if (action != KeyboardAction.KeyPress) return;
-
-        switch ((key, menu.GetValue())) {
-            case (KeyboardKey.Up, _):
-                menu.GoUp();
-                break;
-            case (KeyboardKey.Down, _):
-                menu.GoDown();
-                break;
-            case (KeyboardKey.Enter, "MAIN_MENU"):
+    
+    public void SelectMenuItem(string value) {
+        switch (value) {
+            case ("MAIN_MENU"):
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
@@ -63,7 +55,7 @@ public class ChooseLevel : IGameState {
                     StringArg1 = "MAIN_MENU"
                 });
                 break;
-            case (KeyboardKey.Enter, _):
+            default:
                 try {
                     Level level = LevelFactory.LoadFromFile(
                         Path.Combine("Assets", "Levels", menu.GetValue())
@@ -84,7 +76,23 @@ public class ChooseLevel : IGameState {
                     Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
                 }
                 break;
-            case (KeyboardKey.Escape, _):
+        }
+    }
+
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+        if (action != KeyboardAction.KeyPress) return;
+
+        switch (key) {
+            case (KeyboardKey.Up):
+                menu.GoUp();
+                break;
+            case (KeyboardKey.Down):
+                menu.GoDown();
+                break;
+            case (KeyboardKey.Enter):
+                SelectMenuItem(menu.GetValue());
+                break;
+            case (KeyboardKey.Escape):
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,

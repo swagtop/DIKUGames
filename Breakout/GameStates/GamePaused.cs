@@ -42,17 +42,9 @@ public class GamePaused : IGameState {
     public void UpdateState() {
     }
 
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        if (action != KeyboardAction.KeyPress) return;
-
-        switch ((key, menu.GetValue())) {
-            case (KeyboardKey.Up, _):
-                menu.GoUp();
-                break;
-            case (KeyboardKey.Down, _):
-                menu.GoDown();
-                break;
-            case (KeyboardKey.Escape, _):
+    public void SelectMenuItem(string value) {
+        switch (value) {
+            case "RESUME_GAME":
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
@@ -61,16 +53,7 @@ public class GamePaused : IGameState {
                     StringArg1 = "GAME_RUNNING"
                 });
                 break;
-            case (KeyboardKey.Enter, "RESUME_GAME"):
-                ResetState();
-                eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
-                    Message = "CHANGE_STATE",
-                    StringArg1 = "GAME_RUNNING"
-                });
-                break;
-            case (KeyboardKey.Enter, "MAIN_MENU"):
+            case "MAIN_MENU":
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
@@ -79,8 +62,34 @@ public class GamePaused : IGameState {
                     StringArg1 = "MAIN_MENU"
                 });
                 break;
-            case (KeyboardKey.Enter, _):
+            default:
                 throw new ArgumentException($"Button number not implemented: {menu.GetText()}");
+                break;
+        }
+    }
+
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+        if (action != KeyboardAction.KeyPress) return;
+
+        switch (key) {
+            case (KeyboardKey.Up):
+                menu.GoUp();
+                break;
+            case (KeyboardKey.Down):
+                menu.GoDown();
+                break;
+            case (KeyboardKey.Enter):
+                SelectMenuItem(menu.GetValue());
+                break;
+            case (KeyboardKey.Escape):
+                ResetState();
+                eventBus.RegisterEvent(new GameEvent {
+                    EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "GAME_RUNNING"
+                });
+                break;
             default:
                 break;
         }

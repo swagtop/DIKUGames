@@ -76,22 +76,7 @@ public class MainMenu : IGameState {
                     });
                 }
                 break;
-            default:
-                break;
-        }
-    }
-
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        if (action != KeyboardAction.KeyPress) return;
-
-        switch ((key, menu.GetValue())) {
-            case (KeyboardKey.Up, _):
-                menu.GoUp();
-                break;
-            case (KeyboardKey.Down, _):
-                menu.GoDown();
-                break;
-            case (KeyboardKey.Enter, "CHOOSE_LEVEL"):
+            case "CHOOSE_LEVEL":
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
@@ -99,17 +84,31 @@ public class MainMenu : IGameState {
                     StringArg1 = "CHOOSE_LEVEL"
                 });
                 break;
-            case (KeyboardKey.Enter, "QUIT_GAME"):
+            case "QUIT_GAME":
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.WindowEvent,
                     Message = "QUIT_GAME",
                 });
                 break;
-            case (KeyboardKey.Enter, "PLAY_CAMPAIGN"):
-                SelectMenuItem("PLAY_CAMPAIGN");
-                break;
-            case (KeyboardKey.Enter, _):
+            default:
                 throw new ArgumentException($"Button not implemented: {menu.GetText()}");
+                break;
+        }
+    }
+
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+        if (action != KeyboardAction.KeyPress) return;
+
+        switch (key) {
+            case (KeyboardKey.Up):
+                menu.GoUp();
+                break;
+            case (KeyboardKey.Down):
+                menu.GoDown();
+                break;
+            case (KeyboardKey.Enter):
+                SelectMenuItem(menu.GetValue());
+                break;
             default:
                 break;
         }
