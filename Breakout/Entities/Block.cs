@@ -7,7 +7,7 @@ namespace Breakout.Entities;
 public class Block : Entity
 {
     private IBaseImage damagedImage;
-    private int maxHealth;
+    private int maxHealth = 2;
     private int health;
     private bool unbreakable;
 
@@ -17,7 +17,8 @@ public class Block : Entity
         set
         {
             if (value <= maxHealth / 2 && health > maxHealth / 2) Image = damagedImage;
-            if (value > 0) health = value;
+
+            if (value >= 0) health = value;
             else this.DeleteEntity();
         }
     }

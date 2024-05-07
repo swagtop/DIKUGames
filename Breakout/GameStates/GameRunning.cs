@@ -79,7 +79,6 @@ public class GameRunning : IGameState, IGameEventProcessor
                 {
                     block.Hit();
                     ball.ChangeDirection(colCheck2.CollisionDir);
-                    // ball.Shape.AsDynamicShape().ChangeDirection(new Vec2F(ball.Shape.AsDynamicShape().Direction.X, -ball.Shape.AsDynamicShape().Direction.Y));
                 }
 
             });
