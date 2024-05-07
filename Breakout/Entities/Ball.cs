@@ -37,14 +37,10 @@ public class Ball : Entity
         switch (direction)
         {
             case CollisionDirection.CollisionDirUp:
-                Shape.AsDynamicShape().ChangeDirection(new Vec2F(Shape.AsDynamicShape().Direction.X, -Shape.AsDynamicShape().Direction.Y));
-                break;
             case CollisionDirection.CollisionDirDown:
                 Shape.AsDynamicShape().ChangeDirection(new Vec2F(Shape.AsDynamicShape().Direction.X, -Shape.AsDynamicShape().Direction.Y));
                 break;
             case CollisionDirection.CollisionDirLeft:
-                Shape.AsDynamicShape().ChangeDirection(new Vec2F(-Shape.AsDynamicShape().Direction.X, Shape.AsDynamicShape().Direction.Y));
-                break;
             case CollisionDirection.CollisionDirRight:
                 Shape.AsDynamicShape().ChangeDirection(new Vec2F(-Shape.AsDynamicShape().Direction.X, Shape.AsDynamicShape().Direction.Y));
                 break;

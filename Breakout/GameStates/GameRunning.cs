@@ -41,10 +41,12 @@ public class GameRunning : IGameState, IGameEventProcessor
     {
         player.Reset();
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
+        balls.ClearContainer();
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),
             new DynamicShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.025f, 0.025f), new Vec2F(0.01f, 0.01f))
         ));
+
     }
 
     public void RenderState()
@@ -69,7 +71,11 @@ public class GameRunning : IGameState, IGameEventProcessor
             CollisionData colCheck1 = CollisionDetection.Aabb(ball.Shape.AsDynamicShape(), player.Shape.AsDynamicShape());
             if (colCheck1.Collision)
             {
+                float rot = -(ball.Shape.Position.X - (player.Shape.Position.X - (player.Shape.Extent.X / 2.0f)));
+                rot *= 2;
                 ball.ChangeDirection(colCheck1.CollisionDir);
+                ball.Shape.AsDynamicShape().ChangeDirection(new Vec2F(ball.Shape.AsDynamicShape().Direction.X * (float)Math.Cos(rot) - ball.Shape.AsDynamicShape().Direction.Y * (float)Math.Sin(rot), ball.Shape.AsDynamicShape().Direction.X * (float)Math.Sin(rot) + ball.Shape.AsDynamicShape().Direction.Y * (float)Math.Cos(rot)));
+
             }
 
             level.Blocks.Iterate(block =>
