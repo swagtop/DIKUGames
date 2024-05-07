@@ -197,7 +197,7 @@ public static class LevelFactory
                         damagedImage = defaultDamagedImage;
                     }
 
-                    blocks.AddEntity(new Block(
+                    blocks.AddEntity(new UnbreakableBlock(
                         normalImage,
                         damagedImage,
                         new StationaryShape(
