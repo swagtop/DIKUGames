@@ -185,6 +185,7 @@ public static class LevelFactory
 
                     Image normalImage;
                     Image damagedImage;
+                    BlockType blockType;
 
                     if (levelLegend.ContainsKey(row[j]))
                     {
@@ -196,15 +197,20 @@ public static class LevelFactory
                         normalImage = defaultNormalImage;
                         damagedImage = defaultDamagedImage;
                     }
+                    if (row[j] == levelMeta.HardenedChar)
+                    {
+                        blockType = BlockType.HardenedBlock;
+                    }
+                    else if (row[j] == levelMeta.UnbreakableChar)
+                    {
+                        blockType = BlockType.UnbreakableBlock;
+                    }
+                    else
+                    {
+                        blockType = BlockType.Block;
+                    }
 
-                    blocks.AddEntity(new UnbreakableBlock(
-                        normalImage,
-                        damagedImage,
-                        new StationaryShape(
-                            new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
-                            new Vec2F(xRatio, yRatio)
-                        )
-                    ));
+                    blocks.AddEntity(BlockFactory.CreateBlock(normalImage, damagedImage, blockType, i, j));
                 }
             }
         }

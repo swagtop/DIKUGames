@@ -72,7 +72,7 @@ public class GameRunning : IGameState, IGameEventProcessor
             if (colCheck1.Collision)
             {
                 float rot = -(ball.Shape.Position.X - (player.Shape.Position.X - (player.Shape.Extent.X / 2.0f)));
-                rot *= 2;
+                rot *= 4;
                 ball.ChangeDirection(colCheck1.CollisionDir);
                 ball.Shape.AsDynamicShape().ChangeDirection(new Vec2F(ball.Shape.AsDynamicShape().Direction.X * (float)Math.Cos(rot) - ball.Shape.AsDynamicShape().Direction.Y * (float)Math.Sin(rot), ball.Shape.AsDynamicShape().Direction.X * (float)Math.Sin(rot) + ball.Shape.AsDynamicShape().Direction.Y * (float)Math.Cos(rot)));
 
