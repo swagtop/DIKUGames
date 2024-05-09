@@ -1,8 +1,8 @@
 using NUnit.Framework;
-using DIKUArcade.Math;
-using DIKUArcade.Events;
 using DIKUArcade.Entities;
+using DIKUArcade.Events;
 using DIKUArcade.Graphics;
+using DIKUArcade.Math;
 using Breakout;
 using Breakout.Entities;
 

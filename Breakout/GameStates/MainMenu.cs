@@ -1,15 +1,14 @@
 using System;
 using System.IO;
-using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
-using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Input;
+using DIKUArcade.Math;
 using DIKUArcade.State;
 using DIKUArcade.Utilities;
 using Breakout.LevelHandling;
 using Breakout.Menus;
-
 
 namespace Breakout.GameStates;
 public class MainMenu : IGameState {
@@ -95,7 +94,6 @@ public class MainMenu : IGameState {
                 break;
             default:
                 throw new ArgumentException($"Button not implemented: {menu.GetText()}");
-                break;
         }
     }
 

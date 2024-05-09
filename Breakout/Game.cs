@@ -1,6 +1,6 @@
 using DIKUArcade;
-using DIKUArcade.GUI;
 using DIKUArcade.Events;
+using DIKUArcade.GUI;
 using DIKUArcade.Input;
 using Breakout.GameStates;
 

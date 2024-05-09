@@ -1,11 +1,11 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using NUnit.Framework;
-using DIKUArcade.Math;
-using DIKUArcade.Events;
 using DIKUArcade.Entities;
+using DIKUArcade.Events;
 using DIKUArcade.Graphics;
+using DIKUArcade.Math;
 using DIKUArcade.Utilities;
 using Breakout;
 using Breakout.Entities;

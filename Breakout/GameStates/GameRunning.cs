@@ -1,15 +1,15 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using DIKUArcade;
+using DIKUArcade.Entities;
+using DIKUArcade.Events;
+using DIKUArcade.Graphics;
 using DIKUArcade.GUI;
 using DIKUArcade.Input;
-using DIKUArcade.Events;
 using DIKUArcade.Math;
-using DIKUArcade.State;
-using DIKUArcade.Entities;
-using DIKUArcade.Graphics;
 using DIKUArcade.Physics;
+using DIKUArcade.State;
 using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
@@ -106,18 +106,14 @@ public class GameRunning : IGameState, IGameEventProcessor {
         switch (key) {
             case KeyboardKey.Escape:
                 eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.PlayerEvent,
-                    To = player,
-                    Message = "STOP",
-                });
-                eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "GAME_PAUSED"
                 });
                 break;
-            case KeyboardKey.Left: case KeyboardKey.A:
+            case KeyboardKey.Left: 
+            case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     To = player,
@@ -126,7 +122,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     StringArg2 = "START"
                 });
                 break;
-            case KeyboardKey.Right: case KeyboardKey.D:
+            case KeyboardKey.Right: 
+            case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     To = player,

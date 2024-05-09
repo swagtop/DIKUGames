@@ -8,9 +8,8 @@ public class Block : Entity {
     private IBaseImage damagedImage;
     private int maxHealth;
     private int health;
-    private bool unbreakable;
 
-    public virtual int Health {
+    public int Health {
         get => health;
         set {
             if (value <= maxHealth / 2 && health > maxHealth / 2) Image = damagedImage;
