@@ -12,7 +12,7 @@ using Breakout.Entities;
 using Breakout.LevelHandling;
 
 namespace BreakoutTests;
-public class TestsLevelFactory {
+public class LevelFactoryTest {
     private Level level;
 
     [OneTimeSetUp]
@@ -125,22 +125,22 @@ public class TestsLevelFactory {
         LevelMeta meta = new LevelMeta();
         meta.LevelName = "LEVEL 1";
         meta.TimeLimit = 300;
-        meta.HardenedChar = '#';
-        meta.PowerUpChar = '2';
+        meta.CharDictionary.Add('#', BlockType.HardenedBlock);
+        meta.CharDictionary.Add('%', BlockType.UnbreakableBlock);
 
         LevelMeta fromMethod = LevelFactory.ParseMetaSection(new string[] {
                 "Name: LEVEL 1",
                 "Time: 300",
                 "Hardened: #",
+                "Unbreakable: %",
                 "PowerUp: 2",
             }
         );
 
         Assert.AreEqual(meta.LevelName, fromMethod.LevelName);
         Assert.AreEqual(meta.TimeLimit, fromMethod.TimeLimit);
-        Assert.AreEqual(meta.HardenedChar, fromMethod.HardenedChar);
-        Assert.AreEqual(meta.PowerUpChar, fromMethod.PowerUpChar);
-        Assert.AreEqual(meta.UnbreakableChar, fromMethod.UnbreakableChar);
+        Assert.AreEqual(meta.CharDictionary['#'], fromMethod.CharDictionary['#']);
+        Assert.AreEqual(meta.CharDictionary['#'], fromMethod.CharDictionary['#']);
     }
 
     [Test]
@@ -240,8 +240,84 @@ public class TestsLevelFactory {
         
         Assert.AreEqual(level.Meta.LevelName, "LEVEL 1");
         Assert.AreEqual(level.Meta.TimeLimit, 300);
-        Assert.AreEqual(level.Meta.HardenedChar, '#');
-        Assert.AreEqual(level.Meta.PowerUpChar, '2');
+        Assert.AreEqual(level.Meta.CharDictionary['#'], BlockType.HardenedBlock);
         Assert.AreEqual(level.Blocks.CountEntities(), 76);
+    }
+
+    [Test]
+    public void CorrectDataStructuresTest() {
+        string fullPath = FileIO.GetProjectPath();
+        Level level = LevelFactory.LoadFromFile(Path.Combine(fullPath, "Assets", "Levels", "level1.txt"));
+        
+        Assert.That(level, Is.InstanceOf<Level>());
+        Assert.That(level.Meta, Is.InstanceOf<LevelMeta>());
+        Assert.That(level.Meta.CharDictionary, Is.InstanceOf<Dictionary<char, BlockType>>());
+        Assert.That(level.Blocks, Is.InstanceOf<EntityContainer<Block>>());
+    }
+
+    [Test]
+    public void HandleDifferentMetadataTest() {
+        bool noException = true;
+        Level level;
+
+        try {
+            string fullPath = FileIO.GetProjectPath();
+            level = LevelFactory.LoadFromFile(Path.Combine(fullPath, "Assets", "Levels", "metadata1.txt"));
+        } catch {
+            noException = false;
+        }
+        
+        try {
+            string fullPath = FileIO.GetProjectPath();
+            level = LevelFactory.LoadFromFile(Path.Combine(fullPath, "Assets", "Levels", "metadata2.txt"));
+        } catch {
+            noException = false;
+        }
+
+        try {
+            string fullPath = FileIO.GetProjectPath();
+            level = LevelFactory.LoadFromFile(Path.Combine(fullPath, "Assets", "Levels", "metadata3.txt"));
+        } catch {
+            noException = false;
+        }
+
+        Assert.IsTrue(noException);
+    }
+
+    // The following tests will be handling invalid files throwing errors exactly as done in the
+    // actual codeplace, which puts the method calls inside try catch statements, and switches
+    // state to GameRunning only if the LevelFactory methods complete without throwing errors.
+    [Test]
+    public void HandleInvalidSectionsTest() {
+        bool exceptionHandled = false;
+
+        try {
+            string fullPath = FileIO.GetProjectPath();
+            Level level = LevelFactory.LoadFromFile(Path.Combine(fullPath, "Assets", "Levels", "invalid.txt"));
+        } catch (Exception e) {
+            Assert.AreEqual(
+                e.ToString().Split('\n')[0].Trim(), 
+                "System.Exception: Level sections are incorrectly ordered or corrupted.");   
+            exceptionHandled = true;
+        }
+
+        Assert.IsTrue(exceptionHandled);
+    }
+
+    [Test]
+    public void HandleEmptyFileTest() {
+        bool exceptionHandled = false;
+
+        try {
+            string fullPath = FileIO.GetProjectPath();
+            Level level = LevelFactory.LoadFromFile(Path.Combine(fullPath, "Assets", "Levels", "empty.txt"));
+        } catch (Exception e) {
+            Assert.AreEqual(
+                e.ToString().Split('\n')[0].Trim(), 
+                "System.Exception: Level sections are incorrectly ordered or corrupted.");   
+            exceptionHandled = true;
+        }
+
+        Assert.IsTrue(exceptionHandled);
     }
 }

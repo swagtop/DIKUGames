@@ -9,7 +9,7 @@ using Breakout.Entities;
 using Breakout.LevelHandling;
 
 namespace BreakoutTests;
-public class TestingBlocks {
+public class BlockTests {
     private EntityContainer<Block> blocks;
     private IBaseImage noImage = new NoImage();
     private int maxHealth;
@@ -143,5 +143,37 @@ public class TestingBlocks {
         Assert.AreEqual(blocks.CountEntities(), 360);
         blocks.Iterate(block => block.Health = 0);
         Assert.AreEqual(blocks.CountEntities(), 0);
+    }
+
+    [Test]
+    public void BlocksAreEntitiesTest() {
+        StationaryShape shape = new StationaryShape(
+            new Vec2F(0.1f, 0.1f), 
+            new Vec2F(0.1f, 0.1f)
+        );
+
+        Block block = new Block(noImage, noImage, shape);
+        HardenedBlock hardenedBlock = new HardenedBlock(noImage, noImage, shape);
+        UnbreakableBlock unbreakableBlock = new UnbreakableBlock(noImage, noImage, shape);
+        
+        Assert.That(block, Is.InstanceOf<Entity>());
+        Assert.That(hardenedBlock, Is.InstanceOf<Entity>());
+        Assert.That(unbreakableBlock, Is.InstanceOf<Entity>());
+    }
+
+    [Test]
+    public void SpecialBlocksAreBlocksTest() {
+        StationaryShape shape = new StationaryShape(
+            new Vec2F(0.1f, 0.1f), 
+            new Vec2F(0.1f, 0.1f)
+        );
+
+        Block block = new Block(noImage, noImage, shape);
+        HardenedBlock hardenedBlock = new HardenedBlock(noImage, noImage, shape);
+        UnbreakableBlock unbreakableBlock = new UnbreakableBlock(noImage, noImage, shape);
+        
+        Assert.That(block, Is.InstanceOf<Block>());
+        Assert.That(hardenedBlock, Is.InstanceOf<Block>());
+        Assert.That(unbreakableBlock, Is.InstanceOf<Block>());
     }
 }

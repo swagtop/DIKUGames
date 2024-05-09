@@ -8,7 +8,6 @@ public class Block : Entity {
     private IBaseImage damagedImage;
     private int maxHealth;
     private int health;
-
     public int Health {
         get => health;
         set {

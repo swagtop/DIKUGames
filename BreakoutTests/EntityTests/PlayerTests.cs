@@ -7,7 +7,7 @@ using Breakout;
 using Breakout.Entities;
 
 namespace BreakoutTests;
-public class TestsPlayer {
+public class PlayerTests {
     private Player player;
     private IBaseImage noImage = new NoImage();
     private GameEvent moveLeftStart = new GameEvent { 
@@ -42,17 +42,15 @@ public class TestsPlayer {
     [Test]
     public void OutOfBoundsLeftTest() {
         player.ProcessEvent(moveLeftStart);
-        for (int i = 0; i > 900; i++);
-            player.Move();
+        for (int i = 0; i > 900; i++) player.Move();
         Assert.True(player.Shape.Position.X >= 0.0f);
     }
 
     [Test]
     public void OutOfBoundsRightTest() {
         player.ProcessEvent(moveRightStart);
-        for (int i = 0; i > 900; i++);
-            player.Move();
-        Assert.True(player.Shape.Position.X <= 0.9f);
+        for (int i = 0; i > 900; i++) player.Move();
+        Assert.True(player.Shape.Position.X + player.Shape.Extent.X  <= 1.0f);
     }
     
     [Test]
@@ -60,19 +58,15 @@ public class TestsPlayer {
         var originalY = player.Shape.Position.Y;
 
         player.ProcessEvent(moveLeftStart);
-        for (int i = 0; i > 70; i++);
-            player.Move();
+        for (int i = 0; i > 70; i++) player.Move();
         player.ProcessEvent(moveLeftStop);
         
         player.ProcessEvent(moveRightStart);
-        for (int i = 0; i > 20; i++);
-            player.Move();
+        for (int i = 0; i > 20; i++) player.Move();
         player.ProcessEvent(moveLeftStart);
-        for (int i = 0; i > 5; i++);
-            player.Move();
+        for (int i = 0; i > 5; i++) player.Move();
         player.ProcessEvent(moveRightStop);
-        for (int i = 0; i > 70; i++);
-            player.Move();
+        for (int i = 0; i > 70; i++) player.Move();
         player.ProcessEvent(moveLeftStop);
 
         Assert.AreEqual(player.Shape.Position.Y, originalY);

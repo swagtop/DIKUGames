@@ -1,0 +1,69 @@
+using System.IO;
+using NUnit.Framework;
+using DIKUArcade.Entities;
+using DIKUArcade.Events;
+using DIKUArcade.Graphics;
+using DIKUArcade.Math;
+using Breakout;
+using Breakout.Entities;
+using Breakout.LevelHandling;
+
+namespace BreakoutTests;
+public class BallTests {
+    private Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
+    private Ball ball;
+    private IBaseImage noImage = new NoImage();
+
+    [SetUp]
+    public void Setup() {
+        /*Vec2F ballDirection = new Vec2F(0.0f, 0.0150f);
+        ballDirection.X = ballDirection.X * (float)Math.Cos(rotation) - ballDirection.Y * (float)Math.Sin(rotation);
+        ballDirection.Y = ballDirection.X * (float)Math.Sin(rotation) + ballDirection.Y * (float)Math.Cos(rotation);
+
+        balls.AddEntity(new Ball(
+            new Image(Path.Combine("Assets", "Images", "ball.png")),
+            new DynamicShape(ballPosition, ballExtent, ballDirection)
+        ));
+        */
+    }
+    
+    [Test]
+    public void XOutOfBoundsTest() {
+        Vec2F ballPosition = new Vec2F(0.8f, 0.5f);
+        Vec2F ballDirection = new Vec2F(0.1f, 0.0f);
+        ball = new Ball(
+            noImage,
+            new DynamicShape(
+                ballPosition,
+                ballExtent, 
+                ballDirection
+            )
+        );
+
+        for (int i = 0; i < 10000; i++) {
+            ball.Move();
+            Assert.IsTrue(ball.Shape.Position.X >= 0.0f && ball.Shape.Position.X + ball.Shape.Extent.X <= 1.0f);
+        }
+    }
+    
+    [Test]
+    public void YOutOfBoundsTest() {
+        Vec2F ballPosition = new Vec2F(0.5f, 0.0f);
+        Vec2F ballDirection = new Vec2F(0.0f, 0.1f);
+        ball = new Ball(
+            noImage,
+            new DynamicShape(
+                ballPosition,
+                ballExtent, 
+                ballDirection
+            )
+        );
+
+        for (int i = 0; i < 20; i++) {
+            ball.Move();
+            Assert.IsTrue(ball.Shape.Position.Y + ball.Shape.Extent.Y <= 1.0f);
+        }
+
+        Assert.IsTrue(ball.IsDeleted());
+    }
+}

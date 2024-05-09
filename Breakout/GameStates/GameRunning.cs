@@ -43,16 +43,19 @@ public class GameRunning : IGameState, IGameEventProcessor {
         
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         
-        float rotation = rnd.NextSingle() - rnd.NextSingle();
+        float rotation = rnd.NextSingle() * 0.75f - rnd.NextSingle() * 0.75f;
         
         Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
         Vec2F ballPosition = new Vec2F(
-            player.Shape.Position.X + (player.Shape.Extent.X/2) - ballExtent.X /2.0f, 
+            player.Shape.Position.X + (player.Shape.Extent.X/2) - ballExtent.X /2, 
             player.Shape.Extent.Y
         );
         Vec2F ballDirection = new Vec2F(0.0f, 0.0150f);
         ballDirection.X = ballDirection.X * (float)Math.Cos(rotation) - ballDirection.Y * (float)Math.Sin(rotation);
         ballDirection.Y = ballDirection.X * (float)Math.Sin(rotation) + ballDirection.Y * (float)Math.Cos(rotation);
+        if (ballDirection.Y < 0) {
+            ballDirection.Y *= -1;
+        }
 
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),

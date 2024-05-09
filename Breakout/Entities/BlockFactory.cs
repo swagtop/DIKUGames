@@ -1,8 +1,8 @@
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-namespace Breakout.Entities;
 
+namespace Breakout.Entities;
 public static class BlockFactory {
     public static Block CreateBlock(IBaseImage normalImage, IBaseImage damagedImage, BlockType blockType, int i, int j) {
         int maxNumberOfBlocksInRow = 12;
@@ -20,11 +20,11 @@ public static class BlockFactory {
                 ));
             case BlockType.HardenedBlock:
                 return new HardenedBlock(
-                        normalImage,
-                        damagedImage,
-                        new StationaryShape(
-                            new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
-                            new Vec2F(xRatio, yRatio)
+                    normalImage,
+                    damagedImage,
+                    new StationaryShape(
+                        new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
+                        new Vec2F(xRatio, yRatio)
                 ));
             case BlockType.UnbreakableBlock:
                 return new UnbreakableBlock(
@@ -35,7 +35,7 @@ public static class BlockFactory {
                         new Vec2F(xRatio, yRatio)
                 ));
             default:
-                throw new Exception("Block yype not implementet");
+                throw new Exception("Block type not implementet");
         }
     }
 }
