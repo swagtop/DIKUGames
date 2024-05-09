@@ -31,6 +31,7 @@ public class StateMachine : IGameEventProcessor {
                 ActiveState = GamePaused.GetInstance();
                 break;
             case GameStateType.MainMenu:
+                GameRunning.GetInstance().DumpQueue();
                 ActiveState = MainMenu.GetInstance();
                 break;
             case GameStateType.ChooseLevel:

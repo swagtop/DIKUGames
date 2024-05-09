@@ -6,6 +6,7 @@ using DIKUArcade.Math;
 using DIKUArcade.Events;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
+using DIKUArcade.Utilities;
 using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
@@ -229,25 +230,18 @@ public class TestsLevelFactory {
             meta,
             legend
         );
-    Assert.AreEqual(blocks.CountEntities(), 76);
+        Assert.AreEqual(blocks.CountEntities(), 76);
     }
 
     [Test]
     public void LoadFromFileTest() {
-        try {
-            Level level = LevelFactory.LoadFromFile(Path.Combine("Assets", "Levels", "level1.txt"));
-            
-            Assert.AreEqual(level.Meta.LevelName, "LEVEL 1");
-            Assert.AreEqual(level.Meta.TimeLimit, 300);
-            Assert.AreEqual(level.Meta.HardenedChar, '#');
-            Assert.AreEqual(level.Meta.PowerUpChar, '2');
-            Assert.AreEqual(level.Blocks.CountEntities, 76);
-        } catch(Exception e) {
-            Assert.Inconclusive();
-        }
-        // We are not sure why this test is not working, but we suspect it
-        // may have something to do with FileIO. It works in the game, but
-        // we will have to look closer to find out what the issue here is.
-
+        string fullPath = FileIO.GetProjectPath();
+        Level level = LevelFactory.LoadFromFile(Path.Combine(fullPath, "Assets", "Levels", "level1.txt"));
+        
+        Assert.AreEqual(level.Meta.LevelName, "LEVEL 1");
+        Assert.AreEqual(level.Meta.TimeLimit, 300);
+        Assert.AreEqual(level.Meta.HardenedChar, '#');
+        Assert.AreEqual(level.Meta.PowerUpChar, '2');
+        Assert.AreEqual(level.Blocks.CountEntities(), 76);
     }
 }

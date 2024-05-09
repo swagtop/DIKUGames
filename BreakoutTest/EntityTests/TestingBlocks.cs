@@ -6,13 +6,11 @@ using DIKUArcade.Events;
 using DIKUArcade.Entities;
 using Breakout;
 using Breakout.Entities;
-using Breakout.HitStrategies;
 using Breakout.LevelHandling;
 
 namespace BreakoutTests;
 public class TestingBlocks {
     private EntityContainer<Block> blocks;
-    private IHitStrategy hitStrategy = new StandardHit();
     private IBaseImage noImage = new NoImage();
     private int maxBlockRows;
     private int maxNumberOfBlocksInRow;
@@ -38,16 +36,14 @@ public class TestingBlocks {
                     new StationaryShape(
                         new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                         new Vec2F(xRatio, yRatio)
-                    ),
-                    false,
-                    false
+                    )
                 ));
             }
         }
         
         Assert.AreEqual(blocks.CountEntities(), 360);
-        blocks.Iterate(block => hitStrategy.Hit(block));
-        blocks.Iterate(block => hitStrategy.Hit(block));
+        blocks.Iterate(block => block.Hit());
+        blocks.Iterate(block => block.Hit());
         Assert.AreEqual(blocks.CountEntities(), 0);
     }
 
@@ -55,25 +51,23 @@ public class TestingBlocks {
     public void KillHardenedBlocksTest() {
         for (int i = 0; i < 30; i++) {
             for (int j = 0; j < 12; j++) {
-                blocks.AddEntity(new Block(
+                blocks.AddEntity(new HardenedBlock(
                     noImage,
                     noImage,
                     new StationaryShape(
                         new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                         new Vec2F(xRatio, yRatio)
-                    ),
-                    true,
-                    false
+                    )
                 ));
             }
         }
         
         Assert.AreEqual(blocks.CountEntities(), 360);
-        blocks.Iterate(block => hitStrategy.Hit(block));
-        blocks.Iterate(block => hitStrategy.Hit(block));
+        blocks.Iterate(block => block.Hit());
+        blocks.Iterate(block => block.Hit());
         Assert.AreEqual(blocks.CountEntities(), 360);
-        blocks.Iterate(block => hitStrategy.Hit(block));
-        blocks.Iterate(block => hitStrategy.Hit(block));
+        blocks.Iterate(block => block.Hit());
+        blocks.Iterate(block => block.Hit());
         Assert.AreEqual(blocks.CountEntities(), 0);
     }
     
@@ -81,22 +75,20 @@ public class TestingBlocks {
     public void UnbreakableBlocksCannotBeKilledTest() {
         for (int i = 0; i < 30; i++) {
             for (int j = 0; j < 12; j++) {
-                blocks.AddEntity(new Block(
+                blocks.AddEntity(new UnbreakableBlock(
                     noImage,
                     noImage,
                     new StationaryShape(
                         new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                         new Vec2F(xRatio, yRatio)
-                    ),
-                    false,
-                    true
+                    )
                 ));
             }
         }
         
         Assert.AreEqual(blocks.CountEntities(), 360);
         for (int i = 0; i < 10000; i++) {
-            blocks.Iterate(block => hitStrategy.Hit(block));
+            blocks.Iterate(block => block.Hit());
         }
         Assert.AreEqual(blocks.CountEntities(), 360);
     }
@@ -111,16 +103,14 @@ public class TestingBlocks {
                     new StationaryShape(
                         new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                         new Vec2F(xRatio, yRatio)
-                    ),
-                    false,
-                    false
+                    )
                 ));
             }
         }
         
         foreach (Block block in blocks){
             Assert.AreEqual(block.Health, 2);
-            hitStrategy.Hit(block);
+            blocks.Iterate(block => block.Hit());
             Assert.AreEqual(block.Health, 1);
         }
     }
@@ -135,16 +125,14 @@ public class TestingBlocks {
                     new StationaryShape(
                         new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
                         new Vec2F(xRatio, yRatio)
-                    ),
-                    false,
-                    false
+                    )
                 ));
             }
         }
         
         Assert.AreEqual(blocks.CountEntities(), 360);
         for (int i = 0; i < 10000; i++) {
-            blocks.Iterate(block => block.Health = 0);
+            blocks.Iterate(block => block.Hit());
         }
         Assert.AreEqual(blocks.CountEntities(), 0);
     }
