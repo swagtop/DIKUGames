@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using DIKUArcade.Entities;
-using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Math;
 using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
@@ -57,7 +57,7 @@ public static class LevelFactory {
             while (lines[index] != "Legend/") index++;
             legendEnd = index - legendStart;
         } catch {
-            throw new Exception("Level file invalid or corrupted.");
+            throw new Exception("Level sections are incorrectly ordered or corrupted.");
         }
 
         string[] mapSection = new ArraySegment<string>(lines, mapStart, mapEnd).ToArray();
@@ -82,13 +82,12 @@ public static class LevelFactory {
                         levelMeta.TimeLimit = Int32.Parse(itemPair[1]);
                         break;
                     case "PowerUp":
-                        levelMeta.PowerUpChar = char.Parse(itemPair[1]);
                         break;
                     case "Hardened":
-                        levelMeta.HardenedChar = char.Parse(itemPair[1]);
+                        levelMeta.CharDictionary.Add(char.Parse(itemPair[1]), BlockType.HardenedBlock);
                         break;
                     case "Unbreakable":
-                        levelMeta.UnbreakableChar = char.Parse(itemPair[1]);
+                        levelMeta.CharDictionary.Add(char.Parse(itemPair[1]), BlockType.UnbreakableBlock);
                         break;
                     default:
                         break;
@@ -126,8 +125,6 @@ public static class LevelFactory {
     public static EntityContainer<Block> ParseMapSection(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> levelLegend) {
         int maxBlockRows = 30;
         int maxNumberOfBlocksInRow = 12;
-        float xRatio = 1.0f/maxNumberOfBlocksInRow;
-        float yRatio = xRatio/3.0f;
         int rowsInQueue;
         EntityContainer<Block> blocks = new EntityContainer<Block>();
         Queue<string> rowQueue = new Queue<string>();
@@ -159,6 +156,7 @@ public static class LevelFactory {
                     
                     Image normalImage;
                     Image damagedImage;
+                    BlockType blockType;
 
                     if (levelLegend.ContainsKey(row[j])) {
                         normalImage = levelLegend[row[j]][0];
@@ -168,14 +166,13 @@ public static class LevelFactory {
                         damagedImage = defaultDamagedImage;
                     }
 
-                    blocks.AddEntity(new Block(
-                        normalImage,
-                        damagedImage,
-                        new StationaryShape(
-                            new Vec2F(j * xRatio, 1.0f - ((i + 1)*yRatio)), 
-                            new Vec2F(xRatio, yRatio)
-                        )
-                    ));
+                    if (levelMeta.CharDictionary.ContainsKey(row[j])) {
+                        blockType = levelMeta.CharDictionary[row[j]];
+                    } else {
+                        blockType = BlockType.Block;
+                    }
+
+                    blocks.AddEntity(BlockFactory.CreateBlock(normalImage, damagedImage, blockType, i, j));
                 }
             }
         } catch {

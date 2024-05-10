@@ -8,18 +8,16 @@ public class Block : Entity {
     private IBaseImage damagedImage;
     private int maxHealth;
     private int health;
-    private bool unbreakable;
-    
-    public virtual int Health {
+    public int Health {
         get => health;
         set {
-            if (value <= maxHealth/2 && health > maxHealth/2) Image = damagedImage;
+            if (value <= maxHealth / 2 && health > maxHealth / 2) Image = damagedImage;
             if (value > 0) health = value;
             else this.DeleteEntity();
         }
     }
 
-    public Block(IBaseImage image, IBaseImage damagedImage, Shape shape, int maxHealth=2) : base(shape, image) {
+    public Block(IBaseImage image, IBaseImage damagedImage, Shape shape, int maxHealth = 2) : base(shape, image) {
         this.damagedImage = damagedImage;
         this.maxHealth = maxHealth;
         this.health = this.maxHealth;

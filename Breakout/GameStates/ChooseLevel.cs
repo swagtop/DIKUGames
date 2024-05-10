@@ -1,11 +1,12 @@
 using System;
 using System.IO;
-using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
-using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Input;
+using DIKUArcade.Math;
 using DIKUArcade.State;
+using DIKUArcade.Utilities;
 using Breakout;
 using Breakout.LevelHandling;
 using Breakout.Menus;
@@ -32,10 +33,13 @@ public class ChooseLevel : IGameState {
         menu.Clear();
         menu.AddButton("Main Menu", "MAIN_MENU");
 
-        string[] levelAssets = Directory.GetFiles(Path.Combine("Assets", "Levels"));
+        string fullPath = FileIO.GetProjectPath();
+        string[] levelAssets = Directory.GetFiles(Path.Combine(fullPath, "Assets", "Levels"));
+        Array.Sort(levelAssets);
 
-        for (int i = 0; i < levelAssets.Length; i++) {
-            string fileName = levelAssets[levelAssets.Length - 1 - i].Remove(0, 14);
+        for (int i = levelAssets.Length-1; i > -1; i--) {
+            string[] directoryParts = levelAssets[levelAssets.Length - 1 - i].Split(Path.DirectorySeparatorChar);
+            string fileName = directoryParts[directoryParts.Length - 1];
             menu.AddButton(fileName, fileName);
         }
 

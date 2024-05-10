@@ -1,15 +1,15 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using DIKUArcade;
+using DIKUArcade.Entities;
+using DIKUArcade.Events;
+using DIKUArcade.Graphics;
 using DIKUArcade.GUI;
 using DIKUArcade.Input;
-using DIKUArcade.Events;
 using DIKUArcade.Math;
-using DIKUArcade.State;
-using DIKUArcade.Entities;
-using DIKUArcade.Graphics;
 using DIKUArcade.Physics;
+using DIKUArcade.State;
 using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
@@ -19,6 +19,7 @@ namespace Breakout.GameStates;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();
+    private Random rnd = new Random();
     private Player player = new Player(
         new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
         new Image(Path.Combine("Assets", "Images", "player.png"))
@@ -42,9 +43,23 @@ public class GameRunning : IGameState, IGameEventProcessor {
         
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         
+        float rotation = rnd.NextSingle() * 0.75f - rnd.NextSingle() * 0.75f;
+        
+        Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
+        Vec2F ballPosition = new Vec2F(
+            player.Shape.Position.X + (player.Shape.Extent.X/2) - ballExtent.X /2, 
+            player.Shape.Extent.Y
+        );
+        Vec2F ballDirection = new Vec2F(0.0f, 0.0150f);
+        ballDirection.X = ballDirection.X * (float)Math.Cos(rotation) - ballDirection.Y * (float)Math.Sin(rotation);
+        ballDirection.Y = ballDirection.X * (float)Math.Sin(rotation) + ballDirection.Y * (float)Math.Cos(rotation);
+        if (ballDirection.Y < 0) {
+            ballDirection.Y *= -1;
+        }
+
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),
-            new DynamicShape(new Vec2F(0.0f, 0.0f), new Vec2F(0.025f, 0.025f), new Vec2F(0.02f, 0.01f))
+            new DynamicShape(ballPosition, ballExtent, ballDirection)
         ));
     }
 
@@ -55,9 +70,35 @@ public class GameRunning : IGameState, IGameEventProcessor {
         balls.RenderEntities();
     }
 
+
     public void UpdateState() {
         player.Move();
-        balls.Iterate(ball => movementStrategy.Move(ball));
+        IterateBalls();
+    }
+
+    public void IterateBalls() {
+        balls.Iterate(ball => {
+            movementStrategy.Move(ball);
+            CollisionData colCheck1 = CollisionDetection.Aabb(ball.Dynamic, player.Shape.AsDynamicShape());
+
+            if (colCheck1.Collision) {
+                float rotation = (ball.Shape.Position.X - (player.Shape.Position.X + (player.Shape.Extent.X / 2.0f) - ball.Shape.Extent.X / 2.0f));
+                rotation *= -12.0f;
+                ball.ChangeDirection(colCheck1.CollisionDir);
+                ball.Dynamic.ChangeDirection(new Vec2F(
+                    ball.Dynamic.Direction.X * (float)Math.Cos(rotation) - ball.Dynamic.Direction.Y * (float)Math.Sin(rotation), 
+                    ball.Dynamic.Direction.X * (float)Math.Sin(rotation) + ball.Dynamic.Direction.Y * (float)Math.Cos(rotation))
+                );
+            }
+
+            level.Blocks.Iterate(block => {
+                CollisionData colCheck2 = CollisionDetection.Aabb(ball.Dynamic, block.Shape);
+                if (colCheck2.Collision) {
+                    block.Hit();
+                    ball.ChangeDirection(colCheck2.CollisionDir);
+                }
+            });
+        });
     }
 
     public void DumpQueue() {
@@ -68,18 +109,14 @@ public class GameRunning : IGameState, IGameEventProcessor {
         switch (key) {
             case KeyboardKey.Escape:
                 eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.PlayerEvent,
-                    To = player,
-                    Message = "STOP",
-                });
-                eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "GAME_PAUSED"
                 });
                 break;
-            case KeyboardKey.Left: case KeyboardKey.A:
+            case KeyboardKey.Left: 
+            case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     To = player,
@@ -88,7 +125,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     StringArg2 = "START"
                 });
                 break;
-            case KeyboardKey.Right: case KeyboardKey.D:
+            case KeyboardKey.Right: 
+            case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     To = player,
@@ -107,7 +145,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     ResetState();
                     level = levelQueue.Dequeue();
                 } else {
-                    Console.WriteLine("DEBUG: No more levels in queue, going back to main menu.");
+                    Console.WriteLine("DEBUG: No more levels in queue, returning to main menu.");
                     ResetState();
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,

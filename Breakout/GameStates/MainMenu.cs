@@ -1,11 +1,12 @@
 using System;
 using System.IO;
-using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
-using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Input;
+using DIKUArcade.Math;
 using DIKUArcade.State;
+using DIKUArcade.Utilities;
 using Breakout.LevelHandling;
 using Breakout.Menus;
 
@@ -45,6 +46,8 @@ public class MainMenu : IGameState {
         switch (value) {
             case ("PLAY_CAMPAIGN"):
                 Queue<Level> levelQueue = new Queue<Level>();
+                
+                string fullPath = FileIO.GetProjectPath();
                 string[] levelFilenames = Directory.GetFiles(Path.Combine("Assets", "Levels"));
 
                 for (int i = 0; i < levelFilenames.Length; i++) {
@@ -54,7 +57,7 @@ public class MainMenu : IGameState {
                 foreach (string filename in levelFilenames) {
                     try {
                         levelQueue.Enqueue(LevelFactory.LoadFromFile(
-                            Path.Combine("Assets", "Levels", filename)
+                            Path.Combine(fullPath, "Assets", "Levels", filename)
                         ));
                     } catch (Exception e) {
                         Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
@@ -92,7 +95,6 @@ public class MainMenu : IGameState {
                 break;
             default:
                 throw new ArgumentException($"Button not implemented: {menu.GetText()}");
-                break;
         }
     }
 

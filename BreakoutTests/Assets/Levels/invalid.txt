@@ -1,0 +1,23 @@
+Map
+------------
+------------
+-----------------------
+------------
+------------
+----------asdlkjaslfknai--
+------------
+------------kdjsakjaj
+------------
+Map/
+
+Meta:
+NameINVALID
+Time: 300
+Hard #
+PowerUp: 2
+Meta/
+
+Legend:
+1) onge-block.png
+a) purple-block.png
+Legnd/
