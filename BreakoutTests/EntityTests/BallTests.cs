@@ -16,15 +16,6 @@ public class BallTests {
 
     [SetUp]
     public void Setup() {
-        /*Vec2F ballDirection = new Vec2F(0.0f, 0.0150f);
-        ballDirection.X = ballDirection.X * (float)Math.Cos(rotation) - ballDirection.Y * (float)Math.Sin(rotation);
-        ballDirection.Y = ballDirection.X * (float)Math.Sin(rotation) + ballDirection.Y * (float)Math.Cos(rotation);
-
-        balls.AddEntity(new Ball(
-            new Image(Path.Combine("Assets", "Images", "ball.png")),
-            new DynamicShape(ballPosition, ballExtent, ballDirection)
-        ));
-        */
     }
     
     [Test]
