@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Breakout.Entities;
+
 namespace Breakout.LevelHandling;
 public class LevelMeta {
     public string LevelName;
@@ -5,20 +8,17 @@ public class LevelMeta {
     public char HardenedChar;
     public char UnbreakableChar;
     public char PowerUpChar;
+    public Dictionary<char, BlockType> CharDictionary;
 
     public LevelMeta() {
         LevelName = "";
         TimeLimit = -1;
-        HardenedChar = '-';
-        UnbreakableChar = '-';
-        PowerUpChar = '-';
+        CharDictionary = new Dictionary<char, BlockType>();
     }
 
-    public LevelMeta(string levelName, int timeLimit, char hardenedChar, char unbreakableChar, char powerUpChar) {
+    public LevelMeta(string levelName, int timeLimit, Dictionary<char, BlockType> charDictionary) {
         LevelName = levelName;
         TimeLimit = timeLimit;
-        HardenedChar = hardenedChar;
-        UnbreakableChar = unbreakableChar;
-        PowerUpChar = powerUpChar;
+        CharDictionary = charDictionary;
     }
 }

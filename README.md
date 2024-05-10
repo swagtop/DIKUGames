@@ -1,5 +1,12 @@
-# DIKUGames
-Repo for solving assignments with DIKUArcade for DIKU course Software Development
+# BREAKOUT 
 
-To start working on the assignments, create a **fork** of this repository
-and follow the instructions in the assignment description.
+This is a DIKUGames repository fork for the 2024 Sofware Development at the University of Copenhagen.
+The code in here has been written by:
++ Tobias Bjarnholt <tcj841>
++ Freja Pia Nørager Seidler <bfl942>
++ Janus Jógvansson <ktp367>
+
+To play the game, go to the /DIKUGames/Breakout/ directory, and run `dotnet run` in your terminal.
+For debugging purposes, you can hit spacebar to damage all blocks, and tab for skipping the current level.
+
+Enjoy!
