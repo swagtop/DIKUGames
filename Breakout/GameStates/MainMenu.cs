@@ -37,6 +37,10 @@ public class MainMenu : IGameState {
 
     public void ResetState() {
         menu.Reset();
+        eventBus.RegisterEvent(new GameEvent {
+            EventType = GameEventType.GameStateEvent,
+            Message = "DUMP_QUEUE",
+        });
     }
 
     public void UpdateState() {

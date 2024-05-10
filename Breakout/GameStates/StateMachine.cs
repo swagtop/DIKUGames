@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DIKUArcade.Events;
 using DIKUArcade.State;
 using Breakout;
@@ -6,40 +7,31 @@ using Breakout;
 namespace Breakout.GameStates;
 public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = new StateMachine();
+    private Dictionary<GameStateType, IGameState> gameStateDictionary = new Dictionary<GameStateType, IGameState>();
     public IGameState ActiveState { get; private set; }
-    public StateMachine() { 
-        MainMenu.GetInstance().ResetState();
-        ChooseLevel.GetInstance().ResetState();
-        GameRunning.GetInstance().ResetState();
-        GamePaused.GetInstance().ResetState();
 
-        ActiveState = MainMenu.GetInstance();
-        
-        BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+    public StateMachine() { 
     }
 
     public static StateMachine GetInstance() {
         return StateMachine.instance;
     }
+    
+    public void InitializeStateMachine(params (GameStateType gameStateType, IGameState instance)[] states) {
+        ActiveState = states[0].Item2; // ActiveState initializes with first state in params.
 
-    public void SwitchState(GameStateType stateType) {
-        switch (stateType) {
-            case GameStateType.GameRunning:
-                ActiveState = GameRunning.GetInstance();
-                break;
-            case GameStateType.GamePaused:
-                ActiveState = GamePaused.GetInstance();
-                break;
-            case GameStateType.MainMenu:
-                GameRunning.GetInstance().DumpQueue();
-                ActiveState = MainMenu.GetInstance();
-                break;
-            case GameStateType.ChooseLevel:
-                ChooseLevel.GetInstance().ResetState();
-                ActiveState = ChooseLevel.GetInstance();
-                break;
-            default:
-                throw new ArgumentException($"Unrecognized GameStateType: {stateType}");
+        foreach ((GameStateType gameStateType, IGameState instance) in states) {
+            gameStateDictionary.Add(gameStateType, instance);
+        }
+    }
+
+    public void SwitchState(GameStateType gameStateType) {
+        if (gameStateDictionary.ContainsKey(gameStateType)) {
+            IGameState nextState = gameStateDictionary[gameStateType];
+            nextState.ResetState();
+            ActiveState = nextState;
+        } else {
+            throw new ArgumentException($"Unrecognized GameStateType: {gameStateType}");
         }
     }
 

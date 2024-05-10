@@ -42,6 +42,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         balls.ClearContainer();
         
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
+        eventBus.Subscribe(GameEventType.GameStateEvent, this);
         
         float rotation = rnd.NextSingle() * 0.75f - rnd.NextSingle() * 0.75f;
         
@@ -205,6 +206,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 ResetState();
                 levelQueue = (Queue<Level>)gameEvent.ObjectArg1;
                 level = levelQueue.Dequeue();
+                break;
+            case "DUMP_QUEUE":
+                DumpQueue();
                 break;
             default:
                 break;

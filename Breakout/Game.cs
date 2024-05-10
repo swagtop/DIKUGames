@@ -21,6 +21,12 @@ public class Game : DIKUGame, IGameEventProcessor {
         eventBus.Subscribe(GameEventType.WindowEvent, this);
 
         stateMachine = StateMachine.GetInstance();
+        stateMachine.InitializeStateMachine(
+            (GameStateType.MainMenu, MainMenu.GetInstance()),
+            (GameStateType.ChooseLevel, ChooseLevel.GetInstance()),
+            (GameStateType.GameRunning, GameRunning.GetInstance()),
+            (GameStateType.GamePaused, GamePaused.GetInstance())
+        );
     }
 
     public override void Render() { 
