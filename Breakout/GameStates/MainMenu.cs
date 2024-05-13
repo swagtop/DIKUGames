@@ -1,3 +1,5 @@
+namespace Breakout.GameStates;
+
 using System;
 using System.IO;
 using DIKUArcade.Entities;
@@ -10,8 +12,6 @@ using DIKUArcade.Utilities;
 using Breakout.LevelHandling;
 using Breakout.Menus;
 
-
-namespace Breakout.GameStates;
 public class MainMenu : IGameState {
     private static MainMenu instance = new MainMenu();
     private GameEventBus eventBus = BreakoutBus.GetBus();

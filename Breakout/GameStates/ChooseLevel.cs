@@ -1,3 +1,5 @@
+namespace Breakout.GameStates;
+
 using System;
 using System.IO;
 using DIKUArcade.Entities;
@@ -11,7 +13,6 @@ using Breakout;
 using Breakout.LevelHandling;
 using Breakout.Menus;
 
-namespace Breakout.GameStates;
 public class ChooseLevel : IGameState {
     private static ChooseLevel instance = new ChooseLevel();
     private GameEventBus eventBus = BreakoutBus.GetBus();

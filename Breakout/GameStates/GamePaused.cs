@@ -1,3 +1,5 @@
+namespace Breakout.GameStates;
+
 using System;
 using System.IO;
 using DIKUArcade.Entities;
@@ -8,7 +10,6 @@ using DIKUArcade.Math;
 using DIKUArcade.State;
 using Breakout.Menus;
 
-namespace Breakout.GameStates;
 public class GamePaused : IGameState {
     private static GamePaused instance = new GamePaused();
     private GameEventBus eventBus = BreakoutBus.GetBus();

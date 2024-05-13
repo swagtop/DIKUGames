@@ -1,7 +1,8 @@
+namespace Breakout.LevelHandling;
+
 using DIKUArcade.Entities;
 using Breakout.Entities;
 
-namespace Breakout.LevelHandling;
 public class Level {
     public LevelMeta Meta;
     public EntityContainer<Block> Blocks;

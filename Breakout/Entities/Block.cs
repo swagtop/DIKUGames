@@ -1,9 +1,10 @@
+namespace Breakout.Entities;
+
 using System;
 using System.Collections.Generic;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 
-namespace Breakout.Entities;
 public class Block : Entity {
     private IBaseImage damagedImage;
     private int maxHealth;

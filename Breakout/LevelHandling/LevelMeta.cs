@@ -1,7 +1,8 @@
+namespace Breakout.LevelHandling;
+
 using System.Collections.Generic;
 using Breakout.Entities;
 
-namespace Breakout.LevelHandling;
 public class LevelMeta {
     public string LevelName;
     public int TimeLimit;

@@ -1,4 +1,5 @@
 namespace Breakout.LevelHandling;
+
 public class LevelFileSections {
     public string[] Map;
     public string[] Meta;

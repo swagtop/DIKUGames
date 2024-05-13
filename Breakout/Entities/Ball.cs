@@ -1,3 +1,5 @@
+namespace Breakout.Entities;
+
 using System;
 using System.Collections.Generic;
 using DIKUArcade.Entities;
@@ -5,7 +7,6 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 
-namespace Breakout.Entities;
 public class Ball : Entity {
     public DynamicShape Dynamic;
     public Ball(IBaseImage image, DynamicShape shape) : base(shape, image){

@@ -1,3 +1,5 @@
+namespace Breakout.GameStates;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +17,6 @@ using Breakout.Entities;
 using Breakout.LevelHandling;
 using Breakout.MovementStrategies;
 
-namespace Breakout.GameStates;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();

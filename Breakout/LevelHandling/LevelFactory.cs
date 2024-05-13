@@ -1,3 +1,5 @@
+namespace Breakout.LevelHandling;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +8,6 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Breakout.Entities;
 
-namespace Breakout.LevelHandling;
 public static class LevelFactory {
     public static Level LoadFromFile(string filepath) {
         LevelFileSections levelFileSections;

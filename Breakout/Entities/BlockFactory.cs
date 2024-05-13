@@ -1,8 +1,9 @@
+namespace Breakout.Entities;
+
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
-namespace Breakout.Entities;
 public static class BlockFactory {
     public static Block CreateBlock(IBaseImage normalImage, IBaseImage damagedImage, BlockType blockType, int i, int j) {
         int maxNumberOfBlocksInRow = 12;
