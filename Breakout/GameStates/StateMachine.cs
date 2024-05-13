@@ -28,9 +28,8 @@ public class StateMachine : IGameEventProcessor {
 
     public void SwitchState(GameStateType gameStateType) {
         if (gameStateDictionary.ContainsKey(gameStateType)) {
-            IGameState nextState = gameStateDictionary[gameStateType];
-            nextState.ResetState();
-            ActiveState = nextState;
+            ActiveState = gameStateDictionary[gameStateType];
+            ActiveState.ResetState();
         } else {
             throw new ArgumentException($"Unrecognized GameStateType: {gameStateType}");
         }
@@ -40,7 +39,7 @@ public class StateMachine : IGameEventProcessor {
         if (gameEvent.EventType != GameEventType.GameStateEvent) return;
         
         if (gameEvent.Message == "CHANGE_STATE") {
-            SwitchState(StateTransformer.TransformStringToState(gameEvent.StringArg1));
+            SwitchState(GameStateTransformer.TransformStringToState(gameEvent.StringArg1));
         }
     }
 }

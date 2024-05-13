@@ -75,20 +75,22 @@ public static class LevelFactory {
         try {
             for (int i = 0; i < lines.Length; i++) {
                 itemPair = lines[i].Split(": ");
+                itemPair[0] = itemPair[0].ToUpper();
                 switch (itemPair[0]) {
-                    case "Name":
+                    case "NAME":
                         levelMeta.LevelName = itemPair[1];
                         break;
-                    case "Time":
+                    case "TIME":
                         levelMeta.TimeLimit = Int32.Parse(itemPair[1]);
                         break;
-                    case "PowerUp":
+                    case "POWERUP":
                         break;
-                    case "Hardened":
-                        levelMeta.CharDictionary.Add(char.Parse(itemPair[1]), BlockType.HardenedBlock);
-                        break;
-                    case "Unbreakable":
-                        levelMeta.CharDictionary.Add(char.Parse(itemPair[1]), BlockType.UnbreakableBlock);
+                    case "HARDENED":
+                    case "UNBREAKABLE":
+                        levelMeta.CharDictionary.Add(
+                            char.Parse(itemPair[1]), 
+                            BlockTypeTransformer.TransformStringToType(itemPair[0])
+                        );
                         break;
                     default:
                         break;

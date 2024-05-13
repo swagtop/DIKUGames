@@ -9,7 +9,7 @@ public enum GameStateType {
     ChooseLevel
 }
 
-public static class StateTransformer {
+public static class GameStateTransformer {
     public static GameStateType TransformStringToState(string state) {
         switch (state) {
             case "GAME_RUNNING":
