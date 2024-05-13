@@ -21,6 +21,7 @@ public class ChooseLevel : IGameState {
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
     private Menu menu = new Menu(0.6f);
+
     public static ChooseLevel GetInstance() {
         return ChooseLevel.instance;
     }
