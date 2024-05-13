@@ -13,8 +13,14 @@ public class StateMachineTests {
     private GameRunning gameRunning = GameRunning.GetInstance();
     private GamePaused gamePaused = GamePaused.GetInstance();
 
-    [SetUp]
+    [OneTimeSetUp]
     public void Setup() {
+        stateMachine.InitializeStateMachine(
+            (GameStateType.MainMenu, mainMenu),
+            (GameStateType.ChooseLevel, chooseLevel),
+            (GameStateType.GameRunning, gameRunning),
+            (GameStateType.GamePaused, gamePaused)
+        );
     }
 
     [Test]
