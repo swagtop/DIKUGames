@@ -9,7 +9,8 @@ using DIKUArcade.State;
 using Breakout.Menus;
 
 namespace Breakout.GameStates;
-public class GamePaused : IGameState {
+public class GamePaused : IGameState
+{
     private static GamePaused instance = new GamePaused();
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private Entity backGroundImage = new Entity(
@@ -24,28 +25,34 @@ public class GamePaused : IGameState {
         ("Main Menu", "MAIN_MENU")
     );
 
-    public static GamePaused GetInstance() {
+    public static GamePaused GetInstance()
+    {
         return GamePaused.instance;
     }
-    
-    public void RenderState() {
+
+    public void RenderState()
+    {
         GameRunning.GetInstance().RenderState();
         gamePausedText.RenderText();
         menu.RenderButtons();
     }
 
-    public void ResetState() {
+    public void ResetState()
+    {
         gamePausedText.SetColor(redColor);
         menu.Reset();
     }
 
-    public void UpdateState() {
+    public void UpdateState()
+    {
     }
 
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key)
+    {
         if (action != KeyboardAction.KeyPress) return;
 
-        switch ((key, menu.GetValue())) {
+        switch ((key, menu.GetValue()))
+        {
             case (KeyboardKey.Up, _):
                 menu.GoUp();
                 break;
@@ -54,7 +61,8 @@ public class GamePaused : IGameState {
                 break;
             case (KeyboardKey.Escape, _):
                 ResetState();
-                eventBus.RegisterEvent(new GameEvent {
+                eventBus.RegisterEvent(new GameEvent
+                {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
@@ -63,7 +71,8 @@ public class GamePaused : IGameState {
                 break;
             case (KeyboardKey.Enter, "RESUME_GAME"):
                 ResetState();
-                eventBus.RegisterEvent(new GameEvent {
+                eventBus.RegisterEvent(new GameEvent
+                {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
@@ -72,7 +81,8 @@ public class GamePaused : IGameState {
                 break;
             case (KeyboardKey.Enter, "MAIN_MENU"):
                 ResetState();
-                eventBus.RegisterEvent(new GameEvent {
+                eventBus.RegisterEvent(new GameEvent
+                {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
