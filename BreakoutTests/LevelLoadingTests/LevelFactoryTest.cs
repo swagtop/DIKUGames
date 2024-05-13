@@ -1,3 +1,5 @@
+namespace BreakoutTests;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +13,6 @@ using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
 
-namespace BreakoutTests;
 public class LevelFactoryTest {
     private Level level;
 

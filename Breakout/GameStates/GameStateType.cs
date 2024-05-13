@@ -8,6 +8,7 @@ public enum GameStateType {
     MainMenu,
     ChooseLevel
 }
+
 public static class StateTransformer {
     public static GameStateType TransformStringToState(string state) {
         switch (state) {

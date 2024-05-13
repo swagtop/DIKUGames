@@ -1,10 +1,11 @@
+namespace BreakoutTests;
+
 using NUnit.Framework;
 using DIKUArcade.State;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using Breakout.GameStates;
 
-namespace BreakoutTests;
 public class StateMachineTests {
     private StateMachine stateMachine = StateMachine.GetInstance();
     private MainMenu mainMenu = MainMenu.GetInstance();

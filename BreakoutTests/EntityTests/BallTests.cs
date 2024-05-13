@@ -1,3 +1,5 @@
+namespace BreakoutTests;
+
 using System.IO;
 using NUnit.Framework;
 using DIKUArcade.Entities;
@@ -8,7 +10,6 @@ using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
 
-namespace BreakoutTests;
 public class BallTests {
     private Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
     private Ball ball;

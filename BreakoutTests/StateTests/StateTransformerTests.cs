@@ -1,9 +1,10 @@
+namespace BreakoutTests;
+
 using NUnit.Framework;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using Breakout.GameStates;
 
-namespace BreakoutTests;
 public class StateTransformerTests {
     GameStateType mainMenu = GameStateType.MainMenu;
     GameStateType chooseLevel = GameStateType.ChooseLevel;

@@ -1,3 +1,5 @@
+namespace BreakoutTests;
+
 using NUnit.Framework;
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
@@ -6,7 +8,6 @@ using DIKUArcade.Math;
 using Breakout;
 using Breakout.Entities;
 
-namespace BreakoutTests;
 public class PlayerTests {
     private Player player;
     private IBaseImage noImage = new NoImage();

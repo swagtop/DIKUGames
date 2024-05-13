@@ -1,3 +1,5 @@
+namespace BreakoutTests;
+
 using System.IO;
 using NUnit.Framework;
 using DIKUArcade.Entities;
@@ -8,7 +10,6 @@ using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
 
-namespace BreakoutTests;
 public class BlockTests {
     private EntityContainer<Block> blocks;
     private IBaseImage noImage = new NoImage();
