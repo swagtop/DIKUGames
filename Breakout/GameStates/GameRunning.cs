@@ -14,6 +14,7 @@ using DIKUArcade.Physics;
 using DIKUArcade.State;
 using Breakout;
 using Breakout.Entities;
+using Breakout.GUI;
 using Breakout.LevelHandling;
 using Breakout.MovementStrategies;
 
@@ -33,6 +34,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
     );
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private IMovementStrategy movementStrategy= new StandardMove();
+    private Hearts hearts= new Hearts(
+            3,
+            new Image(Path.Combine("Assets", "Images", "heart_filled.png")),
+            new Image(Path.Combine("Assets", "Images", "heart_empty.png"))
+    );
 
     public static GameRunning GetInstance() {
         return GameRunning.instance;
@@ -63,6 +69,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
             new Image(Path.Combine("Assets", "Images", "ball.png")),
             new DynamicShape(ballPosition, ballExtent, ballDirection)
         ));
+
+        hearts.SetHearts(3);
     }
 
     public void RenderState() {
@@ -70,6 +78,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         level.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();
+        hearts.RenderHearts();
     }
 
 
