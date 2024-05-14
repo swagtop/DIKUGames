@@ -16,6 +16,7 @@ public class Game : DIKUGame, IGameEventProcessor {
         eventBus = BreakoutBus.GetBus();
         eventBus.InitializeEventBus(new List<GameEventType> {
             GameEventType.WindowEvent,
+            GameEventType.StatusEvent,
             GameEventType.GameStateEvent,
             GameEventType.PlayerEvent,
         });
@@ -28,6 +29,7 @@ public class Game : DIKUGame, IGameEventProcessor {
             (GameStateType.GameRunning, GameRunning.GetInstance()),
             (GameStateType.GamePaused, GamePaused.GetInstance())
         );
+        eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
     }
 
     public override void Render() { 

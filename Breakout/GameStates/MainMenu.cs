@@ -36,7 +36,7 @@ public class MainMenu : IGameState {
     public void ResetState() {
         menu.Reset();
         eventBus.RegisterEvent(new GameEvent {
-            EventType = GameEventType.GameStateEvent,
+            EventType = GameEventType.StatusEvent,
             Message = "DUMP_QUEUE",
         });
     }
@@ -69,14 +69,12 @@ public class MainMenu : IGameState {
 
                 if (levelQueue.Count > 0) {
                     eventBus.RegisterEvent(new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        To = GameRunning.GetInstance(),
+                        EventType = GameEventType.StatusEvent,
                         Message = "QUEUE_LEVELS",
                         ObjectArg1 = (object)levelQueue
                     });
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
                         Message = "CHANGE_STATE",
                         StringArg1 = "GAME_RUNNING"
                     });

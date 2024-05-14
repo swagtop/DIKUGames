@@ -36,6 +36,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
             new Image(Path.Combine("Assets", "Images", "heart_empty.png"))
     );
 
+    private GameRunning() {
+        eventBus.Subscribe(GameEventType.PlayerEvent, player);
+        eventBus.Subscribe(GameEventType.StatusEvent, this);
+    }
+
     public static GameRunning GetInstance() {
         return GameRunning.instance;
     }
@@ -43,9 +48,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void ResetState() {
         player.Reset();
         balls.ClearContainer();
-        
-        eventBus.Subscribe(GameEventType.PlayerEvent, player);
-        eventBus.Subscribe(GameEventType.GameStateEvent, this);
         
         float rotation = rnd.NextSingle() * 0.75f - rnd.NextSingle() * 0.75f;
         
@@ -205,8 +207,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.EventType != GameEventType.GameStateEvent) return;
-        
+        if (gameEvent.EventType != GameEventType.StatusEvent) return;
+        Console.WriteLine("GOT IT!!");
         switch (gameEvent.Message) {
             case "LOAD_LEVEL":
                 ResetState();

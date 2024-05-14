@@ -64,14 +64,12 @@ public class ChooseLevel : IGameState {
                         Path.Combine("Assets", "Levels", menu.GetValue())
                     );
                     eventBus.RegisterEvent(new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        To = GameRunning.GetInstance(),
+                        EventType = GameEventType.StatusEvent,
                         Message = "LOAD_LEVEL",
                         ObjectArg1 = (object)level
                     });
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
                         Message = "CHANGE_STATE",
                         StringArg1 = "GAME_RUNNING"
                     });

@@ -23,6 +23,10 @@ public class GamePaused : IGameState {
         ("Main Menu", "MAIN_MENU")
     );
 
+    private GamePaused() {
+        gamePausedText.SetColor(redColor);
+    }
+
     public static GamePaused GetInstance() {
         return GamePaused.instance;
     }
@@ -34,7 +38,6 @@ public class GamePaused : IGameState {
     }
 
     public void ResetState() {
-        gamePausedText.SetColor(redColor);
         menu.Reset();
     }
 
