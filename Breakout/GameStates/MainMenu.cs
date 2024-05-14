@@ -51,6 +51,7 @@ public class MainMenu : IGameState {
                 
                 string fullPath = FileIO.GetProjectPath();
                 string[] levelFilenames = Directory.GetFiles(Path.Combine("Assets", "Levels"));
+                Array.Sort(levelFilenames);
 
                 for (int i = 0; i < levelFilenames.Length; i++) {
                     levelFilenames[i] = levelFilenames[i].Remove(0, 14);
