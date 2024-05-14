@@ -1,4 +1,4 @@
-namespace Breakout.Menus;
+namespace Breakout.UI;
 
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
