@@ -102,7 +102,6 @@ public class GameRunning : IGameState, IGameEventProcessor
 
     public void IterateBalls()
     {
-        // bool shouldBreak = false;
         balls.Iterate(ball =>
         {
             movementStrategy.Move(ball);
@@ -116,8 +115,6 @@ public class GameRunning : IGameState, IGameEventProcessor
                         Console.WriteLine(life.Value);
                         life.Value = false;
                         Console.WriteLine(life.Value);
-                        // shouldBreak = true;
-
                         if (balls.CountEntities() == 1)
                         {
                             Console.WriteLine(balls.CountEntities());

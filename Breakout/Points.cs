@@ -5,6 +5,7 @@ using Breakout.Entities;
 namespace Breakout;
 public class Points : Text
 {
+    // ændre til uint
     private int currentPoints;
 
     public Points() : base("Points:0", new Vec2F(0.77f, 0.1f), new Vec2F(0.2f, 0.2f))
