@@ -11,7 +11,6 @@ using Breakout.GUI;
 public class GamePaused : IGameState {
     private static GamePaused instance = new GamePaused();
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    private Vec3F redColor = new Vec3F(1.0f, 0.0f, 0.0f);
     private Text gamePausedText = new Text("GAME PAUSED!", new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f));
     private Menu menu = new Menu(
         0.4f,
@@ -20,7 +19,7 @@ public class GamePaused : IGameState {
     );
 
     private GamePaused() {
-        gamePausedText.SetColor(redColor);
+        gamePausedText.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));
     }
 
     public static GamePaused GetInstance() {

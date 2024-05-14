@@ -20,11 +20,6 @@ public class ChooseLevel : IGameState {
         return ChooseLevel.instance;
     }
     
-    public void RenderState() {
-        background.RenderBackground();
-        menu.RenderButtons();
-    }
-
     public void ResetState() {
         menu.Clear();
         menu.AddButton("Main Menu", "MAIN_MENU");
@@ -40,6 +35,11 @@ public class ChooseLevel : IGameState {
         }
 
         menu.Reset();
+    }
+    
+    public void RenderState() {
+        background.RenderBackground();
+        menu.RenderButtons();
     }
 
     public void UpdateState() {

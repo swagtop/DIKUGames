@@ -26,11 +26,6 @@ public class MainMenu : IGameState {
     public static MainMenu GetInstance() {
         return MainMenu.instance;
     }
-    
-    public void RenderState() {
-        background.RenderBackground();
-        menu.RenderButtons();
-    }
 
     public void ResetState() {
         menu.Reset();
@@ -38,6 +33,11 @@ public class MainMenu : IGameState {
             EventType = GameEventType.StatusEvent,
             Message = "DUMP_QUEUE",
         });
+    }
+
+    public void RenderState() {
+        background.RenderBackground();
+        menu.RenderButtons();
     }
 
     public void UpdateState() {

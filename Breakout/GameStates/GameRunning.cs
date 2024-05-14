@@ -17,6 +17,7 @@ using Breakout.MovementStrategies;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();
+    private Background background = new Background(new Image(Path.Combine("Assets", "Images", "SpaceBackground.png")));
     private Random rnd = new Random();
     private Player player = new Player(
         new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
@@ -24,7 +25,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     );
     private Level level = new Level();
     private Queue<Level> levelQueue = new Queue<Level>();
-    private Background background = new Background(new Image(Path.Combine("Assets", "Images", "SpaceBackground.png")));
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private IMovementStrategy movementStrategy= new StandardMove();
     private Hearts hearts= new Hearts(
@@ -76,7 +76,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         balls.RenderEntities();
         hearts.RenderHearts();
     }
-
 
     public void UpdateState() {
         player.Move();
