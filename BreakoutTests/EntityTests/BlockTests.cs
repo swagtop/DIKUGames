@@ -69,9 +69,7 @@ public class BlockTests {
         
         Assert.AreEqual(blocks.CountEntities(), 360);
         blocks.Iterate(block => block.Hit());
-        blocks.Iterate(block => block.Hit());
         Assert.AreEqual(blocks.CountEntities(), 360);
-        blocks.Iterate(block => block.Hit());
         blocks.Iterate(block => block.Hit());
         Assert.AreEqual(blocks.CountEntities(), 0);
     }

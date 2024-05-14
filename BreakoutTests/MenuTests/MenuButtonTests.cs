@@ -2,7 +2,7 @@ namespace BreakoutTests;
 
 using NUnit.Framework;
 using DIKUArcade.Math;
-using Breakout.Menus;
+using Breakout.GUI;
 
 public class MenuButtonTests {
     private string text = "text";

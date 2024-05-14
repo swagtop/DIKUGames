@@ -1,7 +1,7 @@
 namespace BreakoutTests;
 
 using NUnit.Framework;
-using Breakout.Menus;
+using Breakout.GUI;
 
 public class MenuTests {
     private Menu menu;

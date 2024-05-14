@@ -1,7 +1,5 @@
 namespace Breakout.GameStates;
 
-using System;
-
 public enum GameStateType {
     GameRunning,
     GamePaused,

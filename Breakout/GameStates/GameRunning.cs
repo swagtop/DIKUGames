@@ -1,8 +1,5 @@
 namespace Breakout.GameStates;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using DIKUArcade;
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
@@ -12,7 +9,6 @@ using DIKUArcade.Input;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
-using Breakout;
 using Breakout.Entities;
 using Breakout.GUI;
 using Breakout.LevelHandling;

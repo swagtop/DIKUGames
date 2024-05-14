@@ -1,6 +1,5 @@
 namespace Breakout.LevelHandling;
 
-using System.Collections.Generic;
 using Breakout.Entities;
 
 public class LevelMeta {

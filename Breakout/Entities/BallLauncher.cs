@@ -3,7 +3,6 @@ namespace Breakout.Entities;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
-using Breakout.Entities;
 
 public class BallLauncher {
     private readonly EntityContainer<Ball> balls;

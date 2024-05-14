@@ -1,10 +1,7 @@
 namespace Breakout.GameStates;
 
-using System;
-using System.Collections.Generic;
 using DIKUArcade.Events;
 using DIKUArcade.State;
-using Breakout;
 
 public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = new StateMachine();

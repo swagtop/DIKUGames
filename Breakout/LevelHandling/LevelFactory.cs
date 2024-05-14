@@ -1,8 +1,5 @@
 namespace Breakout.LevelHandling;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
