@@ -17,7 +17,9 @@ using Breakout.MovementStrategies;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    private Background background = new Background(new Image(Path.Combine("Assets", "Images", "SpaceBackground.png")));
+    private Background background = new Background(
+        new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
+    );
     private Random rnd = new Random();
     private Player player = new Player(
         new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),

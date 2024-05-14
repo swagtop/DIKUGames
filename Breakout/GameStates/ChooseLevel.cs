@@ -13,7 +13,9 @@ using Breakout.GUI;
 public class ChooseLevel : IGameState {
     private static ChooseLevel instance = new ChooseLevel();
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    private Background background = new Background(new Image(Path.Combine("Assets", "Images", "SpaceBackground.png")));
+    private Background background = new Background(new Image(
+        Path.Combine("Assets", "Images", "SpaceBackground.png"))
+    );
     private Menu menu = new Menu(0.6f);
 
     public static ChooseLevel GetInstance() {
