@@ -1,6 +1,6 @@
 using DIKUArcade;
-using DIKUArcade.GUI;
 using DIKUArcade.Events;
+using DIKUArcade.GUI;
 using DIKUArcade.Input;
 using Breakout.GameStates;
 
@@ -13,15 +13,14 @@ public class Game : DIKUGame, IGameEventProcessor {
         window.SetKeyEventHandler(KeyHandler);
 
         eventBus = BreakoutBus.GetBus();
-        stateMachine = StateMachine.GetInstance();
-        
         eventBus.InitializeEventBus(new List<GameEventType> {
             GameEventType.WindowEvent,
             GameEventType.GameStateEvent,
             GameEventType.PlayerEvent,
         });
-        
         eventBus.Subscribe(GameEventType.WindowEvent, this);
+
+        stateMachine = StateMachine.GetInstance();
     }
 
     public override void Render() { 
@@ -41,7 +40,7 @@ public class Game : DIKUGame, IGameEventProcessor {
         if (gameEvent.EventType != GameEventType.WindowEvent) return;
         
         switch (gameEvent.Message) {
-            case "CLOSE_WINDOW":
+            case "QUIT_GAME":
                 window.CloseWindow();
                 System.Environment.Exit(0);
                 break;

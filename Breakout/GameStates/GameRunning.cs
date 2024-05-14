@@ -47,9 +47,6 @@ public class GameRunning : IGameState, IGameEventProcessor
     public void ResetState()
     {
         player.Reset();
-        balls.ClearContainer();
-        points.Reset();
-
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         eventBus.Subscribe(GameEventType.GameStateEvent, this);
 
@@ -92,69 +89,9 @@ public class GameRunning : IGameState, IGameEventProcessor
         lives.RenderEntities();
     }
 
-
     public void UpdateState()
     {
         player.Move();
-        IterateBalls();
-        points.UpdatePointsDisplay();
-    }
-
-    public void IterateBalls()
-    {
-        balls.Iterate(ball =>
-        {
-            movementStrategy.Move(ball);
-
-            if (ball.isLost())
-            {
-                foreach (Life life in lives)
-                {
-                    if (life.Value)
-                    {
-                        Console.WriteLine(life.Value);
-                        life.Value = false;
-                        Console.WriteLine(life.Value);
-                        if (balls.CountEntities() == 1)
-                        {
-                            Console.WriteLine(balls.CountEntities());
-                            ballLauncher.AddNewBall();
-                            Console.WriteLine(balls.CountEntities());
-                        }
-                        break;
-                    }
-
-                }
-            }
-            CollisionData colCheck1 = CollisionDetection.Aabb(ball.Dynamic, player.Shape.AsDynamicShape());
-
-            if (colCheck1.Collision)
-            {
-                float rotation = (ball.Shape.Position.X - (player.Shape.Position.X + (player.Shape.Extent.X / 2.0f) - ball.Shape.Extent.X / 2.0f));
-                rotation *= -12.0f;
-                ball.ChangeDirection(colCheck1.CollisionDir);
-                ball.Dynamic.ChangeDirection(new Vec2F(
-                    ball.Dynamic.Direction.X * (float)Math.Cos(rotation) - ball.Dynamic.Direction.Y * (float)Math.Sin(rotation),
-                    ball.Dynamic.Direction.X * (float)Math.Sin(rotation) + ball.Dynamic.Direction.Y * (float)Math.Cos(rotation))
-                );
-            }
-
-            level.Blocks.Iterate(block =>
-            {
-                CollisionData colCheck2 = CollisionDetection.Aabb(ball.Dynamic, block.Shape);
-                if (colCheck2.Collision)
-                {
-                    block.Hit();
-                    points.AwardPoints(block);
-                    ball.ChangeDirection(colCheck2.CollisionDir);
-                }
-            });
-        });
-    }
-
-    public void DumpQueue()
-    {
-        levelQueue.Clear();
     }
 
     private void KeyPress(KeyboardKey key)
@@ -162,6 +99,12 @@ public class GameRunning : IGameState, IGameEventProcessor
         switch (key)
         {
             case KeyboardKey.Escape:
+                eventBus.RegisterEvent(new GameEvent
+                {
+                    EventType = GameEventType.PlayerEvent,
+                    To = player,
+                    Message = "STOP",
+                });
                 eventBus.RegisterEvent(new GameEvent
                 {
                     EventType = GameEventType.GameStateEvent,
@@ -221,6 +164,7 @@ public class GameRunning : IGameState, IGameEventProcessor
                 }
                 break;
 
+
         }
     }
 
@@ -270,22 +214,10 @@ public class GameRunning : IGameState, IGameEventProcessor
     {
         if (gameEvent.EventType != GameEventType.GameStateEvent) return;
 
-        switch (gameEvent.Message)
+        if (gameEvent.Message == "LOAD_LEVEL")
         {
-            case "LOAD_LEVEL":
-                ResetState();
-                level = (Level)gameEvent.ObjectArg1;
-                break;
-            case "QUEUE_LEVELS":
-                ResetState();
-                levelQueue = (Queue<Level>)gameEvent.ObjectArg1;
-                level = levelQueue.Dequeue();
-                break;
-            case "DUMP_QUEUE":
-                DumpQueue();
-                break;
-            default:
-                break;
+            this.ResetState();
+            level = (Level)gameEvent.ObjectArg1;
         }
     }
 }

@@ -1,19 +1,4 @@
 Map:
-bbbbbbbbbbbb
-------------
--#--------#-
---#------#--
----#----#---
-----#--#----
-------------
-------------
----Y----Y---
-000Y----Y000
-000Y----Y000
-000Y----Y000
-000Y-##-Y000
-000Y----Y000
-YYYYwwwwYYYY
 ------------
 ------------
 ------------
@@ -24,20 +9,41 @@ YYYYwwwwYYYY
 ------------
 ------------
 ------------
+------------
+#!#!#!#!#!#!
+------------
+------------
+------------
+------------
+-#!#!#!#!00-
+-!---!---w0-
+-#-!-#-!#00-
+-!-#-!-#----
+-#-!-#-!----
+-!-#---#----
+-#-!#!#!-----
+-!--0------
+-#--0-------
+----0-------
+----0-------
+------------
+UUUU--------
+UUUU--------
 Map/
 
 Meta:
-Name: LEVEL 3
-Time: 180
-PowerUp: #
-Hardened: Y
+Name: TUNNEL SNAKE!!
 Unbreakable: 0
+Unbreakable: #
+Unbreakable: !
+Hardened: U
 Meta/
 
 Legend:
-0) orange-block.png
-w) darkgreen-block.png
-#) green-block.png
-Y) brown-block.png
-b) yellow-block.png
+U) teal-block.png
+Æ) purple-block.png
+#) darkgreen-block.png
+!) green-block.png
+0) grey-block.png
+w) red-block.png
 Legend/

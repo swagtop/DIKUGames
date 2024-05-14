@@ -1,11 +1,12 @@
 using System;
 using System.IO;
-using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
-using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Input;
+using DIKUArcade.Math;
 using DIKUArcade.State;
+using DIKUArcade.Utilities;
 using Breakout;
 using Breakout.LevelHandling;
 using Breakout.Menus;
@@ -32,10 +33,13 @@ public class ChooseLevel : IGameState {
         menu.Clear();
         menu.AddButton("Main Menu", "MAIN_MENU");
 
-        string[] levelAssets = Directory.GetFiles(Path.Combine("Assets", "Levels"));
+        string fullPath = FileIO.GetProjectPath();
+        string[] levelAssets = Directory.GetFiles(Path.Combine(fullPath, "Assets", "Levels"));
+        Array.Sort(levelAssets);
 
-        for (int i = 0; i < levelAssets.Length; i++) {
-            string fileName = levelAssets[levelAssets.Length - 1 - i].Remove(0, 14);
+        for (int i = levelAssets.Length-1; i > -1; i--) {
+            string[] directoryParts = levelAssets[levelAssets.Length - 1 - i].Split(Path.DirectorySeparatorChar);
+            string fileName = directoryParts[directoryParts.Length - 1];
             menu.AddButton(fileName, fileName);
         }
 
@@ -44,18 +48,10 @@ public class ChooseLevel : IGameState {
 
     public void UpdateState() {
     }
-
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        if (action != KeyboardAction.KeyPress) return;
-
-        switch ((key, menu.GetValue())) {
-            case (KeyboardKey.Up, _):
-                menu.GoUp();
-                break;
-            case (KeyboardKey.Down, _):
-                menu.GoDown();
-                break;
-            case (KeyboardKey.Enter, "MAIN_MENU"):
+    
+    public void SelectMenuItem(string value) {
+        switch (value) {
+            case ("MAIN_MENU"):
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     To = StateMachine.GetInstance(),
@@ -63,7 +59,7 @@ public class ChooseLevel : IGameState {
                     StringArg1 = "MAIN_MENU"
                 });
                 break;
-            case (KeyboardKey.Enter, _):
+            default:
                 try {
                     Level level = LevelFactory.LoadFromFile(
                         Path.Combine("Assets", "Levels", menu.GetValue())
@@ -84,7 +80,23 @@ public class ChooseLevel : IGameState {
                     Console.WriteLine("Cannot load level: " + e.ToString().Split('\n')[0]);
                 }
                 break;
-            case (KeyboardKey.Escape, _):
+        }
+    }
+
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+        if (action != KeyboardAction.KeyPress) return;
+
+        switch (key) {
+            case (KeyboardKey.Up):
+                menu.GoUp();
+                break;
+            case (KeyboardKey.Down):
+                menu.GoDown();
+                break;
+            case (KeyboardKey.Enter):
+                SelectMenuItem(menu.GetValue());
+                break;
+            case (KeyboardKey.Escape):
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,

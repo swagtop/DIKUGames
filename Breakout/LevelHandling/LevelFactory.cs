@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using DIKUArcade.Entities;
-using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Math;
 using Breakout.Entities;
 
 namespace Breakout.LevelHandling;
@@ -69,6 +69,10 @@ public static class LevelFactory
         {
             throw new Exception("Level file invalid or corrupted.");
         }
+        catch
+        {
+            throw new Exception("Level sections are incorrectly ordered or corrupted.");
+        }
 
         string[] mapSection = new ArraySegment<string>(lines, mapStart, mapEnd).ToArray();
         string[] metaSection = new ArraySegment<string>(lines, metaStart, metaEnd).ToArray();
@@ -96,13 +100,12 @@ public static class LevelFactory
                         levelMeta.TimeLimit = Int32.Parse(itemPair[1]);
                         break;
                     case "PowerUp":
-                        levelMeta.PowerUpChar = char.Parse(itemPair[1]);
                         break;
                     case "Hardened":
-                        levelMeta.HardenedChar = char.Parse(itemPair[1]);
+                        levelMeta.CharDictionary.Add(char.Parse(itemPair[1]), BlockType.HardenedBlock);
                         break;
                     case "Unbreakable":
-                        levelMeta.UnbreakableChar = char.Parse(itemPair[1]);
+                        levelMeta.CharDictionary.Add(char.Parse(itemPair[1]), BlockType.UnbreakableBlock);
                         break;
                     default:
                         break;
@@ -197,20 +200,17 @@ public static class LevelFactory
                         normalImage = defaultNormalImage;
                         damagedImage = defaultDamagedImage;
                     }
-                    if (row[j] == levelMeta.HardenedChar)
-                    {
-                        blockType = BlockType.HardenedBlock;
-                    }
-                    else if (row[j] == levelMeta.UnbreakableChar)
-                    {
-                        blockType = BlockType.UnbreakableBlock;
-                    }
-                    else
-                    {
-                        blockType = BlockType.Block;
-                    }
 
-                    blocks.AddEntity(BlockFactory.CreateBlock(normalImage, damagedImage, blockType, i, j));
+                    blocks.AddEntity(new Block(
+                        normalImage,
+                        damagedImage,
+                        new StationaryShape(
+                            new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
+                            new Vec2F(xRatio, yRatio)
+                        ),
+                        row[j] == levelMeta.HardenedChar,
+                        row[j] == levelMeta.UnbreakableChar
+                    ));
                 }
             }
         }

@@ -1,7 +1,7 @@
 using DIKUArcade.Entities;
+using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using DIKUArcade.Events;
 
 namespace Breakout.Entities;
 public class Player : Entity, IGameEventProcessor {
@@ -29,15 +29,16 @@ public class Player : Entity, IGameEventProcessor {
     }
 
     public void Move() {
-        if (!(Shape.Position.X+moveLeft > 1.0f - Shape.Extent.X) && !(Shape.Position.X+moveRight < 0.0)) {
+        float leftSide = Shape.Position.X;
+        float rightSide = Shape.Position.X + Shape.Extent.X;
+
+        if (leftSide + moveLeft < 0.0f) {
+            Shape.Position.X = 0.0f;
+        } else if (rightSide + moveRight > 1.0f) {
+            Shape.Position.X = 1.0f - Shape.Extent.X;
+        } else {
             Shape.Move();
         }
-    }
-
-    public void Stop() {
-        SetMoveLeft(false);
-        SetMoveRight(false);
-        UpdateDirection();
     }
     
     public void Reset() {
@@ -45,7 +46,6 @@ public class Player : Entity, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.Message == "STOP") Stop();
         if (gameEvent.Message != "MOVE") return;
         
         switch (gameEvent.StringArg1) {

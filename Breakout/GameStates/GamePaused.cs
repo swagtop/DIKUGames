@@ -1,10 +1,10 @@
 using System;
 using System.IO;
-using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
-using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Input;
+using DIKUArcade.Math;
 using DIKUArcade.State;
 using Breakout.Menus;
 
@@ -47,19 +47,11 @@ public class GamePaused : IGameState
     {
     }
 
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key)
+    public void SelectMenuItem(string value)
     {
-        if (action != KeyboardAction.KeyPress) return;
-
-        switch ((key, menu.GetValue()))
+        switch (value)
         {
-            case (KeyboardKey.Up, _):
-                menu.GoUp();
-                break;
-            case (KeyboardKey.Down, _):
-                menu.GoDown();
-                break;
-            case (KeyboardKey.Escape, _):
+            case "RESUME_GAME":
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent
                 {
@@ -69,17 +61,7 @@ public class GamePaused : IGameState
                     StringArg1 = "GAME_RUNNING"
                 });
                 break;
-            case (KeyboardKey.Enter, "RESUME_GAME"):
-                ResetState();
-                eventBus.RegisterEvent(new GameEvent
-                {
-                    EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
-                    Message = "CHANGE_STATE",
-                    StringArg1 = "GAME_RUNNING"
-                });
-                break;
-            case (KeyboardKey.Enter, "MAIN_MENU"):
+            case "MAIN_MENU":
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent
                 {
@@ -89,9 +71,95 @@ public class GamePaused : IGameState
                     StringArg1 = "MAIN_MENU"
                 });
                 break;
-            case (KeyboardKey.Enter, _):
-                throw new ArgumentException($"Button number not implemented: {menu.GetText()}");
             default:
+                throw new ArgumentException($"Button number not implemented: {menu.GetText()}");
+        }
+    }
+
+    private void KeyPress(KeyboardKey key)
+    {
+        switch (key)
+        {
+            case (KeyboardKey.Up):
+                menu.GoUp();
+                break;
+            case (KeyboardKey.Down):
+                menu.GoDown();
+                break;
+            case (KeyboardKey.Enter):
+                SelectMenuItem(menu.GetValue());
+                break;
+            case (KeyboardKey.Escape):
+                ResetState();
+                eventBus.RegisterEvent(new GameEvent
+                {
+                    EventType = GameEventType.GameStateEvent,
+                    To = StateMachine.GetInstance(),
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "GAME_RUNNING"
+                });
+                break;
+            case KeyboardKey.Left:
+            case KeyboardKey.A:
+                eventBus.RegisterEvent(new GameEvent
+                {
+                    EventType = GameEventType.PlayerEvent,
+                    Message = "MOVE",
+                    StringArg1 = "LEFT",
+                    StringArg2 = "START"
+                });
+                break;
+            case KeyboardKey.Right:
+            case KeyboardKey.D:
+                eventBus.RegisterEvent(new GameEvent
+                {
+                    EventType = GameEventType.PlayerEvent,
+                    Message = "MOVE",
+                    StringArg1 = "RIGHT",
+                    StringArg2 = "START"
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void KeyRelease(KeyboardKey key)
+    {
+        switch (key)
+        {
+            case KeyboardKey.Left:
+            case KeyboardKey.A:
+                eventBus.RegisterEvent(new GameEvent
+                {
+                    EventType = GameEventType.PlayerEvent,
+                    Message = "MOVE",
+                    StringArg1 = "LEFT",
+                    StringArg2 = "STOP"
+                });
+                break;
+            case KeyboardKey.Right:
+            case KeyboardKey.D:
+                eventBus.RegisterEvent(new GameEvent
+                {
+                    EventType = GameEventType.PlayerEvent,
+                    Message = "MOVE",
+                    StringArg1 = "RIGHT",
+                    StringArg2 = "STOP"
+                });
+                break;
+        }
+    }
+
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key)
+    {
+        switch (action)
+        {
+            case KeyboardAction.KeyPress:
+                KeyPress(key);
+                break;
+            case KeyboardAction.KeyRelease:
+                KeyRelease(key);
                 break;
         }
     }

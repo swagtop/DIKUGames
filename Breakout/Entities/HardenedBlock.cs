@@ -8,6 +8,5 @@ public class HardenedBlock : Block
 {
     public HardenedBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape, 4)
     {
-
     }
 }

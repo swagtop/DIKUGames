@@ -32,7 +32,7 @@ public class StateMachine : IGameEventProcessor
 
     public static StateMachine GetInstance()
     {
-        return instance;
+        return StateMachine.instance;
     }
 
     public void SwitchState(GameStateType stateType)
@@ -46,6 +46,7 @@ public class StateMachine : IGameEventProcessor
                 ActiveState = GamePaused.GetInstance();
                 break;
             case GameStateType.MainMenu:
+                GameRunning.GetInstance().DumpQueue();
                 ActiveState = MainMenu.GetInstance();
                 break;
             case GameStateType.ChooseLevel:
