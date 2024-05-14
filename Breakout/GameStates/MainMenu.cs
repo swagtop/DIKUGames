@@ -10,7 +10,7 @@ using DIKUArcade.Math;
 using DIKUArcade.State;
 using DIKUArcade.Utilities;
 using Breakout.LevelHandling;
-using Breakout.Menus;
+using Breakout.GUI;
 
 public class MainMenu : IGameState {
     private static MainMenu instance = new MainMenu();

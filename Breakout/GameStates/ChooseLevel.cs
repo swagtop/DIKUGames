@@ -11,7 +11,7 @@ using DIKUArcade.State;
 using DIKUArcade.Utilities;
 using Breakout;
 using Breakout.LevelHandling;
-using Breakout.Menus;
+using Breakout.GUI;
 
 public class ChooseLevel : IGameState {
     private static ChooseLevel instance = new ChooseLevel();

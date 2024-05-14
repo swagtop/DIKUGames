@@ -8,7 +8,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Input;
 using DIKUArcade.Math;
 using DIKUArcade.State;
-using Breakout.Menus;
+using Breakout.GUI;
 
 public class GamePaused : IGameState {
     private static GamePaused instance = new GamePaused();
