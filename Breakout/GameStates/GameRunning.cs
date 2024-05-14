@@ -39,6 +39,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private GameRunning() {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         eventBus.Subscribe(GameEventType.StatusEvent, this);
+        eventBus.Subscribe(GameEventType.GameStateEvent, this);
     }
 
     public static GameRunning GetInstance() {
@@ -123,7 +124,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardKey.Escape:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "GAME_PAUSED"
                 });
@@ -132,7 +132,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    To = player,
                     Message = "MOVE",
                     StringArg1 = "LEFT",
                     StringArg2 = "START"
@@ -142,7 +141,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    To = player,
                     Message = "MOVE",
                     StringArg1 = "RIGHT",
                     StringArg2 = "START"
@@ -162,7 +160,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     ResetState();
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
                         Message = "CHANGE_STATE",
                         StringArg1 = "MAIN_MENU"
                     });
@@ -177,7 +174,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardKey.Left: case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    To = player,
                     Message = "MOVE",
                     StringArg1 = "LEFT",
                     StringArg2 = "STOP"
@@ -186,7 +182,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardKey.Right: case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    To = player,
                     Message = "MOVE",
                     StringArg1 = "RIGHT",
                     StringArg2 = "STOP"
@@ -208,7 +203,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void ProcessEvent(GameEvent gameEvent) {
         if (gameEvent.EventType != GameEventType.StatusEvent) return;
-        Console.WriteLine("GOT IT!!");
+        
         switch (gameEvent.Message) {
             case "LOAD_LEVEL":
                 ResetState();

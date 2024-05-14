@@ -83,7 +83,6 @@ public class MainMenu : IGameState {
             case "CHOOSE_LEVEL":
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "CHOOSE_LEVEL"
                 });

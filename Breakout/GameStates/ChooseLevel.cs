@@ -53,7 +53,6 @@ public class ChooseLevel : IGameState {
             case ("MAIN_MENU"):
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "MAIN_MENU"
                 });
@@ -97,7 +96,6 @@ public class ChooseLevel : IGameState {
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "MAIN_MENU"
                 });
