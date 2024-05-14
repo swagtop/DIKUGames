@@ -37,7 +37,7 @@ public class GameRunning : IGameState, IGameEventProcessor
     private IMovementStrategy movementStrategy = new StandardMove();
     private Points points = new Points();
     private BallLauncher ballLauncher;
-    // private EntityContainer<Life> lives = new EntityContainer<Life>();
+    private EntityContainer<Life> lives;
 
     public static GameRunning GetInstance()
     {
@@ -74,6 +74,12 @@ public class GameRunning : IGameState, IGameEventProcessor
             new DynamicShape(ballPosition, ballExtent, ballDirection)
         ));
         ballLauncher = new BallLauncher(balls, player);
+        lives = new EntityContainer<Life>(3);
+        for (int i = 0; i < 3; i++)
+        {
+            lives.AddEntity(new Life(new StationaryShape(new Vec2F(0.777f + (float)i * 0.05f, 0.3f), new Vec2F(0.05f, 0.05f)), new Image(Path.Combine("Assets", "Images", "heart_filled.png")), new Image(Path.Combine("Assets", "Images", "heart_empty.png"))));
+        }
+
     }
 
     public void RenderState()
@@ -83,6 +89,7 @@ public class GameRunning : IGameState, IGameEventProcessor
         player.RenderEntity();
         balls.RenderEntities();
         points.Render();
+        lives.RenderEntities();
     }
 
 
@@ -95,9 +102,33 @@ public class GameRunning : IGameState, IGameEventProcessor
 
     public void IterateBalls()
     {
+        // bool shouldBreak = false;
         balls.Iterate(ball =>
         {
             movementStrategy.Move(ball);
+
+            if (ball.isLost())
+            {
+                foreach (Life life in lives)
+                {
+                    if (life.Value)
+                    {
+                        Console.WriteLine(life.Value);
+                        life.Value = false;
+                        Console.WriteLine(life.Value);
+                        // shouldBreak = true;
+
+                        if (balls.CountEntities() == 1)
+                        {
+                            Console.WriteLine(balls.CountEntities());
+                            ballLauncher.AddNewBall();
+                            Console.WriteLine(balls.CountEntities());
+                        }
+                        break;
+                    }
+
+                }
+            }
             CollisionData colCheck1 = CollisionDetection.Aabb(ball.Dynamic, player.Shape.AsDynamicShape());
 
             if (colCheck1.Collision)
@@ -128,27 +159,6 @@ public class GameRunning : IGameState, IGameEventProcessor
     {
         levelQueue.Clear();
     }
-    // public void LaunchBall()
-    // {
-    //     Vec2F launchVector = new Vec2F(0.0f, 0.0f);
-    //     balls.Iterate(ball =>
-    //     {
-    //         float directionX = (ball.Shape.Position.X) - (player.Shape.Position.X + player.Shape.Extent.X / 2);
-    //         float directionY = 1.0f;
-
-    //         // Normalize the vector
-    //         Vec2F normalizedDir = Vec2F.Normalize(new Vec2F(directionX * 10, directionY));
-
-    //         // Scale the vector to get the desired speed of the ball
-    //         float desiredLength = 0.015f;
-    //         normalizedDir *= desiredLength;
-
-    //         // Add the scaled direction to the launch vector
-    //         launchVector += normalizedDir;
-    //         ball.Shape.AsDynamicShape().ChangeDirection(launchVector);
-    //     });
-    // }
-
 
     private void KeyPress(KeyboardKey key)
     {

@@ -1,5 +1,6 @@
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
+using DIKUArcade.Graphics;
 using Breakout.Entities;
 
 
@@ -33,8 +34,27 @@ public class BallLauncher
 
             // Add the scaled direction to the launch vector
             launchVector += normalizedDir;
-            ball.Shape.AsDynamicShape().ChangeDirection(launchVector);
+            if (ball.Shape.Position.Y < 0.05f)
+            {
+                ball.Shape.AsDynamicShape().ChangeDirection(launchVector);
+            }
         });
+
+    }
+    public void AddNewBall()
+    {
+        Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
+        Vec2F ballPosition = new Vec2F(
+            player.Shape.Position.X + (player.Shape.Extent.X / 2) - ballExtent.X / 2,
+            player.Shape.Extent.Y
+        );
+        Vec2F ballDirection = new Vec2F(0.0f, 0.0f);
+
+        // Create a new ball with appropriate parameters
+        balls.AddEntity(new Ball(
+            new Image(Path.Combine("Assets", "Images", "ball.png")),
+            new DynamicShape(ballPosition, ballExtent, ballDirection)
+        ));
     }
 }
 
