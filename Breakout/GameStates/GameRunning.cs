@@ -70,7 +70,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
             new DynamicShape(ballPosition, ballExtent, ballDirection)
         ));
 
-        hearts.SetHearts(3);
+        hearts.Amount = 3;
     }
 
     public void RenderState() {
@@ -109,6 +109,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     ball.ChangeDirection(colCheck2.CollisionDir);
                 }
             });
+
+            if (ball.IsDeleted()) {
+                hearts.BreakHeart();
+            }
         });
     }
 
