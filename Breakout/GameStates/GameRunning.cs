@@ -24,10 +24,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     );
     private Level level = new Level();
     private Queue<Level> levelQueue = new Queue<Level>();
-    private Entity backGroundImage = new Entity(
-        new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
-        new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
-    );
+    private Background background = new Background(new Image(Path.Combine("Assets", "Images", "SpaceBackground.png")));
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private IMovementStrategy movementStrategy= new StandardMove();
     private Hearts hearts= new Hearts(
@@ -73,7 +70,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void RenderState() {
-        backGroundImage.RenderEntity();
+        background.RenderBackground();
         level.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();

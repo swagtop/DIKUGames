@@ -13,8 +13,7 @@ using Breakout.LevelHandling;
 public class MainMenu : IGameState {
     private static MainMenu instance = new MainMenu();
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    private Entity backGroundImage = new Entity(
-        new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
+    private Background background = new Background(
         new Image(Path.Combine("Assets", "Images", "BreakoutTitleScreen.png"))
     );
     private Menu menu = new Menu(
@@ -29,7 +28,7 @@ public class MainMenu : IGameState {
     }
     
     public void RenderState() {
-        backGroundImage.RenderEntity();
+        background.RenderBackground();
         menu.RenderButtons();
     }
 
