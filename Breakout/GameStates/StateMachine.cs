@@ -9,9 +9,6 @@ public class StateMachine : IGameEventProcessor {
     private Dictionary<GameStateType, IGameState> gameStateDictionary = new Dictionary<GameStateType, IGameState>();
     public IGameState ActiveState { get; private set; } = EmptyState.GetInstance();
 
-    public StateMachine() { 
-    }
-
     public static StateMachine GetInstance() {
         return StateMachine.instance;
     }

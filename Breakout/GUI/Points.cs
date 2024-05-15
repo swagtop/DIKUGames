@@ -12,12 +12,10 @@ public class Points : Text {
     }
 
     public void AwardPoints(Block block) {
-        if (block.IsDeleted()) {
-            if (block is HardenedBlock) {
-                currentPoints += 2;
-            } else {
-                currentPoints += 1;
-            }
+        if (block is HardenedBlock) {
+            currentPoints += 2;
+        } else {
+            currentPoints += 1;
         }
     }
 
