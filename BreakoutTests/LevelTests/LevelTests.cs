@@ -23,6 +23,7 @@ public class LevelTests {
         Assert.AreEqual(level.Blocks.CountEntities(), 0);
         Assert.AreEqual(level.Meta.LevelName, emptyMeta.LevelName);
         Assert.AreEqual(level.Meta.TimeLimit, emptyMeta.TimeLimit);
+        Assert.That(level.Meta.CharDictionary is Dictionary<char, BlockType>);
         Assert.AreEqual(level.Meta.CharDictionary.Count, emptyMeta.CharDictionary.Count);
     }
 
@@ -35,6 +36,7 @@ public class LevelTests {
         Assert.AreEqual(level.Blocks.CountEntities(), 0);
         Assert.AreEqual(level.Meta.LevelName, "Level name");
         Assert.AreEqual(level.Meta.TimeLimit, 100);
+        Assert.That(level.Meta.CharDictionary is Dictionary<char, BlockType>);
         Assert.AreEqual(level.Meta.CharDictionary.Count, 0);
     }
 }
