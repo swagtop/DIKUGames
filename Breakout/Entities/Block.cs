@@ -10,8 +10,8 @@ public class Block : Entity {
     public int Health {
         get => health;
         set {
-            if (value <= maxHealth / 2 && health > maxHealth / 2) Image = damagedImage;
-            if (value > 0) health = value;
+            if (value <= maxHealth / 2 && health > maxHealth / 2) { Image = damagedImage; }
+            if (value > 0) { health = value; }
             else this.DeleteEntity();
         }
     }
