@@ -16,7 +16,6 @@ public static class BlockTypeTransformer {
             case "HARDENED":
                 return BlockType.HardenedBlock;
             default:
-                Console.WriteLine("JEP");
                 throw new ArgumentException($"Unrecognized BlockType: {type}");
         }
     }
