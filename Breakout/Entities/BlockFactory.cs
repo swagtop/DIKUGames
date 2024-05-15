@@ -9,32 +9,30 @@ public static class BlockFactory {
         int maxNumberOfBlocksInRow = 12;
         float xRatio = 1.0f / maxNumberOfBlocksInRow;
         float yRatio = xRatio / 3.0f;
+        Shape shape = new StationaryShape(
+            new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
+            new Vec2F(xRatio, yRatio)
+        );
 
         switch (blockType) {
             case BlockType.Block:
                 return new Block(
                     normalImage,
                     damagedImage,
-                    new StationaryShape(
-                        new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
-                        new Vec2F(xRatio, yRatio)
-                ));
+                    shape
+                );
             case BlockType.HardenedBlock:
                 return new HardenedBlock(
                     normalImage,
                     damagedImage,
-                    new StationaryShape(
-                        new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
-                        new Vec2F(xRatio, yRatio)
-                ));
+                    shape
+                );
             case BlockType.UnbreakableBlock:
                 return new UnbreakableBlock(
                     normalImage,
                     damagedImage,
-                    new StationaryShape(
-                        new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
-                        new Vec2F(xRatio, yRatio)
-                ));
+                    shape
+                );
             default:
                 throw new Exception("Block type not implementet");
         }
