@@ -25,7 +25,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
         new Image(Path.Combine("Assets", "Images", "player.png"))
     );
-    private Level level = new Level();
+    private Level currentLevel = new Level();
     private Queue<Level> levelQueue = new Queue<Level>();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private IMovementStrategy movementStrategy= new StandardMove();
@@ -78,7 +78,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void RenderState() {
         background.RenderBackground();
-        level.Blocks.RenderEntities();
+        currentLevel.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();
         hearts.RenderHearts();
@@ -99,7 +99,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 );
             }
 
-            level.Blocks.Iterate(block => {
+            currentLevel.Blocks.Iterate(block => {
                 CollisionData colCheck2 = CollisionDetection.Aabb(ball.Dynamic, block.Shape);
                 if (colCheck2.Collision) {
                     block.Hit();
@@ -146,13 +146,13 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 break;
             case KeyboardKey.Space:
                 Console.WriteLine("DEBUG: All blocks take one hit.");
-                level.Blocks.Iterate(block => block.Hit());
+                currentLevel.Blocks.Iterate(block => block.Hit());
                 break;
             case KeyboardKey.Tab:
                 if (levelQueue.Any()) {
                     Console.WriteLine("DEBUG: Skipping to next level in queue.");
                     ResetState();
-                    level = levelQueue.Dequeue();
+                    currentLevel = levelQueue.Dequeue();
                 } else {
                     Console.WriteLine("DEBUG: No more levels in queue, returning to main menu.");
                     ResetState();
@@ -205,12 +205,12 @@ public class GameRunning : IGameState, IGameEventProcessor {
         switch (gameEvent.Message) {
             case "LOAD_LEVEL":
                 ResetState();
-                level = (Level)gameEvent.ObjectArg1;
+                currentLevel = (Level)gameEvent.ObjectArg1;
                 break;
             case "QUEUE_LEVELS":
                 ResetState();
                 levelQueue = (Queue<Level>)gameEvent.ObjectArg1;
-                level = levelQueue.Dequeue();
+                currentLevel = levelQueue.Dequeue();
                 break;
             case "DUMP_QUEUE":
                 DumpQueue();
