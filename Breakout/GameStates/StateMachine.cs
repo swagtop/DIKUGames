@@ -24,6 +24,7 @@ public class StateMachine : IGameEventProcessor {
     
     public void InitializeStateMachine(params (GameStateType gameStateType, IGameState instance)[] states) {
         if (initialized) throw new InvalidOperationException("StateMachine is already initialized!");
+        if (states.Length == 0) throw new ArgumentException("StateMachine must initialize with at least one GameStateType and GameState pair!");
 
         ActiveState = states[0].Item2; // ActiveState initializes with first state in params.
 
