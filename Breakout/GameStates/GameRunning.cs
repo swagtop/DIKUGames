@@ -71,17 +71,17 @@ public class GameRunning : IGameState, IGameEventProcessor {
         hearts.Amount = 3;
     }
 
+    public void UpdateState() {
+        player.Move();
+        IterateBalls();
+    }
+
     public void RenderState() {
         background.RenderBackground();
         level.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();
         hearts.RenderHearts();
-    }
-
-    public void UpdateState() {
-        player.Move();
-        IterateBalls();
     }
 
     public void IterateBalls() {

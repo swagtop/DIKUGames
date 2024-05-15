@@ -26,17 +26,16 @@ public class GamePaused : IGameState {
         return GamePaused.instance;
     }
     
-    public void RenderState() {
-        GameRunning.GetInstance().RenderState();
-        gamePausedText.RenderText();
-        menu.RenderButtons();
-    }
-
     public void ResetState() {
         menu.Reset();
     }
 
-    public void UpdateState() {
+    public void UpdateState() {}
+
+    public void RenderState() {
+        GameRunning.GetInstance().RenderState();
+        gamePausedText.RenderText();
+        menu.RenderButtons();
     }
 
     public void SelectMenuItem(string value) {

@@ -39,12 +39,11 @@ public class ChooseLevel : IGameState {
         menu.Reset();
     }
     
+    public void UpdateState() {}
+
     public void RenderState() {
         background.RenderBackground();
         menu.RenderButtons();
-    }
-
-    public void UpdateState() {
     }
     
     public void SelectMenuItem(string value) {
