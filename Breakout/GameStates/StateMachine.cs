@@ -5,27 +5,33 @@ using DIKUArcade.Input;
 using DIKUArcade.State;
 
 public class StateMachine : IGameEventProcessor {
-    private class EmptyState : IGameState {
-        public void ResetState() {}
-        public void UpdateState() {}
-        public void RenderState() {}
-        public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {}
-    }
-
     private static StateMachine instance = new StateMachine();
     private Dictionary<GameStateType, IGameState> gameStateDictionary = new Dictionary<GameStateType, IGameState>();
-    public IGameState ActiveState { get; private set; } = new EmptyState();
+    private bool initialized = false;
+    private IGameState? activeState = null;
+
+    public IGameState ActiveState { 
+        get {
+            if (activeState != null) return activeState;
+            else throw new Exception("StateMachine has not been initialized.");
+        }
+        private set { activeState = value; }
+    }
 
     public static StateMachine GetInstance() {
         return StateMachine.instance;
     }
     
     public void InitializeStateMachine(params (GameStateType gameStateType, IGameState instance)[] states) {
+        if (initialized) throw new InvalidOperationException("StateMachine is already initialized!");
+
         ActiveState = states[0].Item2; // ActiveState initializes with first state in params.
 
         foreach ((GameStateType gameStateType, IGameState instance) in states) {
             gameStateDictionary.Add(gameStateType, instance);
         }
+
+        initialized = true;
     }
 
     public void SwitchState(GameStateType gameStateType) {
@@ -33,7 +39,7 @@ public class StateMachine : IGameEventProcessor {
             ActiveState = gameStateDictionary[gameStateType];
             ActiveState.ResetState();
         } else {
-            throw new ArgumentException($"Unrecognized GameStateType: {gameStateType}");
+            throw new ArgumentException($"Could not switch to state. Did you initialize the StateMachine with {gameStateType}?");
         }
     }
 
