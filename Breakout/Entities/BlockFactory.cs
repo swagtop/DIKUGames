@@ -34,7 +34,7 @@ public static class BlockFactory {
                     shape
                 );
             default:
-                throw new Exception("Block type not implementet");
+                throw new Exception("Block type not implemented");
         }
     }
 }
