@@ -1,12 +1,13 @@
 namespace Breakout.GameStates;
 
 using DIKUArcade.Events;
+using DIKUArcade.Input;
 using DIKUArcade.State;
 
 public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = new StateMachine();
     private Dictionary<GameStateType, IGameState> gameStateDictionary = new Dictionary<GameStateType, IGameState>();
-    public IGameState ActiveState { get; private set; }
+    public IGameState ActiveState { get; private set; } = EmptyState.GetInstance();
 
     public StateMachine() { 
     }
@@ -39,4 +40,17 @@ public class StateMachine : IGameEventProcessor {
             SwitchState(GameStateTransformer.TransformStringToState(gameEvent.StringArg1));
         }
     }
+}
+
+public class EmptyState : IGameState {
+    private static EmptyState instance = new EmptyState();
+
+    public static EmptyState GetInstance() {
+        return EmptyState.instance;
+    }
+
+    public void ResetState() {}
+    public void RenderState() {}
+    public void UpdateState() {}
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {}
 }
