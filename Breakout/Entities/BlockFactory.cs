@@ -16,23 +16,11 @@ public static class BlockFactory {
 
         switch (blockType) {
             case BlockType.Block:
-                return new Block(
-                    normalImage,
-                    damagedImage,
-                    shape
-                );
+                return new Block(normalImage, damagedImage, shape);
             case BlockType.HardenedBlock:
-                return new HardenedBlock(
-                    normalImage,
-                    damagedImage,
-                    shape
-                );
+                return new HardenedBlock(normalImage, damagedImage, shape);
             case BlockType.UnbreakableBlock:
-                return new UnbreakableBlock(
-                    normalImage,
-                    damagedImage,
-                    shape
-                );
+                return new UnbreakableBlock(normalImage, damagedImage, shape);
             default:
                 throw new Exception("Block type not implemented");
         }
