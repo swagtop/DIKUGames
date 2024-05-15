@@ -35,7 +35,7 @@ public class GamePaused : IGameState {
     public void RenderState() {
         GameRunning.GetInstance().RenderState();
         gamePausedText.RenderText();
-        menu.RenderButtons();
+        menu.RenderMenu();
     }
 
     public void SelectMenuItem(string value) {

@@ -39,7 +39,7 @@ public class MainMenu : IGameState {
 
     public void RenderState() {
         background.RenderBackground();
-        menu.RenderButtons();
+        menu.RenderMenu();
     }
 
     public void SelectMenuItem(string value) {

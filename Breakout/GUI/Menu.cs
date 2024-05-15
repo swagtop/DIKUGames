@@ -67,7 +67,7 @@ public class Menu {
         activeButton = 0;
     }
 
-    public void RenderButtons() {
+    public void RenderMenu() {
         foreach (MenuButton button in Buttons) {
             button.RenderText();
         }
