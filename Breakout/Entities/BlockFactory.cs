@@ -34,6 +34,14 @@ public static class BlockFactory {
                         new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
                         new Vec2F(xRatio, yRatio)
                 ));
+            case BlockType.PowerupBlock:
+                return new PowerupBlock(
+                    normalImage,
+                    damagedImage,
+                    new StationaryShape(
+                        new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
+                        new Vec2F(xRatio, yRatio)
+                ));
             default:
                 throw new Exception("Block type not implementet");
         }

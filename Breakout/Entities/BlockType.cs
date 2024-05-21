@@ -3,4 +3,5 @@ public enum BlockType {
     Block,
     HardenedBlock,
     UnbreakableBlock
+    PowerupBlock 
 }
