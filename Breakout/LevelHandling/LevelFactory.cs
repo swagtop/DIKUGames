@@ -22,7 +22,7 @@ public static class LevelFactory
             fileLines = File.ReadAllText(filepath).Split('\n');
             for (int i = 0; i < fileLines.Length; i++)
             {
-                fileLines[i] = fileLines[i].Trim();
+                fileLines[i] = fileLines[i].Trim(); //Trim() deletes all leading and trailing whitespaces
             }
         }
         catch
@@ -87,7 +87,7 @@ public static class LevelFactory
         {
             for (int i = 0; i < lines.Length; i++)
             {
-                itemPair = lines[i].Split(": ");
+                itemPair = lines[i].Split(": "); // Split each line to make a pair
                 switch (itemPair[0])
                 {
                     case "Name":
