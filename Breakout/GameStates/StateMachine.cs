@@ -11,19 +11,12 @@ public class StateMachine : IGameEventProcessor
     public IGameState ActiveState { get; private set; }
     public StateMachine()
     {
-        foreach (GameStateType stateType in Enum.GetValues(typeof(GameStateType)))
-        {
-            // Get the class type corresponding to the enum value
-            Type stateClass = Type.GetType(stateType.ToString());
-            // Ensure the class exists and has a GetInstance method
-            if (stateClass != null)
-            {
-                // Dynamically create an instance of the state class
-                IGameState stateInstance = Activator.CreateInstance(stateClass) as IGameState;
-                // Reset the state
-                stateInstance.ResetState();
-            }
-        }
+        MainMenu.GetInstance().ResetState();
+        ChooseLevel.GetInstance().ResetState();
+        GameRunning.GetInstance().ResetState();
+        GamePaused.GetInstance().ResetState();
+        GameOver.GetInstance().ResetState();
+        GameWon.GetInstance().ResetState();
 
         ActiveState = MainMenu.GetInstance();
 
@@ -52,6 +45,12 @@ public class StateMachine : IGameEventProcessor
             case GameStateType.ChooseLevel:
                 ChooseLevel.GetInstance().ResetState();
                 ActiveState = ChooseLevel.GetInstance();
+                break;
+            case GameStateType.GameOver:
+                ActiveState = GameOver.GetInstance();
+                break;
+            case GameStateType.GameWon:
+                ActiveState = GameWon.GetInstance();
                 break;
             default:
                 throw new ArgumentException($"Unrecognized GameStateType: {stateType}");

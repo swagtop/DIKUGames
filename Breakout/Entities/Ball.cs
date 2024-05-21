@@ -50,4 +50,8 @@ public class Ball : Entity
                 break;
         }
     }
+    public bool isLost()
+    {
+        return this.IsDeleted();
+    }
 }

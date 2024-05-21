@@ -69,10 +69,7 @@ public static class LevelFactory
         {
             throw new Exception("Level file invalid or corrupted.");
         }
-        catch
-        {
-            throw new Exception("Level sections are incorrectly ordered or corrupted.");
-        }
+
 
         string[] mapSection = new ArraySegment<string>(lines, mapStart, mapEnd).ToArray();
         string[] metaSection = new ArraySegment<string>(lines, metaStart, metaEnd).ToArray();
@@ -151,8 +148,6 @@ public static class LevelFactory
     {
         int maxBlockRows = 30;
         int maxNumberOfBlocksInRow = 12;
-        float xRatio = 1.0f / maxNumberOfBlocksInRow;
-        float yRatio = xRatio / 3.0f;
         int rowsInQueue;
         EntityContainer<Block> blocks = new EntityContainer<Block>();
         Queue<string> rowQueue = new Queue<string>();
@@ -201,16 +196,16 @@ public static class LevelFactory
                         damagedImage = defaultDamagedImage;
                     }
 
-                    blocks.AddEntity(new Block(
-                        normalImage,
-                        damagedImage,
-                        new StationaryShape(
-                            new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
-                            new Vec2F(xRatio, yRatio)
-                        ),
-                        row[j] == levelMeta.HardenedChar,
-                        row[j] == levelMeta.UnbreakableChar
-                    ));
+                    if (levelMeta.CharDictionary.ContainsKey(row[j]))
+                    {
+                        blockType = levelMeta.CharDictionary[row[j]];
+                    }
+                    else
+                    {
+                        blockType = BlockType.Block;
+                    }
+
+                    blocks.AddEntity(BlockFactory.CreateBlock(normalImage, damagedImage, blockType, i, j));
                 }
             }
         }

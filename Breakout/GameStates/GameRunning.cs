@@ -10,6 +10,7 @@ using DIKUArcade.Input;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
+using DIKUArcade.Timers;
 using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
@@ -38,6 +39,7 @@ public class GameRunning : IGameState, IGameEventProcessor
     private Points points = new Points();
     private BallLauncher ballLauncher;
     private EntityContainer<Life> lives;
+    private Timer timer = new Timer();
 
     public static GameRunning GetInstance()
     {
@@ -47,6 +49,8 @@ public class GameRunning : IGameState, IGameEventProcessor
     public void ResetState()
     {
         player.Reset();
+        balls.ClearContainer();
+        points.Reset();
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         eventBus.Subscribe(GameEventType.GameStateEvent, this);
 
@@ -58,7 +62,7 @@ public class GameRunning : IGameState, IGameEventProcessor
             player.Shape.Extent.Y
         );
         Vec2F ballDirection = new Vec2F(0.0f, 0.0f);
-        // Vec2F ballDirection = ball.BallLaunch(player);
+
         ballDirection.X = ballDirection.X * (float)Math.Cos(rotation) - ballDirection.Y * (float)Math.Sin(rotation);
         ballDirection.Y = ballDirection.X * (float)Math.Sin(rotation) + ballDirection.Y * (float)Math.Cos(rotation);
         if (ballDirection.Y < 0)
@@ -76,6 +80,8 @@ public class GameRunning : IGameState, IGameEventProcessor
         {
             lives.AddEntity(new Life(new StationaryShape(new Vec2F(0.777f + (float)i * 0.05f, 0.3f), new Vec2F(0.05f, 0.05f)), new Image(Path.Combine("Assets", "Images", "heart_filled.png")), new Image(Path.Combine("Assets", "Images", "heart_empty.png"))));
         }
+        StaticTimer.RestartTimer();
+        timer.Reset();
 
     }
 
@@ -87,11 +93,78 @@ public class GameRunning : IGameState, IGameEventProcessor
         balls.RenderEntities();
         points.Render();
         lives.RenderEntities();
+        timer.Render();
     }
 
     public void UpdateState()
     {
         player.Move();
+        points.HasWon();
+        IterateBalls();
+        points.UpdatePointsDisplay();
+        timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
+        timer.SetTimeLimit(level.Meta.TimeLimit);
+        if (balls.CountEntities() == 0)
+        {
+            eventBus.RegisterEvent(new GameEvent
+            {
+                EventType = GameEventType.GameStateEvent,
+                To = StateMachine.GetInstance(),
+                Message = "CHANGE_STATE",
+                StringArg1 = "GAME_OVER"
+            });
+        }
+        timer.TimeIsUp(StaticTimer.GetElapsedSeconds());
+
+    }
+
+    public void IterateBalls()
+    {
+        balls.Iterate(ball =>
+        {
+            movementStrategy.Move(ball);
+            if (ball.isLost())
+            {
+                foreach (Life life in lives)
+                {
+                    if (life.Value)
+                    {
+                        life.Value = false;
+                        if (balls.CountEntities() == 1)
+                        {
+                            ballLauncher.AddNewBall();
+                        }
+                        break;
+                    }
+                }
+            }
+            CollisionData colCheck1 = CollisionDetection.Aabb(ball.Dynamic, player.Shape.AsDynamicShape());
+            if (colCheck1.Collision)
+            {
+                float rotation = (ball.Shape.Position.X - (player.Shape.Position.X + (player.Shape.Extent.X / 2.0f) - ball.Shape.Extent.X / 2.0f));
+                rotation *= -12.0f;
+                ball.ChangeDirection(colCheck1.CollisionDir);
+                ball.Dynamic.ChangeDirection(new Vec2F(
+                    ball.Dynamic.Direction.X * (float)Math.Cos(rotation) - ball.Dynamic.Direction.Y * (float)Math.Sin(rotation),
+                    ball.Dynamic.Direction.X * (float)Math.Sin(rotation) + ball.Dynamic.Direction.Y * (float)Math.Cos(rotation))
+                );
+            }
+            level.Blocks.Iterate(block =>
+            {
+                CollisionData colCheck2 = CollisionDetection.Aabb(ball.Dynamic, block.Shape);
+                if (colCheck2.Collision)
+                {
+                    block.Hit();
+                    points.AwardPoints(block);
+                    ball.ChangeDirection(colCheck2.CollisionDir);
+                }
+            });
+        });
+    }
+
+    public void DumpQueue()
+    {
+        levelQueue.Clear();
     }
 
     private void KeyPress(KeyboardKey key)
@@ -136,8 +209,8 @@ public class GameRunning : IGameState, IGameEventProcessor
                 });
                 break;
             case KeyboardKey.Space:
-                // Console.WriteLine("DEBUG: All blocks take one hit.");
-                // level.Blocks.Iterate(block => block.Hit());
+                Console.WriteLine("DEBUG: All blocks take one hit.");
+                level.Blocks.Iterate(block => block.Hit());
                 if (balls.CountEntities() == 1)
                 {
                     ballLauncher.LaunchBall();
@@ -214,10 +287,22 @@ public class GameRunning : IGameState, IGameEventProcessor
     {
         if (gameEvent.EventType != GameEventType.GameStateEvent) return;
 
-        if (gameEvent.Message == "LOAD_LEVEL")
+        switch (gameEvent.Message)
         {
-            this.ResetState();
-            level = (Level)gameEvent.ObjectArg1;
+            case "LOAD_LEVEL":
+                ResetState();
+                level = (Level)gameEvent.ObjectArg1;
+                break;
+            case "QUEUE_LEVELS":
+                ResetState();
+                levelQueue = (Queue<Level>)gameEvent.ObjectArg1;
+                level = levelQueue.Dequeue();
+                break;
+            case "DUMP_QUEUE":
+                DumpQueue();
+                break;
+            default:
+                break;
         }
     }
 }
