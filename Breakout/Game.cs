@@ -27,7 +27,9 @@ public class Game : DIKUGame, IGameEventProcessor {
             (GameStateType.MainMenu, MainMenu.GetInstance()),
             (GameStateType.ChooseLevel, ChooseLevel.GetInstance()),
             (GameStateType.GameRunning, GameRunning.GetInstance()),
-            (GameStateType.GamePaused, GamePaused.GetInstance())
+            (GameStateType.GamePaused, GamePaused.GetInstance()),
+            (GameStateType.GameOver, GameOver.GetInstance()),
+            (GameStateType.GameWon, GameWon.GetInstance())
         );
         eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
     }

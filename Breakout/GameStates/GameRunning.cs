@@ -9,6 +9,7 @@ using DIKUArcade.Input;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
+using DIKUArcade.Timers;
 using Breakout.Entities;
 using Breakout.GUI;
 using Breakout.LevelHandling;
@@ -34,6 +35,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
             new Image(Path.Combine("Assets", "Images", "heart_filled.png")),
             new Image(Path.Combine("Assets", "Images", "heart_empty.png"))
     );
+    private Timer timer = new Timer();
 
     private GameRunning() {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
@@ -69,11 +71,16 @@ public class GameRunning : IGameState, IGameEventProcessor {
         ));
 
         hearts.Amount = 3;
+
+        StaticTimer.RestartTimer();
+        timer.Reset();
     }
 
     public void UpdateState() {
+        timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
         player.Move();
         IterateBalls();
+        timer.TimeIsUp(StaticTimer.GetElapsedSeconds());
     }
 
     public void RenderState() {
@@ -82,6 +89,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.RenderEntity();
         balls.RenderEntities();
         hearts.RenderHearts();
+        timer.Render();
     }
 
     public void IterateBalls() {
@@ -206,11 +214,13 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case "LOAD_LEVEL":
                 ResetState();
                 currentLevel = (Level)gameEvent.ObjectArg1;
+                timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
                 break;
             case "QUEUE_LEVELS":
                 ResetState();
                 levelQueue = (Queue<Level>)gameEvent.ObjectArg1;
                 currentLevel = levelQueue.Dequeue();
+                timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
                 break;
             case "DUMP_QUEUE":
                 DumpQueue();
