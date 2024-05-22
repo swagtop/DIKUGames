@@ -46,13 +46,7 @@ public class Timer : Text {
         }
     }
 
-    public void TimeIsUp(double timePassed) {
-        if (timeLimit > 0 && timeLimit - timePassed < 0) {
-            eventBus.RegisterEvent(new GameEvent {
-                EventType = GameEventType.GameStateEvent,
-                Message = "CHANGE_STATE",
-                StringArg1 = "GAME_OVER"
-            });
-        }
+    public bool TimeIsUp(double timePassed) {
+        return (timeLimit > 0 && timeLimit - timePassed < 0);
     }
 }

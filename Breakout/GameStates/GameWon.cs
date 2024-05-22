@@ -62,7 +62,9 @@ public class GameWon : IGameState {
         }
     }
 
-    private void KeyPress(KeyboardKey key) {
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+        if (action != KeyboardAction.KeyPress) return;
+
         switch (key) {
             case (KeyboardKey.Up):
                 menu.GoUp();
@@ -73,59 +75,7 @@ public class GameWon : IGameState {
             case (KeyboardKey.Enter):
                 SelectMenuItem(menu.GetValue());
                 break;
-            case KeyboardKey.Left:
-            case KeyboardKey.A:
-                eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.PlayerEvent,
-                    Message = "MOVE",
-                    StringArg1 = "LEFT",
-                    StringArg2 = "START"
-                });
-                break;
-            case KeyboardKey.Right:
-            case KeyboardKey.D:
-                eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.PlayerEvent,
-                    Message = "MOVE",
-                    StringArg1 = "RIGHT",
-                    StringArg2 = "START"
-                });
-                break;
             default:
-                break;
-        }
-    }
-
-    private void KeyRelease(KeyboardKey key) {
-        switch (key) {
-            case KeyboardKey.Left:
-            case KeyboardKey.A:
-                eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.PlayerEvent,
-                    Message = "MOVE",
-                    StringArg1 = "LEFT",
-                    StringArg2 = "STOP"
-                });
-                break;
-            case KeyboardKey.Right:
-            case KeyboardKey.D:
-                eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.PlayerEvent,
-                    Message = "MOVE",
-                    StringArg1 = "RIGHT",
-                    StringArg2 = "STOP"
-                });
-                break;
-        }
-    }
-
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        switch (action) {
-            case KeyboardAction.KeyPress:
-                KeyPress(key);
-                break;
-            case KeyboardAction.KeyRelease:
-                KeyRelease(key);
                 break;
         }
     }

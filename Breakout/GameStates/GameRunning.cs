@@ -80,7 +80,16 @@ public class GameRunning : IGameState, IGameEventProcessor {
         timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
         player.Move();
         IterateBalls();
-        timer.TimeIsUp(StaticTimer.GetElapsedSeconds());
+        if (hearts.Amount < 0 || timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
+            ResetState();
+            DumpQueue();
+            eventBus.RegisterEvent(new GameEvent{
+                EventType = GameEventType.GameStateEvent,
+                To = StateMachine.GetInstance(),
+                Message = "CHANGE_STATE",
+                StringArg1 = "GAME_OVER"
+            });
+        }
     }
 
     public void RenderState() {
@@ -162,12 +171,12 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     ResetState();
                     currentLevel = levelQueue.Dequeue();
                 } else {
-                    Console.WriteLine("DEBUG: No more levels in queue, returning to main menu.");
+                    Console.WriteLine("DEBUG: No more levels in queue, game won!.");
                     ResetState();
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
                         Message = "CHANGE_STATE",
-                        StringArg1 = "MAIN_MENU"
+                        StringArg1 = "GAME_WON"
                     });
                 }
                 break;

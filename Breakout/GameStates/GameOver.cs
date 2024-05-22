@@ -65,8 +65,10 @@ public class GameOver : IGameState {
                 throw new ArgumentException($"Button number not implemented: {menu.GetText()}");
         }
     }
+    
+    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+        if (action != KeyboardAction.KeyPress) return;
 
-    private void KeyPress(KeyboardKey key) {
         switch (key) {
             case (KeyboardKey.Up):
                 menu.GoUp();
@@ -78,40 +80,6 @@ public class GameOver : IGameState {
                 SelectMenuItem(menu.GetValue());
                 break;
             default:
-                break;
-        }
-    }
-
-    private void KeyRelease(KeyboardKey key) {
-        switch (key) {
-            case KeyboardKey.Left:
-            case KeyboardKey.A:
-                eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.PlayerEvent,
-                    Message = "MOVE",
-                    StringArg1 = "LEFT",
-                    StringArg2 = "STOP"
-                });
-                break;
-            case KeyboardKey.Right:
-            case KeyboardKey.D:
-                eventBus.RegisterEvent(new GameEvent {
-                    EventType = GameEventType.PlayerEvent,
-                    Message = "MOVE",
-                    StringArg1 = "RIGHT",
-                    StringArg2 = "STOP"
-                });
-                break;
-        }
-    }
-
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        switch (action) {
-            case KeyboardAction.KeyPress:
-                KeyPress(key);
-                break;
-            case KeyboardAction.KeyRelease:
-                KeyRelease(key);
                 break;
         }
     }
