@@ -96,7 +96,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void IterateBalls() {
         balls.Iterate(ball => {
             movementStrategy.Move(ball);
-            CollisionData colCheckPlayer = CollisionDetection.Aabb(ball.Dynamic, player.Shape.AsDynamicShape());
+            CollisionData colCheckPlayer = CollisionDetection.Aabb(
+                ball.Dynamic, 
+                player.Shape.AsDynamicShape()
+            );
 
             if (colCheckPlayer.Collision) {
                 float ballMiddle = ball.Shape.Position.X - (ball.Shape.Extent.X / 2.0f);
@@ -115,7 +118,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
             }
 
             currentLevel.Blocks.Iterate(block => {
-                CollisionData colCheckBlock = CollisionDetection.Aabb(ball.Dynamic, block.Shape);
+                CollisionData colCheckBlock = CollisionDetection.Aabb(
+                    ball.Dynamic, 
+                    block.Shape
+                );
                 if (colCheckBlock.Collision) {
                     block.Hit();
                     ball.ChangeDirection(colCheckBlock.CollisionDir);
@@ -178,7 +184,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     });
                 }
                 break;
-
         }
     }
 
