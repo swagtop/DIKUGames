@@ -76,7 +76,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         IterateBalls();
         if (hearts.Amount < 0 || timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
             ResetState();
-            FlushQueue();
             eventBus.RegisterEvent(new GameEvent{
                 EventType = GameEventType.GameStateEvent,
                 Message = "CHANGE_STATE",
