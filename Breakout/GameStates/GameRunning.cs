@@ -32,6 +32,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private IMovementStrategy movementStrategy= new StandardMove();
     private Hearts hearts= new Hearts(3);
     private Timer timer = new Timer();
+    private Points points = new Points();
 
     private GameRunning() {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
@@ -87,6 +88,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         balls.RenderEntities();
         hearts.RenderHearts();
         timer.Render();
+        points.RenderPoints();
     }
 
     public void IterateBalls() {
@@ -121,6 +123,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 if (colCheckBlock.Collision) {
                     block.Hit();
                     ball.ChangeDirection(colCheckBlock.CollisionDir);
+                }
+                if (block.IsDeleted()) {
+                    points.AwardPointsFor(block);
                 }
             });
 
@@ -236,6 +241,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 if (gameEvent.StringArg1 == "GAME_RUNNING") return;
                 if (gameEvent.StringArg1 == "GAME_PAUSED") return;
                 if (levelQueue.Count > 0) { FlushQueue(); }
+                points.ResetPoints();
                 break;
             default:
                 break;
