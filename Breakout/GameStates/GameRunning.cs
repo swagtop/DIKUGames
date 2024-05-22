@@ -90,7 +90,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.RenderEntity();
         balls.RenderEntities();
         hearts.RenderHearts();
-        timer.RenderText();
+        timer.Render();
     }
 
     public void IterateBalls() {
@@ -174,8 +174,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     Console.WriteLine("DEBUG: Skipping to next level in queue.");
                     ResetState();
                     currentLevel = levelQueue.Dequeue();
+                    timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
                 } else {
-                    Console.WriteLine("DEBUG: No more levels in queue, switching to PostGame!.");
+                    Console.WriteLine("DEBUG: No more levels in queue, switching to PostGame!");
                     ResetState();
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
