@@ -18,6 +18,10 @@ public class ChooseLevel : IGameState {
     );
     private Menu menu = new Menu(0.6f);
 
+    private ChooseLevel() {
+        ResetState();
+    }
+
     public static ChooseLevel GetInstance() {
         return ChooseLevel.instance;
     }
@@ -49,6 +53,7 @@ public class ChooseLevel : IGameState {
     public void SelectMenuItem(string value) {
         switch (value) {
             case ("MAIN_MENU"):
+                ResetState();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     Message = "CHANGE_STATE",

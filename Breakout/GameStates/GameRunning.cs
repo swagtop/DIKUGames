@@ -59,12 +59,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
             player.Shape.Extent.Y
         );
         Vec2F ballDirection = new Vec2F(0.0f, 0.0150f);
-        ballDirection.X = ballDirection.X * (float)Math.Cos(rotation) - ballDirection.Y * (float)Math.Sin(rotation);
-        ballDirection.Y = ballDirection.X * (float)Math.Sin(rotation) + ballDirection.Y * (float)Math.Cos(rotation);
-        if (ballDirection.Y < 0) {
-            ballDirection.Y *= -1;
-        }
-
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),
             new DynamicShape(ballPosition, ballExtent, ballDirection)
@@ -176,7 +170,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     ResetState();
                     currentLevel = levelQueue.Dequeue();
                 } else {
-                    Console.WriteLine("DEBUG: No more levels in queue, game won!.");
+                    Console.WriteLine("DEBUG: No more levels in queue, switching to PostGame!.");
                     ResetState();
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
@@ -222,8 +216,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.EventType != GameEventType.StatusEvent) return;
-        
         switch (gameEvent.Message) {
             case "LOAD_LEVEL":
                 ResetState();
@@ -238,6 +230,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 break;
             case "FLUSH_QUEUE":
                 FlushQueue();
+                break;
+            case "CHANGE_STATE":
+                if (gameEvent.StringArg1 == "GAME_RUNNING") return;
+                if (gameEvent.StringArg1 == "GAME_PAUSED") return;
+                if (levelQueue.Count > 0) { FlushQueue(); }
                 break;
             default:
                 break;
