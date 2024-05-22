@@ -142,6 +142,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private void KeyPress(KeyboardKey key) {
         switch (key) {
             case KeyboardKey.Escape:
+                StaticTimer.PauseTimer();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     Message = "CHANGE_STATE",

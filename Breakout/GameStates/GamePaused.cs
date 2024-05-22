@@ -43,6 +43,7 @@ public class GamePaused : IGameState {
         switch (value) {
             case "RESUME_GAME":
                 ResetState();
+                StaticTimer.ResumeTimer();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     Message = "CHANGE_STATE",
@@ -51,6 +52,7 @@ public class GamePaused : IGameState {
                 break;
             case "MAIN_MENU":
                 ResetState();
+                StaticTimer.ResumeTimer();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     Message = "CHANGE_STATE",
@@ -75,6 +77,7 @@ public class GamePaused : IGameState {
                 break;
             case (KeyboardKey.Escape):
                 ResetState();
+                StaticTimer.ResumeTimer();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
                     Message = "CHANGE_STATE",
