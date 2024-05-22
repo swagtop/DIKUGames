@@ -30,11 +30,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Queue<Level> levelQueue = new Queue<Level>();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private IMovementStrategy movementStrategy= new StandardMove();
-    private Hearts hearts= new Hearts(
-            3,
-            new Image(Path.Combine("Assets", "Images", "heart_filled.png")),
-            new Image(Path.Combine("Assets", "Images", "heart_empty.png"))
-    );
+    private Hearts hearts= new Hearts(3);
     private Timer timer = new Timer();
 
     private GameRunning() {

@@ -14,11 +14,11 @@ public class Hearts {
     );
     public uint Amount;
 
-    public Hearts(uint startAmount, IBaseImage fullContainerImage, IBaseImage emptyContainerImage) {
+    public Hearts(uint startAmount) {
         this.startAmount = startAmount;
         this.Amount = this.startAmount;
-        this.fullContainerImage = fullContainerImage;
-        this.emptyContainerImage = emptyContainerImage;
+        this.fullContainerImage = new Image(Path.Combine("Assets", "Images", "heart_filled.png"));
+        this.emptyContainerImage = new Image(Path.Combine("Assets", "Images", "heart_empty.png"));
     }
 
     public bool BreakHeart() {
