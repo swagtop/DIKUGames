@@ -12,18 +12,18 @@ public class Ball : Entity {
     }
 
     public void Move(){
-        if (!(Shape.Position.X + Dynamic.Direction.X < 0.0f) && !(Shape.Position.X + Dynamic.Direction.X > 1.0f - Shape.Extent.X)) {
-            Shape.Position.X += Dynamic.Direction.X;
-        } else {
-            Dynamic.ChangeDirection(new Vec2F(-Dynamic.Direction.X, Dynamic.Direction.Y));
-        }
-        if (!(Shape.Position.Y + Dynamic.Direction.Y > 1.0f - Shape.Extent.Y)) {
-            Shape.Position.Y += Dynamic.Direction.Y;
-        }
-        else {
-            Dynamic.ChangeDirection(new Vec2F(Dynamic.Direction.X, -Dynamic.Direction.Y));
-        }
-        if (Shape.Position.Y + Dynamic.Direction.Y < 0.0f - Shape.Extent.Y) this.DeleteEntity();
+        bool withinLeftBound = !(Shape.Position.X + Dynamic.Direction.X < 0.0f);
+        bool withinRightBound = !(Shape.Position.X + Dynamic.Direction.X > 1.0f - Shape.Extent.X);
+        bool withinUpperBound = !(Shape.Position.Y + Dynamic.Direction.Y > 1.0f - Shape.Extent.Y);
+        bool belowLowerBound = Shape.Position.Y + Dynamic.Direction.Y < 0.0f - Shape.Extent.Y;
+
+        if (withinLeftBound && withinRightBound) { Shape.Position.X += Dynamic.Direction.X; } 
+        else { Dynamic.ChangeDirection(new Vec2F(-Dynamic.Direction.X, Dynamic.Direction.Y)); }
+
+        if (withinUpperBound) { Shape.Position.Y += Dynamic.Direction.Y; } 
+        else { Dynamic.ChangeDirection(new Vec2F(Dynamic.Direction.X, -Dynamic.Direction.Y)); }
+
+        if (belowLowerBound) { this.DeleteEntity(); }
     }
     public void ChangeDirection(CollisionDirection direction) {
         switch (direction) {
