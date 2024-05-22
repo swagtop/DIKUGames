@@ -6,6 +6,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Input;
 using DIKUArcade.Math;
 using DIKUArcade.State;
+using DIKUArcade.Timers;
 using Breakout.GUI;
 
 public class GamePaused : IGameState {

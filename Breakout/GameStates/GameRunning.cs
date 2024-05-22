@@ -82,10 +82,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
         IterateBalls();
         if (hearts.Amount < 0 || timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
             ResetState();
-            DumpQueue();
+            FlushQueue();
             eventBus.RegisterEvent(new GameEvent{
                 EventType = GameEventType.GameStateEvent,
-                To = StateMachine.GetInstance(),
                 Message = "CHANGE_STATE",
                 StringArg1 = "GAME_OVER"
             });
@@ -98,29 +97,35 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.RenderEntity();
         balls.RenderEntities();
         hearts.RenderHearts();
-        timer.Render();
+        timer.RenderText();
     }
 
     public void IterateBalls() {
         balls.Iterate(ball => {
             movementStrategy.Move(ball);
-            CollisionData colCheck1 = CollisionDetection.Aabb(ball.Dynamic, player.Shape.AsDynamicShape());
+            CollisionData colCheckPlayer = CollisionDetection.Aabb(ball.Dynamic, player.Shape.AsDynamicShape());
 
-            if (colCheck1.Collision) {
-                float rotation = (ball.Shape.Position.X - (player.Shape.Position.X + (player.Shape.Extent.X / 2.0f) - ball.Shape.Extent.X / 2.0f));
-                rotation *= -12.0f;
-                ball.ChangeDirection(colCheck1.CollisionDir);
+            if (colCheckPlayer.Collision) {
+                float ballMiddle = ball.Shape.Position.X - (ball.Shape.Extent.X / 2.0f);
+                float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2.0f);
+                float relativeRotation = (ballMiddle - playerMiddle) * -12.0f;
+
+                ball.ChangeDirection(colCheckPlayer.CollisionDir);
+
+                float ballDirX = ball.Dynamic.Direction.X;
+                float ballDirY = ball.Dynamic.Direction.Y;
+
                 ball.Dynamic.ChangeDirection(new Vec2F(
-                    ball.Dynamic.Direction.X * (float)Math.Cos(rotation) - ball.Dynamic.Direction.Y * (float)Math.Sin(rotation), 
-                    ball.Dynamic.Direction.X * (float)Math.Sin(rotation) + ball.Dynamic.Direction.Y * (float)Math.Cos(rotation))
-                );
+                    ballDirX * MathF.Cos(relativeRotation) - ballDirY * MathF.Sin(relativeRotation),
+                    ballDirX * MathF.Sin(relativeRotation) + ballDirY * MathF.Cos(relativeRotation)
+                ));
             }
 
             currentLevel.Blocks.Iterate(block => {
-                CollisionData colCheck2 = CollisionDetection.Aabb(ball.Dynamic, block.Shape);
-                if (colCheck2.Collision) {
+                CollisionData colCheckBlock = CollisionDetection.Aabb(ball.Dynamic, block.Shape);
+                if (colCheckBlock.Collision) {
                     block.Hit();
-                    ball.ChangeDirection(colCheck2.CollisionDir);
+                    ball.ChangeDirection(colCheckBlock.CollisionDir);
                 }
             });
 
@@ -130,7 +135,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         });
     }
 
-    public void DumpQueue() {
+    public void FlushQueue() {
         levelQueue.Clear();
     }
 
@@ -231,8 +236,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 currentLevel = levelQueue.Dequeue();
                 timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
                 break;
-            case "DUMP_QUEUE":
-                DumpQueue();
+            case "FLUSH_QUEUE":
+                FlushQueue();
                 break;
             default:
                 break;

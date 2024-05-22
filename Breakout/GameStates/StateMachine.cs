@@ -30,6 +30,7 @@ public class StateMachine : IGameEventProcessor {
 
         foreach ((GameStateType gameStateType, IGameState instance) in states) {
             gameStateDictionary.Add(gameStateType, instance);
+            // ActiveState.ResetState();
         }
 
         initialized = true;
@@ -38,7 +39,6 @@ public class StateMachine : IGameEventProcessor {
     public void SwitchState(GameStateType gameStateType) {
         if (gameStateDictionary.ContainsKey(gameStateType)) {
             ActiveState = gameStateDictionary[gameStateType];
-            ActiveState.ResetState();
         } else {
             throw new ArgumentException($"Could not switch to state. Did you initialize the StateMachine with {gameStateType}?");
         }

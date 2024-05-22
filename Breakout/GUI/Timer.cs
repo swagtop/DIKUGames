@@ -14,6 +14,7 @@ public class Timer : Text {
     private GameEventBus eventBus = BreakoutBus.GetBus();
     public Timer() : base("TimeLeft: -1", new Vec2F(0.77f, 0.01f), new Vec2F(0.2f, 0.2f)) {
         timeLeft = -1;
+        SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
     }
 
     public void SetTimeLimit(int timeLimit) {
@@ -29,7 +30,6 @@ public class Timer : Text {
     public void Reset() {
         timeLeft = -1;
         timeLimit = -1;
-        SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
     }
 
     public void UpdateTimer(double timePassed) {

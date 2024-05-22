@@ -31,7 +31,7 @@ public class MainMenu : IGameState {
         menu.Reset();
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.StatusEvent,
-            Message = "DUMP_QUEUE",
+            Message = "FLUSH_QUEUE",
         });
     }
     
