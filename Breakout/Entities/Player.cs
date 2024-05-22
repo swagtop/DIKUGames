@@ -17,7 +17,7 @@ public class Player : Entity, IGameEventProcessor {
     }
 
     private void SetMoveLeft(bool val) {
-        if (val) { moveLeft = - MOVEMENT_SPEED; } 
+        if (val) { moveLeft = -MOVEMENT_SPEED; } 
         else { moveLeft = 0f; }
         UpdateDirection();
     }
