@@ -1,5 +1,5 @@
-namespace Breakout.PowerupEffects;
+namespace Breakout.PowerUpEffects;
 
-public class DoubleSize : PowerupEffects {
+public class DoubleSize : PowerUpEffects {
 
 }

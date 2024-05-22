@@ -34,8 +34,8 @@ public static class BlockFactory {
                         new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
                         new Vec2F(xRatio, yRatio)
                 ));
-            case BlockType.PowerupBlock:
-                return new PowerupBlock(
+            case BlockType.PowerUpBlock:
+                return new PowerUpBlock(
                     normalImage,
                     damagedImage,
                     new StationaryShape(

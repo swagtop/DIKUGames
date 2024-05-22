@@ -4,7 +4,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 
 namespace Breakout.Entities;
-public class PowerupBlock : Block{
-    public PowerupBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape){
+public class PowerUpBlock : Block{
+    public PowerUpBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape){
     }
 }
