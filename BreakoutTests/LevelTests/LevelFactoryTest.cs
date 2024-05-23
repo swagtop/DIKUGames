@@ -217,7 +217,7 @@ public class LevelFactoryTest {
                 "------------",
                 "------------",
                 "------------",
-                "------------",
+                "----pppp----",
                 "------------",
                 "------------",
                 "------------",
@@ -231,7 +231,7 @@ public class LevelFactoryTest {
             meta,
             legend
         );
-        Assert.AreEqual(blocks.CountEntities(), 76);
+        Assert.AreEqual(blocks.CountEntities(), 80);
     }
 
     [Test]
