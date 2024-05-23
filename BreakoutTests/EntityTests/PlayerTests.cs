@@ -87,4 +87,9 @@ public class PlayerTests {
     public void InBottomHalfTest() {
         Assert.IsTrue(player.Shape.Position.Y < 0.5f);
     }
+
+    [Test]
+    public void ResetNoExceptionTest() {
+        player.Reset();
+    }
 }
