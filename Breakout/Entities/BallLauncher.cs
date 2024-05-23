@@ -9,7 +9,6 @@ public class BallLauncher {
     private readonly EntityContainer<Ball> balls;
     private readonly Player player;
 
-
     public BallLauncher(EntityContainer<Ball> balls, Player player) {
         this.balls = balls;
         this.player = player;
@@ -53,4 +52,3 @@ public class BallLauncher {
         ));
     }
 }
-
