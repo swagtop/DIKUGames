@@ -183,7 +183,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
                         Message = "CHANGE_STATE",
-                        StringArg1 = "GAME_WON"
+                        StringArg1 = "POST_GAME"
                     });
                 }
                 break;

@@ -5,8 +5,7 @@ public enum GameStateType {
     GamePaused,
     MainMenu,
     ChooseLevel,
-    GameOver,
-    GameWon
+    PostGame
 }
 
 public static class GameStateTransformer {
@@ -20,10 +19,8 @@ public static class GameStateTransformer {
                 return GameStateType.MainMenu;
             case "CHOOSE_LEVEL":
                 return GameStateType.ChooseLevel;
-            case "GAME_OVER":
-                return GameStateType.GameOver;
-            case "GAME_WON":
-                return GameStateType.GameWon;
+            case "POST_GAME":
+                return GameStateType.PostGame;
             default:
                 throw new ArgumentException($"Unrecognized GameStateType: {state}");
         }
@@ -39,10 +36,8 @@ public static class GameStateTransformer {
                 return "MAIN_MENU";
             case GameStateType.ChooseLevel:
                 return "CHOOSE_LEVEL";
-            case GameStateType.GameOver:
-                return "GAME_OVER";
-            case GameStateType.GameWon:
-                return "GAME_WON";
+            case GameStateType.PostGame:
+                return "POST_GAME";
             default:
                 throw new ArgumentException($"Unrecognized GameStateType: {state}");
         }

@@ -19,6 +19,7 @@ public class Game : DIKUGame, IGameEventProcessor {
             GameEventType.StatusEvent,
             GameEventType.GameStateEvent,
             GameEventType.PlayerEvent,
+            GameEventType.GraphicsEvent,
         });
         eventBus.Subscribe(GameEventType.WindowEvent, this);
 
@@ -28,8 +29,7 @@ public class Game : DIKUGame, IGameEventProcessor {
             (GameStateType.ChooseLevel, ChooseLevel.GetInstance()),
             (GameStateType.GameRunning, GameRunning.GetInstance()),
             (GameStateType.GamePaused, GamePaused.GetInstance()),
-            (GameStateType.GameOver, GameOver.GetInstance()),
-            (GameStateType.GameWon, GameWon.GetInstance())
+            (GameStateType.PostGame, PostGame.GetInstance())
         );
         eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
     }
