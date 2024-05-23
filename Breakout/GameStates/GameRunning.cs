@@ -222,7 +222,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     private void KeyRelease(KeyboardKey key) {
         switch (key) {
-            case KeyboardKey.Left: case KeyboardKey.A:
+            case KeyboardKey.Left:
+            case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     Message = "MOVE",
@@ -230,7 +231,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     StringArg2 = "STOP"
                 });
                 break;
-            case KeyboardKey.Right: case KeyboardKey.D:
+            case KeyboardKey.Right:
+            case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
                     Message = "MOVE",
