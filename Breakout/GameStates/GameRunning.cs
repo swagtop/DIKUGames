@@ -92,6 +92,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void IterateBalls() {
+        int ballCount = balls.CountEntities();
+
         balls.Iterate(ball => {
             movementStrategy.Move(ball);
             CollisionData colCheckPlayer = CollisionDetection.Aabb(
@@ -129,10 +131,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 }
             });
 
-            if (ball.IsDeleted()) {
-                hearts.BreakHeart();
-            }
         });
+
+        if (ballCount != 0 && balls.CountEntities() == 0) {
+            hearts.BreakHeart();
+        }
     }
 
     public void FlushQueue() {
