@@ -208,9 +208,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 });
                 break;
             case KeyboardKey.Space:
-                //Console.WriteLine("DEBUG: All blocks take one hit.");
-                //currentLevel.Blocks.Iterate(block => block.Hit());
                 ballLauncher.LaunchBall();
+                break;
+            case KeyboardKey.B:
+                Console.WriteLine("DEBUG: All blocks take one hit.");
+                currentLevel.Blocks.Iterate(block => block.Hit());
                 break;
             case KeyboardKey.Tab:
                 if (levelQueue.Any()) {

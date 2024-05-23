@@ -26,10 +26,20 @@ public class GameRunningTests {
         gameRunning.IterateBalls();
         gameRunning.FlushQueue();
         gameRunning.EndLevel();
-        gameRunning.EndGame();
+        gameRunning.EndGame(true);
+        gameRunning.EndGame(false);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Up);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Down);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Enter);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Space);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.P);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.R);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Up);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Down);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Enter);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Space);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.P);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.R);
         Assert.Pass();
     }
 
