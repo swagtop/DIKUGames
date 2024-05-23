@@ -10,6 +10,7 @@ using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
 using DIKUArcade.Timers;
+using DIKUArcade.Utilities;
 using Breakout.Entities;
 using Breakout.GUI;
 using Breakout.LevelHandling;
@@ -21,7 +22,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Background background = new Background(
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
-    private Random rnd = new Random();
     private Player player = new Player(
         new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
         new Image(Path.Combine("Assets", "Images", "player.png"))
@@ -49,6 +49,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.Reset();
         balls.ClearContainer();
         
+        Random rnd = RandomGenerator.Generator;
         float rotation = rnd.NextSingle() * 0.75f - rnd.NextSingle() * 0.75f;
         
         Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
