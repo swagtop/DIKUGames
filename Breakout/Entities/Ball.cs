@@ -7,6 +7,7 @@ using DIKUArcade.Physics;
 
 public class Ball : Entity {
     public DynamicShape Dynamic;
+
     public Ball(IBaseImage image, DynamicShape shape) : base(shape, image){
         Dynamic = shape.AsDynamicShape();
     }
