@@ -40,7 +40,7 @@ public class Timer : Text {
         }
     }
 
-    public void Render() {
+    public void RenderTimer() {
         if (timeLimit >= 0) {
             RenderText();
         }

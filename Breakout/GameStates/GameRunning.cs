@@ -29,6 +29,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Level currentLevel = new Level();
     private Queue<Level> levelQueue = new Queue<Level>();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
+    private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
     private IMovementStrategy movementStrategy= new StandardMove();
     private Hearts hearts= new Hearts(3);
     private Timer timer = new Timer();
@@ -55,7 +56,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
             player.Shape.Position.X + (player.Shape.Extent.X/2) - ballExtent.X /2, 
             player.Shape.Extent.Y
         );
-        Vec2F ballDirection = new Vec2F(0.0f, 0.0150f);
+        Vec2F ballDirection = defaultBallDirection.Copy();
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),
             new DynamicShape(ballPosition, ballExtent, ballDirection)
@@ -87,7 +88,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.RenderEntity();
         balls.RenderEntities();
         hearts.RenderHearts();
-        timer.Render();
+        timer.RenderTimer();
         points.RenderPoints();
     }
 
@@ -102,14 +103,14 @@ public class GameRunning : IGameState, IGameEventProcessor {
             );
 
             if (colCheckPlayer.Collision) {
-                float ballMiddle = ball.Shape.Position.X - (ball.Shape.Extent.X / 2.0f);
+                float ballMiddle = ball.Shape.Position.X + (ball.Shape.Extent.X / 2.0f);
                 float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2.0f);
-                float relativeRotation = (ballMiddle - playerMiddle) * -12.0f;
+                float relativeRotation = (playerMiddle - ballMiddle) * 8.0f;
 
                 ball.ChangeDirection(colCheckPlayer.CollisionDir);
 
-                float ballDirX = ball.Dynamic.Direction.X;
-                float ballDirY = ball.Dynamic.Direction.Y;
+                float ballDirX = defaultBallDirection.X;
+                float ballDirY = defaultBallDirection.Y;
 
                 ball.Dynamic.ChangeDirection(new Vec2F(
                     ballDirX * MathF.Cos(relativeRotation) - ballDirY * MathF.Sin(relativeRotation),
