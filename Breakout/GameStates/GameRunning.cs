@@ -111,12 +111,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
                 ball.ChangeDirection(colCheckPlayer.CollisionDir);
 
-                Vec2F currentDir = ball.Dynamic.Direction;
                 Vec2F newDir = defaultBallDirection.Copy();
-                
-                // Averaging default direction with current direction
-                //newDir.X = (newDir.X + currentDir.X)/2.0f;
-                //newDir.Y = (newDir.Y + currentDir.Y)/2.0f;
 
                 ball.Dynamic.ChangeDirection(new Vec2F(
                     newDir.X * MathF.Cos(relativeRotation) - newDir.Y * MathF.Sin(relativeRotation),
