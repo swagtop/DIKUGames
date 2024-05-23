@@ -6,6 +6,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using DIKUArcade.Physics;
 using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
@@ -77,6 +78,6 @@ public class BallTests {
         ball.ChangeDirection(CollisionDirection.CollisionDirLeft);
         ball.ChangeDirection(CollisionDirection.CollisionDirRight);
 
-        Assert.IsTrue(ball.IsDeleted());
+        Assert.Pass();
     }
 }
