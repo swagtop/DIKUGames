@@ -39,7 +39,7 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     public override void Update() {
-        eventBus.ProcessEventsSequentially();
+        eventBus.ProcessEvents();
         stateMachine.ActiveState.UpdateState();
     }
 

@@ -5,8 +5,10 @@ using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 
 public class BallLauncher {
+    private Ball loadedBall;
     private readonly EntityContainer<Ball> balls;
     private readonly Player player;
+
 
     public BallLauncher(EntityContainer<Ball> balls, Player player) {
         this.balls = balls;
@@ -16,7 +18,9 @@ public class BallLauncher {
     public void LaunchBall() {
         Vec2F launchVector = new Vec2F(0.0f, 0.0f);
         balls.Iterate(ball => {
-            float directionX = (ball.Shape.Position.X) - (player.Shape.Position.X + player.Shape.Extent.X / 2);
+            float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2);
+
+            float directionX = ball.Shape.Position.X - playerMiddle;
             float directionY = 1.0f;
 
             // Normalize the vector
@@ -32,8 +36,8 @@ public class BallLauncher {
                 ball.Shape.AsDynamicShape().ChangeDirection(launchVector);
             }
         });
-
     }
+
     public void AddNewBall() {
         Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
         Vec2F ballPosition = new Vec2F(

@@ -29,6 +29,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Level currentLevel = new Level();
     private Queue<Level> levelQueue = new Queue<Level>();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
+    private BallLauncher ballLauncher;
     private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
     private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
     private IMovementStrategy movementStrategy= new StandardMove();
@@ -40,6 +41,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         eventBus.Subscribe(GameEventType.StatusEvent, this);
         eventBus.Subscribe(GameEventType.GameStateEvent, this);
+
+        ballLauncher = new BallLauncher(balls, player);
     }
 
     public static GameRunning GetInstance() {
@@ -76,7 +79,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.Move();
         IterateBalls();
         if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
-            EndGame();
+            ResetState();
+            EndGame(false);
         }
     }
 
@@ -111,8 +115,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 Vec2F newDir = defaultBallDirection.Copy();
                 
                 // Averaging default direction with current direction
-                newDir.X = (newDir.X + currentDir.X)/2.0f;
-                newDir.Y = (newDir.Y + currentDir.Y)/2.0f;
+                //newDir.X = (newDir.X + currentDir.X)/2.0f;
+                //newDir.Y = (newDir.Y + currentDir.Y)/2.0f;
 
                 ball.Dynamic.ChangeDirection(new Vec2F(
                     newDir.X * MathF.Cos(relativeRotation) - newDir.Y * MathF.Sin(relativeRotation),
@@ -137,7 +141,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
         });
 
         if (ballCount != 0 && balls.CountEntities() == 0) {
-            hearts.BreakHeart();
+            bool playerLost = hearts.BreakHeart();
+            if (playerLost) { EndGame(false); }
+            else { ballLauncher.AddNewBall(); }
         }
     }
 
@@ -151,16 +157,19 @@ public class GameRunning : IGameState, IGameEventProcessor {
             currentLevel = levelQueue.Dequeue();
             timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
         } else {
-            EndGame();
+            EndGame(true);
         }
     }
 
-    public void EndGame() {
-        ResetState();
+    public void EndGame(bool gameWon) {
+        string result;
+        if (gameWon) { result = "WON"; }
+        else { result = "LOST"; }
+
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GraphicsEvent,
             Message = "DISPLAY_STATS",
-            StringArg1 = "WON",
+            StringArg1 = result,
             IntArg1 = (int)points.GetPoints()
         });
         eventBus.RegisterEvent(new GameEvent {
@@ -199,8 +208,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 });
                 break;
             case KeyboardKey.Space:
-                Console.WriteLine("DEBUG: All blocks take one hit.");
-                currentLevel.Blocks.Iterate(block => block.Hit());
+                //Console.WriteLine("DEBUG: All blocks take one hit.");
+                //currentLevel.Blocks.Iterate(block => block.Hit());
+                ballLauncher.LaunchBall();
                 break;
             case KeyboardKey.Tab:
                 if (levelQueue.Any()) {

@@ -8,7 +8,7 @@ using DIKUArcade.Math;
 public class Player : Entity, IGameEventProcessor {
     private float moveLeft = 0.0f;
     private float moveRight = 0.0f;
-    private const float MOVEMENT_SPEED = 0.15f;
+    private const float MOVEMENT_SPEED = 0.02f;
 
     public Player(DynamicShape shape, IBaseImage image) : base(shape, image) {}
 
