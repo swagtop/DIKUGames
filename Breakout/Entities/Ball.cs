@@ -11,19 +11,20 @@ public class Ball : Entity {
         Dynamic = shape.AsDynamicShape();
     }
 
-    public void Move(){
+    public void Move() {
+        bool belowLowerBound = Shape.Position.Y + Dynamic.Direction.Y < 0.0f - Shape.Extent.Y;
+        
+        if (belowLowerBound) { this.DeleteEntity(); return; } // Early return for optimization
+
         bool withinLeftBound = !(Shape.Position.X + Dynamic.Direction.X < 0.0f);
         bool withinRightBound = !(Shape.Position.X + Dynamic.Direction.X > 1.0f - Shape.Extent.X);
         bool withinUpperBound = !(Shape.Position.Y + Dynamic.Direction.Y > 1.0f - Shape.Extent.Y);
-        bool belowLowerBound = Shape.Position.Y + Dynamic.Direction.Y < 0.0f - Shape.Extent.Y;
 
         if (withinLeftBound && withinRightBound) { Shape.Position.X += Dynamic.Direction.X; } 
         else { Dynamic.ChangeDirection(new Vec2F(-Dynamic.Direction.X, Dynamic.Direction.Y)); }
 
         if (withinUpperBound) { Shape.Position.Y += Dynamic.Direction.Y; } 
         else { Dynamic.ChangeDirection(new Vec2F(Dynamic.Direction.X, -Dynamic.Direction.Y)); }
-
-        if (belowLowerBound) { this.DeleteEntity(); }
     }
     public void ChangeDirection(CollisionDirection direction) {
         switch (direction) {

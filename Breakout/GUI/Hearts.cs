@@ -25,8 +25,10 @@ public class Hearts {
     }
 
     public bool BreakHeart() {
+        if (Amount == 0) return true;
+
         Amount -= 1;
-        return (Amount > 0);
+        return false;
     }
 
     public void RenderHearts() {
