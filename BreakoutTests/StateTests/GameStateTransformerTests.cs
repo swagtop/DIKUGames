@@ -10,10 +10,12 @@ public class GameStateTransformerTests {
     GameStateType chooseLevel = GameStateType.ChooseLevel;
     GameStateType gameRunning = GameStateType.GameRunning;
     GameStateType gamePaused = GameStateType.GamePaused;
+    GameStateType postGame = GameStateType.PostGame;
     string stringMainMenu = "MAIN_MENU";
     string stringChooseLevel = "CHOOSE_LEVEL";
     string stringGameRunning = "GAME_RUNNING";
     string stringGamePaused = "GAME_PAUSED";
+    string stringPostGame = "POST_GAME";
 
     [SetUp]
     public void Setup() {
@@ -25,6 +27,7 @@ public class GameStateTransformerTests {
         Assert.AreEqual(chooseLevel, GameStateTransformer.TransformStringToState(stringChooseLevel));
         Assert.AreEqual(gameRunning, GameStateTransformer.TransformStringToState(stringGameRunning));
         Assert.AreEqual(gamePaused, GameStateTransformer.TransformStringToState(stringGamePaused));
+        Assert.AreEqual(postGame, GameStateTransformer.TransformStringToState(stringPostGame));
     }
 
     [Test]
@@ -33,5 +36,6 @@ public class GameStateTransformerTests {
         Assert.AreEqual(stringChooseLevel, GameStateTransformer.TransformStateToString(chooseLevel));
         Assert.AreEqual(stringGameRunning, GameStateTransformer.TransformStateToString(gameRunning));
         Assert.AreEqual(stringGamePaused, GameStateTransformer.TransformStateToString(gamePaused));
+        Assert.AreEqual(stringPostGame, GameStateTransformer.TransformStateToString(postGame));
     }
 }
