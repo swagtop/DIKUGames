@@ -58,4 +58,25 @@ public class BallTests {
 
         Assert.IsTrue(ball.IsDeleted());
     }
+
+    [Test]
+    public void ChangeDirectionsTest() {
+        Vec2F ballPosition = new Vec2F(0.5f, 0.0f);
+        Vec2F ballDirection = new Vec2F(0.0f, 0.1f);
+        ball = new Ball(
+            noImage,
+            new DynamicShape(
+                ballPosition,
+                ballExtent, 
+                ballDirection
+            )
+        );
+
+        ball.ChangeDirection(CollisionDirection.CollisionDirUp);
+        ball.ChangeDirection(CollisionDirection.CollisionDirDown);
+        ball.ChangeDirection(CollisionDirection.CollisionDirLeft);
+        ball.ChangeDirection(CollisionDirection.CollisionDirRight);
+
+        Assert.IsTrue(ball.IsDeleted());
+    }
 }

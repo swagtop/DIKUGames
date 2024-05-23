@@ -27,6 +27,7 @@ public class Ball : Entity {
         if (withinUpperBound) { Shape.Position.Y += Dynamic.Direction.Y; } 
         else { Dynamic.ChangeDirection(new Vec2F(Dynamic.Direction.X, -Dynamic.Direction.Y)); }
     }
+
     public void ChangeDirection(CollisionDirection direction) {
         switch (direction) {
             case CollisionDirection.CollisionDirUp:
