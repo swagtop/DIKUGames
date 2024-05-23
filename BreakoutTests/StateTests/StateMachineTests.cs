@@ -12,6 +12,7 @@ public class StateMachineTests {
     private ChooseLevel chooseLevel = ChooseLevel.GetInstance();
     private GameRunning gameRunning = GameRunning.GetInstance();
     private GamePaused gamePaused = GamePaused.GetInstance();
+    private PostGame postGame = PostGame.GetInstance();
 
     [OneTimeSetUp]
     public void Setup() {
@@ -28,6 +29,7 @@ public class StateMachineTests {
         Assert.AreNotEqual(stateMachine.ActiveState, chooseLevel);
         Assert.AreNotEqual(stateMachine.ActiveState, gameRunning);
         Assert.AreNotEqual(stateMachine.ActiveState, gamePaused);
+        Assert.AreNotEqual(stateMachine.ActiveState, postGame);
     }
 
     [Test]
@@ -36,5 +38,15 @@ public class StateMachineTests {
         Assert.That(chooseLevel, Is.InstanceOf<IGameState>());
         Assert.That(gameRunning, Is.InstanceOf<IGameState>());
         Assert.That(gamePaused, Is.InstanceOf<IGameState>());
+        Assert.That(postGame, Is.InstanceOf<IGameState>());
+    }
+
+    [Test]
+    public void SwitchingStatesNoExceptionsTest() {
+        stateMachine.SwitchState(GameStateType.MainMenu);
+        stateMachine.SwitchState(GameStateType.ChooseLevel);
+        stateMachine.SwitchState(GameStateType.GameRunning);
+        stateMachine.SwitchState(GameStateType.GamePaused);
+        stateMachine.SwitchState(GameStateType.PostGame);
     }
 }
