@@ -27,6 +27,10 @@ public class Points : Text {
         UpdatePointsDisplay();
     }
 
+    public uint GetPoints() {
+        return currentPoints;
+    }
+
     public void UpdatePointsDisplay() {
         SetText($"Points: {currentPoints}");
     }

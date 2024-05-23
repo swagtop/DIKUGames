@@ -139,6 +139,30 @@ public class GameRunning : IGameState, IGameEventProcessor {
         levelQueue.Clear();
     }
 
+    public void EndLevel() {
+        if (levelQueue.Any()) {
+            ResetState();
+            currentLevel = levelQueue.Dequeue();
+            timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
+        } else {
+            EndGame();
+        }
+    }
+
+    public void EndGame() {
+        ResetState();
+        eventBus.RegisterEvent(new GameEvent {
+            EventType = GameEventType.GraphicsEvent,
+            Message = "DISPLAY_STATS",
+            IntArg1 = (int)points.GetPoints()
+        });
+        eventBus.RegisterEvent(new GameEvent {
+            EventType = GameEventType.GameStateEvent,
+            Message = "CHANGE_STATE",
+            StringArg1 = "POST_GAME"
+        });
+    }
+
     private void KeyPress(KeyboardKey key) {
         switch (key) {
             case KeyboardKey.Escape:
@@ -174,18 +198,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardKey.Tab:
                 if (levelQueue.Any()) {
                     Console.WriteLine("DEBUG: Skipping to next level in queue.");
-                    ResetState();
-                    currentLevel = levelQueue.Dequeue();
-                    timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
                 } else {
                     Console.WriteLine("DEBUG: No more levels in queue, switching to PostGame!");
-                    ResetState();
-                    eventBus.RegisterEvent(new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        Message = "CHANGE_STATE",
-                        StringArg1 = "POST_GAME"
-                    });
                 }
+                EndLevel();
                 break;
         }
     }

@@ -18,6 +18,7 @@ public class PostGame : IGameState, IGameEventProcessor {
     );
     private Text gameLostText = new Text("YOU LOST!", new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f));
     private Text gameWonText = new Text("YOU WON!", new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f));
+    private Text points = new Text("Total Points: 0", new Vec2F(0.5f, 0.5f), new Vec2F(0.3f, 0.3f));
     private bool playerHasWon = false;
 
     private Menu menu = new Menu(
@@ -30,6 +31,7 @@ public class PostGame : IGameState, IGameEventProcessor {
         eventBus.Subscribe(GameEventType.GraphicsEvent, this);
         gameWonText.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));
         gameLostText.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));
+        points.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));
     }
     
     public static PostGame GetInstance() {
@@ -37,10 +39,7 @@ public class PostGame : IGameState, IGameEventProcessor {
     }
     public void ResetState() {
         menu.Reset();
-        eventBus.RegisterEvent(new GameEvent {
-            EventType = GameEventType.StatusEvent,
-            Message = "DUMP_QUEUE",
-        });
+        points.SetText("Total Points: 0");
     }
     
     public void UpdateState() {
@@ -53,6 +52,7 @@ public class PostGame : IGameState, IGameEventProcessor {
         } else {
             gameLostText.RenderText();
         }
+        points.RenderText();
         menu.RenderMenu();
     }
     public void SelectMenuItem(string value) {
@@ -97,6 +97,7 @@ public class PostGame : IGameState, IGameEventProcessor {
     public void ProcessEvent(GameEvent gameEvent) {
         switch (gameEvent.Message) {
             case "DISPLAY_STATS":
+                points.SetText($"Total Points: {gameEvent.IntArg1}");
                 break;
             default:
                 break;
