@@ -30,7 +30,6 @@ public class StateMachine : IGameEventProcessor {
 
         foreach ((GameStateType gameStateType, IGameState instance) in states) {
             gameStateDictionary.Add(gameStateType, instance);
-            // ActiveState.ResetState();
         }
 
         initialized = true;

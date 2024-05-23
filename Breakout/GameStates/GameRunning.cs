@@ -29,6 +29,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Level currentLevel = new Level();
     private Queue<Level> levelQueue = new Queue<Level>();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
+    private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
     private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
     private IMovementStrategy movementStrategy= new StandardMove();
     private Hearts hearts= new Hearts(3);
@@ -52,12 +53,13 @@ public class GameRunning : IGameState, IGameEventProcessor {
         Random rnd = RandomGenerator.Generator;
         float rotation = rnd.NextSingle() * 0.75f - rnd.NextSingle() * 0.75f;
         
-        Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
+        Vec2F ballExtent = defaultBallExtent.Copy();
         Vec2F ballPosition = new Vec2F(
             player.Shape.Position.X + (player.Shape.Extent.X/2) - ballExtent.X /2, 
             player.Shape.Extent.Y
         );
         Vec2F ballDirection = defaultBallDirection.Copy();
+        defaultBallDirection.Copy();
         balls.AddEntity(new Ball(
             new Image(Path.Combine("Assets", "Images", "ball.png")),
             new DynamicShape(ballPosition, ballExtent, ballDirection)
@@ -73,13 +75,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
         player.Move();
         IterateBalls();
-        if (hearts.Amount < 0 || timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
-            ResetState();
-            eventBus.RegisterEvent(new GameEvent{
-                EventType = GameEventType.GameStateEvent,
-                Message = "CHANGE_STATE",
-                StringArg1 = "GAME_OVER"
-            });
+        if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
+            EndGame();
         }
     }
 
@@ -106,11 +103,16 @@ public class GameRunning : IGameState, IGameEventProcessor {
             if (colCheckPlayer.Collision) {
                 float ballMiddle = ball.Shape.Position.X + (ball.Shape.Extent.X / 2.0f);
                 float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2.0f);
-                float relativeRotation = (playerMiddle - ballMiddle) * 8.0f;
+                float relativeRotation = (playerMiddle - ballMiddle) * 12.0f;
 
                 ball.ChangeDirection(colCheckPlayer.CollisionDir);
 
+                Vec2F currentDir = ball.Dynamic.Direction;
                 Vec2F newDir = defaultBallDirection.Copy();
+                
+                // Averaging default direction with current direction
+                newDir.X = (newDir.X + currentDir.X)/2.0f;
+                newDir.Y = (newDir.Y + currentDir.Y)/2.0f;
 
                 ball.Dynamic.ChangeDirection(new Vec2F(
                     newDir.X * MathF.Cos(relativeRotation) - newDir.Y * MathF.Sin(relativeRotation),
@@ -158,6 +160,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GraphicsEvent,
             Message = "DISPLAY_STATS",
+            StringArg1 = "WON",
             IntArg1 = (int)points.GetPoints()
         });
         eventBus.RegisterEvent(new GameEvent {

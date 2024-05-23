@@ -97,6 +97,7 @@ public class PostGame : IGameState, IGameEventProcessor {
     public void ProcessEvent(GameEvent gameEvent) {
         switch (gameEvent.Message) {
             case "DISPLAY_STATS":
+                playerHasWon = (gameEvent.StringArg1 == "WON");
                 points.SetText($"Total Points: {gameEvent.IntArg1}");
                 break;
             default:
