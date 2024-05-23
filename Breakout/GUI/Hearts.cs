@@ -9,8 +9,7 @@ public class Hearts {
     private IBaseImage fullContainerImage;
     private IBaseImage emptyContainerImage;
     private Shape renderingShape;
-
-    public uint Amount;
+    public uint Amount { get; private set; }
 
     public Hearts(uint startAmount) {
         this.startAmount = startAmount;
@@ -21,6 +20,7 @@ public class Hearts {
     }
 
     public void SetHearts(uint amount) {
+        startAmount = amount;
         Amount = amount;
     }
 

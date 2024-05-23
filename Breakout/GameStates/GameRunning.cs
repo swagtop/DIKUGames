@@ -65,7 +65,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
             new DynamicShape(ballPosition, ballExtent, ballDirection)
         ));
 
-        hearts.Amount = 3;
+        hearts.SetHearts(3);
 
         StaticTimer.RestartTimer();
         timer.Reset();
