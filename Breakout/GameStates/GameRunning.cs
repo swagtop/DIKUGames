@@ -210,7 +210,7 @@ public class GameRunning : IGameState, IGameEventProcessor
                 break;
             case KeyboardKey.Space:
                 Console.WriteLine("DEBUG: All blocks take one hit.");
-                level.Blocks.Iterate(block => block.Hit());
+                // level.Blocks.Iterate(block => block.Hit());
                 if (balls.CountEntities() == 1)
                 {
                     ballLauncher.LaunchBall();
