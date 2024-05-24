@@ -40,5 +40,6 @@ public class LevelTests {
         Assert.That(level.Meta.CharDictionary is Dictionary<char, BlockType>);
         Assert.AreEqual(level.Meta.CharDictionary.Count, 0);
         Assert.That(level.BreakableLeft is uint);
+        Assert.AreEqual(level.BreakableLeft, 0);
     }
 }
