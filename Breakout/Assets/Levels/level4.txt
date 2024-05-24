@@ -37,6 +37,7 @@ Unbreakable: 0
 Unbreakable: #
 Unbreakable: !
 Hardened: U
+Time: 10
 Meta/
 
 Legend:

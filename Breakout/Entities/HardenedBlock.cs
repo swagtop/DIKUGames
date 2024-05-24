@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
+namespace Breakout.Entities;
+
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 
-namespace Breakout.Entities;
-public class HardenedBlock : Block{
-    public HardenedBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape, 4){
-    }
+public class HardenedBlock : Block {
+    public HardenedBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape, 2) {}
 }

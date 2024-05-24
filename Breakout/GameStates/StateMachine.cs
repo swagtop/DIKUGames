@@ -1,45 +1,45 @@
-using System;
-using DIKUArcade.Events;
-using DIKUArcade.State;
-using Breakout;
-
 namespace Breakout.GameStates;
+
+using DIKUArcade.Events;
+using DIKUArcade.Input;
+using DIKUArcade.State;
+
 public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = new StateMachine();
-    public IGameState ActiveState { get; private set; }
-    public StateMachine() { 
-        MainMenu.GetInstance().ResetState();
-        ChooseLevel.GetInstance().ResetState();
-        GameRunning.GetInstance().ResetState();
-        GamePaused.GetInstance().ResetState();
+    private Dictionary<GameStateType, IGameState> gameStateDictionary = new Dictionary<GameStateType, IGameState>();
+    private bool initialized = false;
+    private IGameState? activeState = null;
 
-        ActiveState = MainMenu.GetInstance();
-        
-        BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
+    public IGameState ActiveState { 
+        get {
+            if (activeState != null) return activeState;
+            else throw new Exception("StateMachine has not been initialized.");
+        }
+        private set { activeState = value; }
     }
 
     public static StateMachine GetInstance() {
         return StateMachine.instance;
     }
+    
+    public void InitializeStateMachine(params (GameStateType gameStateType, IGameState instance)[] states) {
+        if (initialized) throw new InvalidOperationException("StateMachine is already initialized!");
+        if (states.Length == 0) throw new ArgumentException("StateMachine must initialize with at least one GameStateType and GameState pair!");
 
-    public void SwitchState(GameStateType stateType) {
-        switch (stateType) {
-            case GameStateType.GameRunning:
-                ActiveState = GameRunning.GetInstance();
-                break;
-            case GameStateType.GamePaused:
-                ActiveState = GamePaused.GetInstance();
-                break;
-            case GameStateType.MainMenu:
-                GameRunning.GetInstance().DumpQueue();
-                ActiveState = MainMenu.GetInstance();
-                break;
-            case GameStateType.ChooseLevel:
-                ChooseLevel.GetInstance().ResetState();
-                ActiveState = ChooseLevel.GetInstance();
-                break;
-            default:
-                throw new ArgumentException($"Unrecognized GameStateType: {stateType}");
+        ActiveState = states[0].Item2; // ActiveState initializes with first state in params.
+
+        foreach ((GameStateType gameStateType, IGameState instance) in states) {
+            gameStateDictionary.Add(gameStateType, instance);
+        }
+
+        initialized = true;
+    }
+
+    public void SwitchState(GameStateType gameStateType) {
+        if (gameStateDictionary.ContainsKey(gameStateType)) {
+            ActiveState = gameStateDictionary[gameStateType];
+        } else {
+            throw new ArgumentException($"Could not switch to state. Did you initialize the StateMachine with {gameStateType}?");
         }
     }
 
@@ -47,7 +47,7 @@ public class StateMachine : IGameEventProcessor {
         if (gameEvent.EventType != GameEventType.GameStateEvent) return;
         
         if (gameEvent.Message == "CHANGE_STATE") {
-            SwitchState(StateTransformer.TransformStringToState(gameEvent.StringArg1));
+            SwitchState(GameStateTransformer.TransformStringToState(gameEvent.StringArg1));
         }
     }
 }

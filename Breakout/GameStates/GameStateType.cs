@@ -1,13 +1,14 @@
-using System;
-
 namespace Breakout.GameStates;
+
 public enum GameStateType {
     GameRunning,
     GamePaused,
     MainMenu,
-    ChooseLevel
+    ChooseLevel,
+    PostGame
 }
-public static class StateTransformer {
+
+public static class GameStateTransformer {
     public static GameStateType TransformStringToState(string state) {
         switch (state) {
             case "GAME_RUNNING":
@@ -18,6 +19,8 @@ public static class StateTransformer {
                 return GameStateType.MainMenu;
             case "CHOOSE_LEVEL":
                 return GameStateType.ChooseLevel;
+            case "POST_GAME":
+                return GameStateType.PostGame;
             default:
                 throw new ArgumentException($"Unrecognized GameStateType: {state}");
         }
@@ -33,6 +36,8 @@ public static class StateTransformer {
                 return "MAIN_MENU";
             case GameStateType.ChooseLevel:
                 return "CHOOSE_LEVEL";
+            case GameStateType.PostGame:
+                return "POST_GAME";
             default:
                 throw new ArgumentException($"Unrecognized GameStateType: {state}");
         }

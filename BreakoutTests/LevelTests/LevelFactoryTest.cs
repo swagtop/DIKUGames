@@ -1,3 +1,5 @@
+namespace BreakoutTests;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +13,6 @@ using Breakout;
 using Breakout.Entities;
 using Breakout.LevelHandling;
 
-namespace BreakoutTests;
 public class LevelFactoryTest {
     private Level level;
 
@@ -216,7 +217,7 @@ public class LevelFactoryTest {
                 "------------",
                 "------------",
                 "------------",
-                "------------",
+                "----pppp----",
                 "------------",
                 "------------",
                 "------------",
@@ -230,7 +231,7 @@ public class LevelFactoryTest {
             meta,
             legend
         );
-        Assert.AreEqual(blocks.CountEntities(), 76);
+        Assert.AreEqual(blocks.CountEntities(), 80);
     }
 
     [Test]

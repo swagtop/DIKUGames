@@ -1,5 +1,5 @@
-using System;
-using System.IO;
+namespace Breakout.GameStates;
+
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
 using DIKUArcade.Graphics;
@@ -7,28 +7,25 @@ using DIKUArcade.Input;
 using DIKUArcade.Math;
 using DIKUArcade.State;
 using DIKUArcade.Utilities;
-using Breakout;
 using Breakout.LevelHandling;
-using Breakout.Menus;
+using Breakout.GUI;
 
-namespace Breakout.GameStates;
 public class ChooseLevel : IGameState {
     private static ChooseLevel instance = new ChooseLevel();
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    private Entity backGroundImage = new Entity(
-        new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
-        new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
+    private Background background = new Background(new Image(
+        Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
     private Menu menu = new Menu(0.6f);
+
+    private ChooseLevel() {
+        ResetState();
+    }
+
     public static ChooseLevel GetInstance() {
         return ChooseLevel.instance;
     }
     
-    public void RenderState() {
-        backGroundImage.RenderEntity();
-        menu.RenderButtons();
-    }
-
     public void ResetState() {
         menu.Clear();
         menu.AddButton("Main Menu", "MAIN_MENU");
@@ -45,16 +42,20 @@ public class ChooseLevel : IGameState {
 
         menu.Reset();
     }
+    
+    public void UpdateState() {}
 
-    public void UpdateState() {
+    public void RenderState() {
+        background.RenderBackground();
+        menu.RenderMenu();
     }
     
     public void SelectMenuItem(string value) {
         switch (value) {
             case ("MAIN_MENU"):
+                ResetState();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "MAIN_MENU"
                 });
@@ -65,14 +66,12 @@ public class ChooseLevel : IGameState {
                         Path.Combine("Assets", "Levels", menu.GetValue())
                     );
                     eventBus.RegisterEvent(new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        To = GameRunning.GetInstance(),
+                        EventType = GameEventType.StatusEvent,
                         Message = "LOAD_LEVEL",
                         ObjectArg1 = (object)level
                     });
                     eventBus.RegisterEvent(new GameEvent {
                         EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
                         Message = "CHANGE_STATE",
                         StringArg1 = "GAME_RUNNING"
                     });
@@ -100,7 +99,6 @@ public class ChooseLevel : IGameState {
                 ResetState();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "MAIN_MENU"
                 });

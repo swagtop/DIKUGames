@@ -1,10 +1,11 @@
+namespace Breakout;
+
 using DIKUArcade;
 using DIKUArcade.Events;
 using DIKUArcade.GUI;
 using DIKUArcade.Input;
 using Breakout.GameStates;
 
-namespace Breakout;
 public class Game : DIKUGame, IGameEventProcessor {  
     private GameEventBus eventBus;
     private StateMachine stateMachine;
@@ -15,12 +16,22 @@ public class Game : DIKUGame, IGameEventProcessor {
         eventBus = BreakoutBus.GetBus();
         eventBus.InitializeEventBus(new List<GameEventType> {
             GameEventType.WindowEvent,
+            GameEventType.StatusEvent,
             GameEventType.GameStateEvent,
             GameEventType.PlayerEvent,
+            GameEventType.GraphicsEvent,
         });
         eventBus.Subscribe(GameEventType.WindowEvent, this);
 
         stateMachine = StateMachine.GetInstance();
+        stateMachine.InitializeStateMachine(
+            (GameStateType.MainMenu, MainMenu.GetInstance()),
+            (GameStateType.ChooseLevel, ChooseLevel.GetInstance()),
+            (GameStateType.GameRunning, GameRunning.GetInstance()),
+            (GameStateType.GamePaused, GamePaused.GetInstance()),
+            (GameStateType.PostGame, PostGame.GetInstance())
+        );
+        eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
     }
 
     public override void Render() { 
@@ -28,7 +39,7 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     public override void Update() {
-        eventBus.ProcessEventsSequentially();
+        eventBus.ProcessEvents();
         stateMachine.ActiveState.UpdateState();
     }
 

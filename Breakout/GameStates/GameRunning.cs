@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
+namespace Breakout.GameStates;
+
 using DIKUArcade;
 using DIKUArcade.Entities;
 using DIKUArcade.Events;
@@ -10,28 +9,43 @@ using DIKUArcade.Input;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
-using Breakout;
+using DIKUArcade.Timers;
+using DIKUArcade.Utilities;
 using Breakout.Entities;
+using Breakout.GUI;
 using Breakout.LevelHandling;
-using Breakout.MovementStrategies;
+using Breakout.PowerupEffects;
 
-namespace Breakout.GameStates;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    private Random rnd = new Random();
-    private Player player = new Player(
-        new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
-        new Image(Path.Combine("Assets", "Images", "player.png"))
-    );
-    private Level level = new Level();
-    private Queue<Level> levelQueue = new Queue<Level>();
-    private Entity backGroundImage = new Entity(
-        new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
+    private Background background = new Background(
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
+    
+    private Player player = new Player();
+    private Queue<Level> levelQueue = new Queue<Level>();
+    private Level currentLevel = new Level();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
-    private IMovementStrategy movementStrategy= new StandardMove();
+    private BallLauncher ballLauncher;
+    private EntityContainer<Powerup> powerups = new EntityContainer<Powerup>();
+
+    private Hearts hearts= new Hearts();
+    private Timer timer = new Timer();
+    private Points points = new Points();
+
+    private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
+    private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
+
+    private GameRunning() {
+        eventBus.Subscribe(GameEventType.PlayerEvent, player);
+        eventBus.Subscribe(GameEventType.StatusEvent, this);
+        eventBus.Subscribe(GameEventType.GameStateEvent, this);
+
+        ballLauncher = new BallLauncher(balls, player);
+
+        ResetState();
+    }
 
     public static GameRunning GetInstance() {
         return GameRunning.instance;
@@ -40,77 +54,136 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void ResetState() {
         player.Reset();
         balls.ClearContainer();
-        
-        eventBus.Subscribe(GameEventType.PlayerEvent, player);
-        
-        float rotation = rnd.NextSingle() * 0.75f - rnd.NextSingle() * 0.75f;
-        
-        Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
-        Vec2F ballPosition = new Vec2F(
-            player.Shape.Position.X + (player.Shape.Extent.X/2) - ballExtent.X /2, 
-            player.Shape.Extent.Y
-        );
-        Vec2F ballDirection = new Vec2F(0.0f, 0.0150f);
-        ballDirection.X = ballDirection.X * (float)Math.Cos(rotation) - ballDirection.Y * (float)Math.Sin(rotation);
-        ballDirection.Y = ballDirection.X * (float)Math.Sin(rotation) + ballDirection.Y * (float)Math.Cos(rotation);
-        if (ballDirection.Y < 0) {
-            ballDirection.Y *= -1;
-        }
+        ballLauncher.AddNewBall();       
+        powerups.ClearContainer();
 
-        balls.AddEntity(new Ball(
-            new Image(Path.Combine("Assets", "Images", "ball.png")),
-            new DynamicShape(ballPosition, ballExtent, ballDirection)
-        ));
+        hearts.SetHearts(3);
+
+        StaticTimer.RestartTimer();
+        timer.Reset();
+    }
+
+    public void UpdateState() {
+        timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
+        player.Move();
+        IterateBalls();
+        powerups.Iterate(powerup => {
+            powerup.Move();
+            CollisionData colCheckPlayer = CollisionDetection.Aabb(
+                powerup.Shape.AsDynamicShape(), 
+                player.Shape.AsStationaryShape()
+            );
+            if (colCheckPlayer.Collision) {
+                powerup.Pop().EngagePowerup(balls, player);
+            }
+        });
+        
+        if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
+            EndGame("LOST");
+        }
     }
 
     public void RenderState() {
-        backGroundImage.RenderEntity();
-        level.Blocks.RenderEntities();
+        background.RenderBackground();
+
+        currentLevel.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();
-    }
+        powerups.RenderEntities();
 
-
-    public void UpdateState() {
-        player.Move();
-        IterateBalls();
+        hearts.RenderHearts();
+        timer.RenderTimer();
+        points.RenderPoints();
     }
 
     public void IterateBalls() {
-        balls.Iterate(ball => {
-            movementStrategy.Move(ball);
-            CollisionData colCheck1 = CollisionDetection.Aabb(ball.Dynamic, player.Shape.AsDynamicShape());
+        int ballCount = balls.CountEntities();
 
-            if (colCheck1.Collision) {
-                float rotation = (ball.Shape.Position.X - (player.Shape.Position.X + (player.Shape.Extent.X / 2.0f) - ball.Shape.Extent.X / 2.0f));
-                rotation *= -12.0f;
-                ball.ChangeDirection(colCheck1.CollisionDir);
+        balls.Iterate(ball => {
+            ball.Move();
+            CollisionData colCheckPlayer = CollisionDetection.Aabb(
+                ball.Dynamic, 
+                player.Shape.AsDynamicShape()
+            );
+
+            if (colCheckPlayer.Collision) {
+                float ballMiddle = ball.Shape.Position.X + (ball.Shape.Extent.X / 2.0f);
+                float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2.0f);
+                float relativeRotation = (playerMiddle - ballMiddle) * 12.0f;
+
+                ball.ChangeDirection(colCheckPlayer.CollisionDir);
+
+                Vec2F newDir = defaultBallDirection.Copy();
+
                 ball.Dynamic.ChangeDirection(new Vec2F(
-                    ball.Dynamic.Direction.X * (float)Math.Cos(rotation) - ball.Dynamic.Direction.Y * (float)Math.Sin(rotation), 
-                    ball.Dynamic.Direction.X * (float)Math.Sin(rotation) + ball.Dynamic.Direction.Y * (float)Math.Cos(rotation))
-                );
+                    newDir.X * MathF.Cos(relativeRotation) - newDir.Y * MathF.Sin(relativeRotation),
+                    newDir.X * MathF.Sin(relativeRotation) + newDir.Y * MathF.Cos(relativeRotation)
+                ));
             }
 
-            level.Blocks.Iterate(block => {
-                CollisionData colCheck2 = CollisionDetection.Aabb(ball.Dynamic, block.Shape);
-                if (colCheck2.Collision) {
+            currentLevel.Blocks.Iterate(block => {
+                CollisionData colCheckBlock = CollisionDetection.Aabb(
+                    ball.Dynamic, 
+                    block.Shape
+                );
+                if (colCheckBlock.Collision) {
                     block.Hit();
-                    ball.ChangeDirection(colCheck2.CollisionDir);
+                    ball.ChangeDirection(colCheckBlock.CollisionDir);
+                }
+                if (block.IsDeleted()) {
+                    powerups.AddEntity(PowerupFactory.CreatePowerup(block.Shape.Position, PowerupEffectType.Split));
+                    points.AwardPointsFor(block);
+                    currentLevel.BreakableLeft -= 1;
                 }
             });
         });
+        
+        if (currentLevel.BreakableLeft == 0) {
+            EndLevel();
+            return;
+        }
+        bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
+        if (lostAllBalls) {
+            bool playerLost = hearts.BreakHeart();
+            if (playerLost) { EndGame("LOST"); }
+            else { ballLauncher.AddNewBall(); }
+        }
     }
 
-    public void DumpQueue() {
+    public void FlushQueue() {
         levelQueue.Clear();
+    }
+
+    public void EndLevel() {
+        if (levelQueue.Any()) {
+            ResetState();
+            currentLevel = levelQueue.Dequeue();
+            timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
+        } else {
+            EndGame("WON");
+        }
+    }
+
+    public void EndGame(string result) {
+        eventBus.RegisterEvent(new GameEvent {
+            EventType = GameEventType.GraphicsEvent,
+            Message = "DISPLAY_STATS",
+            StringArg1 = result,
+            IntArg1 = (int)points.GetPoints()
+        });
+        eventBus.RegisterEvent(new GameEvent {
+            EventType = GameEventType.GameStateEvent,
+            Message = "CHANGE_STATE",
+            StringArg1 = "POST_GAME"
+        });
     }
 
     private void KeyPress(KeyboardKey key) {
         switch (key) {
             case KeyboardKey.Escape:
+                StaticTimer.PauseTimer();
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.GameStateEvent,
-                    To = StateMachine.GetInstance(),
                     Message = "CHANGE_STATE",
                     StringArg1 = "GAME_PAUSED"
                 });
@@ -119,7 +192,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    To = player,
                     Message = "MOVE",
                     StringArg1 = "LEFT",
                     StringArg2 = "START"
@@ -129,51 +201,44 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    To = player,
                     Message = "MOVE",
                     StringArg1 = "RIGHT",
                     StringArg2 = "START"
                 });
                 break;
             case KeyboardKey.Space:
+                ballLauncher.LaunchBall();
+                break;
+            case KeyboardKey.B:
                 Console.WriteLine("DEBUG: All blocks take one hit.");
-                level.Blocks.Iterate(block => block.Hit());
+                currentLevel.Blocks.Iterate(block => block.Hit());
                 break;
             case KeyboardKey.Tab:
                 if (levelQueue.Any()) {
                     Console.WriteLine("DEBUG: Skipping to next level in queue.");
-                    ResetState();
-                    level = levelQueue.Dequeue();
                 } else {
-                    Console.WriteLine("DEBUG: No more levels in queue, returning to main menu.");
-                    ResetState();
-                    eventBus.RegisterEvent(new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        To = StateMachine.GetInstance(),
-                        Message = "CHANGE_STATE",
-                        StringArg1 = "MAIN_MENU"
-                    });
+                    Console.WriteLine("DEBUG: No more levels in queue, switching to PostGame!");
                 }
+                EndLevel();
                 break;
-
         }
     }
 
     private void KeyRelease(KeyboardKey key) {
         switch (key) {
-            case KeyboardKey.Left: case KeyboardKey.A:
+            case KeyboardKey.Left:
+            case KeyboardKey.A:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    To = player,
                     Message = "MOVE",
                     StringArg1 = "LEFT",
                     StringArg2 = "STOP"
                 });
                 break;
-            case KeyboardKey.Right: case KeyboardKey.D:
+            case KeyboardKey.Right:
+            case KeyboardKey.D:
                 eventBus.RegisterEvent(new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    To = player,
                     Message = "MOVE",
                     StringArg1 = "RIGHT",
                     StringArg2 = "STOP"
@@ -194,17 +259,26 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.EventType != GameEventType.GameStateEvent) return;
-        
         switch (gameEvent.Message) {
             case "LOAD_LEVEL":
                 ResetState();
-                level = (Level)gameEvent.ObjectArg1;
+                currentLevel = (Level)gameEvent.ObjectArg1;
+                timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
                 break;
             case "QUEUE_LEVELS":
                 ResetState();
                 levelQueue = (Queue<Level>)gameEvent.ObjectArg1;
-                level = levelQueue.Dequeue();
+                currentLevel = levelQueue.Dequeue();
+                timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
+                break;
+            case "FLUSH_QUEUE":
+                FlushQueue();
+                break;
+            case "CHANGE_STATE":
+                if (gameEvent.StringArg1 == "GAME_RUNNING") return;
+                if (gameEvent.StringArg1 == "GAME_PAUSED") return;
+                if (levelQueue.Count > 0) { FlushQueue(); }
+                points.ResetPoints();
                 break;
             default:
                 break;
