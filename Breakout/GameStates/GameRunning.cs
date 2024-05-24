@@ -21,11 +21,13 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Background background = new Background(
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
+    
     private Player player = new Player();
     private Queue<Level> levelQueue = new Queue<Level>();
     private Level currentLevel = new Level();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private BallLauncher ballLauncher;
+
     private Hearts hearts= new Hearts();
     private Timer timer = new Timer();
     private Points points = new Points();
@@ -69,9 +71,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void RenderState() {
         background.RenderBackground();
+
         currentLevel.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();
+
         hearts.RenderHearts();
         timer.RenderTimer();
         points.RenderPoints();

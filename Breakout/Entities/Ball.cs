@@ -13,7 +13,7 @@ public class Ball : Entity {
     }
 
     public void Move() {
-        bool belowLowerBound = Shape.Position.Y + Dynamic.Direction.Y < 0.0f - Shape.Extent.Y;
+        bool belowLowerBound = (Shape.Position.Y + Dynamic.Direction.Y < 0.0f - Shape.Extent.Y);
         
         if (belowLowerBound) { this.DeleteEntity(); return; } // Early return for optimization
 
