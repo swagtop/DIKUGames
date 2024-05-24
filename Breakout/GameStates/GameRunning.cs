@@ -14,7 +14,6 @@ using DIKUArcade.Utilities;
 using Breakout.Entities;
 using Breakout.GUI;
 using Breakout.LevelHandling;
-using Breakout.MovementStrategies;
 
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
@@ -22,17 +21,13 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Background background = new Background(
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
-    private Player player = new Player(
-        new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
-        new Image(Path.Combine("Assets", "Images", "player.png"))
-    );
+    private Player player = new Player();
     private Queue<Level> levelQueue = new Queue<Level>();
     private Level currentLevel = new Level();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private BallLauncher ballLauncher;
     private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
     private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
-    private IMovementStrategy movementStrategy= new StandardMove();
     private Hearts hearts= new Hearts(3);
     private Timer timer = new Timer();
     private Points points = new Points();
@@ -85,7 +80,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         int ballCount = balls.CountEntities();
 
         balls.Iterate(ball => {
-            movementStrategy.Move(ball);
+            ball.Move();
             CollisionData colCheckPlayer = CollisionDetection.Aabb(
                 ball.Dynamic, 
                 player.Shape.AsDynamicShape()
@@ -127,8 +122,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
             EndLevel();
             return;
         }
-
-        if (ballCount != 0 && balls.CountEntities() == 0) {
+        bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
+        if (lostAllBalls) {
             bool playerLost = hearts.BreakHeart();
             if (playerLost) { EndGame("LOST"); }
             else { ballLauncher.AddNewBall(); }
@@ -150,7 +145,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void EndGame(string result) {
-        ResetState();
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GraphicsEvent,
             Message = "DISPLAY_STATS",

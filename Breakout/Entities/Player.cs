@@ -10,6 +10,11 @@ public class Player : Entity, IGameEventProcessor {
     private float moveRight = 0.0f;
     private const float MOVEMENT_SPEED = 0.02f;
 
+    public Player() : base(
+        new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
+        new Image(Path.Combine("Assets", "Images", "player.png"))
+    ) {}
+    
     public Player(DynamicShape shape, IBaseImage image) : base(shape, image) {}
 
     private void UpdateDirection() {
