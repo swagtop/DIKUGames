@@ -26,8 +26,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         new DynamicShape(new Vec2F((1.0f - 0.07f)/2.0f, 0.0f), new Vec2F(0.14f, 0.0275f)),
         new Image(Path.Combine("Assets", "Images", "player.png"))
     );
-    private Level currentLevel = new Level();
     private Queue<Level> levelQueue = new Queue<Level>();
+    private Level currentLevel = new Level();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private BallLauncher ballLauncher;
     private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
@@ -52,21 +52,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void ResetState() {
         player.Reset();
         balls.ClearContainer();
-        
-        Random rnd = RandomGenerator.Generator;
-        float rotation = rnd.NextSingle() * 0.75f - rnd.NextSingle() * 0.75f;
-        
-        Vec2F ballExtent = defaultBallExtent.Copy();
-        Vec2F ballPosition = new Vec2F(
-            player.Shape.Position.X + (player.Shape.Extent.X/2) - ballExtent.X /2, 
-            player.Shape.Extent.Y
-        );
-        Vec2F ballDirection = defaultBallDirection.Copy();
-        defaultBallDirection.Copy();
-        balls.AddEntity(new Ball(
-            new Image(Path.Combine("Assets", "Images", "ball.png")),
-            new DynamicShape(ballPosition, ballExtent, ballDirection)
-        ));
+        ballLauncher.AddNewBall();       
+
+        //Random rnd = RandomGenerator.Generator;
 
         hearts.SetHearts(3);
 
@@ -80,7 +68,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         IterateBalls();
         if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
             ResetState();
-            EndGame(false);
+            EndGame("LOST");
         }
     }
 
@@ -130,14 +118,20 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 }
                 if (block.IsDeleted()) {
                     points.AwardPointsFor(block);
+                    currentLevel.BreakableLeft -= 1;
                 }
             });
 
         });
+        
+        if (currentLevel.BreakableLeft == 0) {
+            EndLevel();
+            return;
+        }
 
         if (ballCount != 0 && balls.CountEntities() == 0) {
             bool playerLost = hearts.BreakHeart();
-            if (playerLost) { EndGame(false); }
+            if (playerLost) { EndGame("LOST"); }
             else { ballLauncher.AddNewBall(); }
         }
     }
@@ -152,15 +146,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
             currentLevel = levelQueue.Dequeue();
             timer.SetTimeLimit(currentLevel.Meta.TimeLimit);
         } else {
-            EndGame(true);
+            EndGame("WON");
         }
     }
 
-    public void EndGame(bool gameWon) {
-        string result;
-        if (gameWon) { result = "WON"; }
-        else { result = "LOST"; }
-
+    public void EndGame(string result) {
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GraphicsEvent,
             Message = "DISPLAY_STATS",

@@ -6,14 +6,17 @@ using Breakout.Entities;
 public class Level {
     public LevelMeta Meta;
     public EntityContainer<Block> Blocks;
+    public uint BreakableLeft;
 
     public Level() {
         Meta = new LevelMeta(); 
         Blocks = new EntityContainer<Block>();
+        BreakableLeft = 0;
     }
 
-    public Level(LevelMeta meta, EntityContainer<Block> blocks) {
+    public Level(LevelMeta meta, EntityContainer<Block> blocks, uint breakableLeft) {
         Meta = meta; 
         Blocks = blocks;
+        BreakableLeft = breakableLeft;
     }
 }

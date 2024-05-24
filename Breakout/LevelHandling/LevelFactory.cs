@@ -28,8 +28,14 @@ public static class LevelFactory {
         levelLegend = ParseLegendSection(levelFileSections.Legend);
 
         blocks = ParseMapSection(levelFileSections.Map, levelMeta, levelLegend);
+                
+        uint notBreakableAmount = 0;
+        foreach (Block block in blocks) {
+            if (block is UnbreakableBlock) notBreakableAmount++;
+        }
+        uint breakableLeft = (uint)blocks.CountEntities() - notBreakableAmount;
 
-        return new Level(levelMeta, blocks);
+        return new Level(levelMeta, blocks, breakableLeft);
     }
 
     public static LevelFileSections GetLevelFileSections(string[] lines) {
