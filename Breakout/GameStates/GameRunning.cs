@@ -67,7 +67,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.Move();
         IterateBalls();
         if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
-            ResetState();
             EndGame("LOST");
         }
     }
@@ -151,6 +150,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void EndGame(string result) {
+        ResetState();
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GraphicsEvent,
             Message = "DISPLAY_STATS",

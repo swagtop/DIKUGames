@@ -26,8 +26,8 @@ public class GameRunningTests {
         gameRunning.IterateBalls();
         gameRunning.FlushQueue();
         gameRunning.EndLevel();
-        gameRunning.EndGame(true);
-        gameRunning.EndGame(false);
+        gameRunning.EndGame("WON");
+        gameRunning.EndGame("LOST");
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Up);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Down);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Enter);
