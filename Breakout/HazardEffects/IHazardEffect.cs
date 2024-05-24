@@ -6,5 +6,5 @@ using DIKUArcade.Entities;
 using Breakout.Entities;
 
 public interface IHazardEffect {
-    void EngagePowerup(EntityContainer<Ball> balls, Player player);
+    void EngageHazard(EntityContainer<Ball> balls, Player player);
 }
