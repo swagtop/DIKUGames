@@ -6,17 +6,25 @@ using DIKUArcade.Math;
 
 public class Hearts {
     private uint startAmount;
-    private IBaseImage fullContainerImage;
-    private IBaseImage emptyContainerImage;
-    private Shape renderingShape;
+    private IBaseImage fullContainerImage = new Image(
+        Path.Combine("Assets", "Images", "heart_filled.png")
+    );
+    private IBaseImage emptyContainerImage = new Image(
+        Path.Combine("Assets", "Images", "heart_empty.png")
+    );
+    private Shape renderingShape = new StationaryShape(
+        new Vec2F(0.95f, 0.3f), new Vec2F(0.05f, 0.05f)
+    );
     public uint Amount { get; private set; }
+
+    public Hearts() {
+        this.startAmount = 0;
+        this.Amount = this.startAmount;
+    }
 
     public Hearts(uint startAmount) {
         this.startAmount = startAmount;
         this.Amount = this.startAmount;
-        this.fullContainerImage = new Image(Path.Combine("Assets", "Images", "heart_filled.png"));
-        this.emptyContainerImage = new Image(Path.Combine("Assets", "Images", "heart_empty.png"));
-        this.renderingShape = new StationaryShape(new Vec2F(0.777f, 0.3f), new Vec2F(0.05f, 0.05f));
     }
 
     public void SetHearts(uint amount) {
@@ -34,7 +42,7 @@ public class Hearts {
     public void RenderHearts() {
         float originalX = renderingShape.Position.X;
         for (int i = 0; i < startAmount; i++) {
-            renderingShape.Position.X += i * 0.05f;
+            renderingShape.Position.X -= 0.05f;
             if (i < Amount) {
                 fullContainerImage.Render(renderingShape);
             } else {

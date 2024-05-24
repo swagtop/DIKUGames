@@ -26,11 +26,12 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Level currentLevel = new Level();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private BallLauncher ballLauncher;
-    private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
-    private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
-    private Hearts hearts= new Hearts(3);
+    private Hearts hearts= new Hearts();
     private Timer timer = new Timer();
     private Points points = new Points();
+
+    private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
+    private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
 
     private GameRunning() {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
@@ -38,6 +39,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         eventBus.Subscribe(GameEventType.GameStateEvent, this);
 
         ballLauncher = new BallLauncher(balls, player);
+
+        ResetState();
     }
 
     public static GameRunning GetInstance() {
@@ -48,8 +51,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.Reset();
         balls.ClearContainer();
         ballLauncher.AddNewBall();       
-
-        //Random rnd = RandomGenerator.Generator;
 
         hearts.SetHearts(3);
 
