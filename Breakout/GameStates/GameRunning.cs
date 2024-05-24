@@ -14,6 +14,7 @@ using DIKUArcade.Utilities;
 using Breakout.Entities;
 using Breakout.GUI;
 using Breakout.LevelHandling;
+using Breakout.PowerupEffects;
 
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
@@ -27,6 +28,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Level currentLevel = new Level();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private BallLauncher ballLauncher;
+    private EntityContainer<Powerup> powerups = new EntityContainer<Powerup>();
 
     private Hearts hearts= new Hearts();
     private Timer timer = new Timer();
@@ -53,6 +55,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.Reset();
         balls.ClearContainer();
         ballLauncher.AddNewBall();       
+        powerups.ClearContainer();
 
         hearts.SetHearts(3);
 
@@ -64,6 +67,17 @@ public class GameRunning : IGameState, IGameEventProcessor {
         timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
         player.Move();
         IterateBalls();
+        powerups.Iterate(powerup => {
+            powerup.Move();
+            CollisionData colCheckPlayer = CollisionDetection.Aabb(
+                powerup.Shape.AsDynamicShape(), 
+                player.Shape.AsStationaryShape()
+            );
+            if (colCheckPlayer.Collision) {
+                powerup.Pop().EngagePowerup(balls, player);
+            }
+        });
+        
         if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
             EndGame("LOST");
         }
@@ -75,6 +89,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         currentLevel.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();
+        powerups.RenderEntities();
 
         hearts.RenderHearts();
         timer.RenderTimer();
@@ -116,6 +131,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     ball.ChangeDirection(colCheckBlock.CollisionDir);
                 }
                 if (block.IsDeleted()) {
+                    powerups.AddEntity(PowerupFactory.CreatePowerup(block.Shape.Position, PowerupEffectType.Wide));
                     points.AwardPointsFor(block);
                     currentLevel.BreakableLeft -= 1;
                 }

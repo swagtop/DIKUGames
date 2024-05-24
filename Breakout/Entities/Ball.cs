@@ -42,4 +42,14 @@ public class Ball : Entity {
                 break;
         }
     }
+
+    public Ball Clone() {
+        return new Ball(
+            this.Image, 
+            new DynamicShape(
+                this.Shape.Position.Copy(), 
+                this.Shape.Extent, 
+                this.Dynamic.Direction.Copy()
+        ));
+    }
 }

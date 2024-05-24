@@ -6,6 +6,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
 public class Player : Entity, IGameEventProcessor {
+    private bool fat = false;
     private float moveLeft = 0.0f;
     private float moveRight = 0.0f;
     private const float MOVEMENT_SPEED = 0.02f;
@@ -16,6 +17,26 @@ public class Player : Entity, IGameEventProcessor {
     ) {}
     
     public Player(DynamicShape shape, IBaseImage image) : base(shape, image) {}
+
+    public void GetFat() {
+        if (fat) return;
+
+        var currentPosition = Shape.Position.Copy();
+        Shape.Extent = new Vec2F(Shape.Extent.X * 2, Shape.Extent.Y);
+        Shape.Position = new Vec2F(currentPosition.X - (Shape.Extent.X / 4), currentPosition.Y);
+
+        fat = true;
+    }
+    
+    public void GetSkinny() {
+        if (!fat) return;
+
+        var oldExtent = Shape.Extent.Copy();
+        Shape.Extent = new Vec2F(Shape.Extent.X / 2, Shape.Extent.Y);
+        Shape.Position.X = Shape.Position.X + (oldExtent.X / 4);
+        
+        fat = false;
+    }
 
     private void UpdateDirection() {
         Shape.AsDynamicShape().ChangeDirection(new Vec2F(moveLeft + moveRight, 0.0f));
@@ -53,14 +74,24 @@ public class Player : Entity, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.Message != "MOVE") return;
-        
-        switch (gameEvent.StringArg1) {
-            case "LEFT":
-                SetMoveLeft(gameEvent.StringArg2 == "START");
+        switch (gameEvent.Message) {
+            case "MOVE":
+                switch (gameEvent.StringArg1) {
+                    case "LEFT":
+                        SetMoveLeft(gameEvent.StringArg2 == "START");
+                        break;
+                    case "RIGHT":
+                        SetMoveRight(gameEvent.StringArg2 == "START");
+                        break;
+                }
                 break;
-            case "RIGHT":
-                SetMoveRight(gameEvent.StringArg2 == "START");
+            case "GET_FAT":
+                GetFat();
+                break;
+            case "GET_SKINNY":
+                GetSkinny();
+                break;
+            default:
                 break;
         }
     }
