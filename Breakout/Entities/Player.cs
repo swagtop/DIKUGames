@@ -43,6 +43,8 @@ public class Player : Entity, IGameEventProcessor {
     
     public void Reset() {
         Shape.Position = new Vec2F((1.0f - Shape.Extent.X)/2.0f, 0.0f);
+        SetMoveRight(false);
+        SetMoveLeft(false);
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
