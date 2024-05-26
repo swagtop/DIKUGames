@@ -30,8 +30,6 @@ public class Split : IPowerupEffect {
             }
             ball.DeleteEntity();
         });
-        
-        //if (newBalls.Count == 0) return;
 
         foreach (Ball ball in newBalls) {
             balls.AddEntity(ball);
