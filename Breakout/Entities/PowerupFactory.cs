@@ -28,6 +28,12 @@ public static class PowerupFactory {
                     new DynamicShape(spawnPosition, extent, direction),
                     new Wide()
                 );
+            case PowerupEffectType.DoubleSize:
+                return new Powerup(
+                    new Image(Path.Combine("Assets", "Images", "BigPowerUp.png")),
+                    new DynamicShape(spawnPosition, extent, direction),
+                    new DoubleSize()
+                );
             default:
                 throw new Exception("Powerup type not implemented.");
         }

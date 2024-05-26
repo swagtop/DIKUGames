@@ -1,11 +1,13 @@
-/*namespace Breakout.PowerUpEffects;
+namespace Breakout.PowerupEffects;
 
-public class DoubleSize : PowerUpEffects {
-    public vois ActivateDoubleSize (List<Ball>) {
-        foreach (var ball in balls) {
-            ball.Shape.Extent *= 2;
-        }
-        // Implementering af timer 
+using DIKUArcade.Entities;
+using Breakout.Entities;
+
+public class DoubleSize : IPowerupEffect {
+    public void EngagePowerup(EntityContainer<Ball> balls, Player player) {
+        balls.Iterate(ball => {
+        ball.Shape.Extent *= 2;
+        return;
+        });
     }
 }
-*/

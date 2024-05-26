@@ -142,6 +142,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
             EndLevel();
             return;
         }
+
         bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
         if (lostAllBalls) {
             bool playerLost = hearts.BreakHeart();

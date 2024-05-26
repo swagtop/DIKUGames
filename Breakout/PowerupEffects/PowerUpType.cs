@@ -3,7 +3,7 @@ namespace Breakout.PowerupEffects;
 public enum PowerupEffectType {
     //PlayerSpeed,
     Wide,
-    //DoubleSize,
+    DoubleSize,
     Split,
     //HardBall
 }
