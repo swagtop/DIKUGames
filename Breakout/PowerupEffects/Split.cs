@@ -13,6 +13,7 @@ public class Split : IPowerupEffect {
     }
     
     public void EngagePowerup(EntityContainer<Ball> balls, Player player) {
+        if (balls.CountEntities() > 500) return;
         List<Ball> newBalls = new List<Ball>();
         balls.Iterate(ball => {
             for (int i = 0; i < multiplier; i++) {

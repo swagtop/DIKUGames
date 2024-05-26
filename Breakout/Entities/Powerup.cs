@@ -12,7 +12,9 @@ public class Powerup : Entity {
     }
 
     public void Move() {
-        Shape.Position.Y += Shape.AsDynamicShape().Direction.Y;
+        Shape.Move();
+
+        if (Shape.Position.X < 0.0f - Shape.Extent.X) { DeleteEntity(); }
     }
 
     public IPowerupEffect Pop() {

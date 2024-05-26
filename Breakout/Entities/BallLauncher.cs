@@ -6,7 +6,6 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Utilities;
 
 public class BallLauncher {
-    private Ball loadedBall;
     private readonly EntityContainer<Ball> balls;
     private readonly Player player;
 
