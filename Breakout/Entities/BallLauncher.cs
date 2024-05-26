@@ -25,9 +25,9 @@ public class BallLauncher {
             float directionY = 1.0f;
 
             // Slight randomization
-            float randomFloatOne = RandomGenerator.Generator.NextSingle() * 0.01f;
-            float randomFloatTwo = RandomGenerator.Generator.NextSingle() * 0.01f;
-            directionX += (randomFloatOne - randomFloatTwo)/2;
+            float randomFloat = RandomGenerator.Generator.NextSingle() * 0.01f;
+            if (RandomGenerator.Generator.Next(2) == 0) { randomFloat *= -1; }
+            directionX += randomFloat;
 
             // Normalize the vector
             Vec2F normalizedDir = Vec2F.Normalize(new Vec2F(directionX * 10, directionY));

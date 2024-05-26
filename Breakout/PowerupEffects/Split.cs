@@ -28,6 +28,7 @@ public class Split : IPowerupEffect {
 
                 newBalls.Add(newBall);
             }
+            ball.DeleteEntity();
         });
         
         //if (newBalls.Count == 0) return;
