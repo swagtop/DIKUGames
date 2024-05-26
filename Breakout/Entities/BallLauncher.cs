@@ -18,8 +18,9 @@ public class BallLauncher {
         Vec2F launchVector = new Vec2F(0.0f, 0.0f);
         balls.Iterate(ball => {
             float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2);
+            float ballMiddle = ball.Shape.Position.X + (ball.Shape.Extent.X / 2);
 
-            float directionX = ball.Shape.Position.X - playerMiddle;
+            float directionX = ballMiddle - playerMiddle;
             float directionY = 1.0f;
 
             // Normalize the vector

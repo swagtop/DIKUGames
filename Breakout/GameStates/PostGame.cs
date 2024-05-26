@@ -29,6 +29,7 @@ public class PostGame : IGameState, IGameEventProcessor {
 
     private PostGame() {
         eventBus.Subscribe(GameEventType.GraphicsEvent, this);
+
         gameWonText.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));
         gameLostText.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));
         points.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));

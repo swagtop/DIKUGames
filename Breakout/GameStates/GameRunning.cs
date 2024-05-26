@@ -136,7 +136,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     currentLevel.BreakableLeft -= 1;
                 }
             });
-
         });
         
         if (currentLevel.BreakableLeft == 0) {
