@@ -3,7 +3,7 @@ namespace Breakout.LevelHandling;
 using DIKUArcade.Entities;
 using Breakout.Entities;
 
-public class Level {
+public struct Level {
     public LevelMeta Meta;
     public EntityContainer<Block> Blocks;
     public uint BreakableLeft;
