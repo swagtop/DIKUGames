@@ -2,6 +2,7 @@ namespace Breakout.LevelHandling;
 
 using DIKUArcade.Entities;
 using Breakout.Entities;
+using Breakout.Entities.Blocks;
 
 public struct Level {
     public LevelMeta Meta;

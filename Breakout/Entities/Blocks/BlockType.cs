@@ -1,4 +1,4 @@
-namespace Breakout.Entities;
+namespace Breakout.Entities.Blocks;
 
 public enum BlockType {
     Block,

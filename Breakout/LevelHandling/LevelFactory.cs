@@ -4,6 +4,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Breakout.Entities;
+using Breakout.Entities.Blocks;
 
 public static class LevelFactory {
     public static Level LoadFromFile(string filepath) {

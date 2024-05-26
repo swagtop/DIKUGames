@@ -8,10 +8,6 @@ using Breakout.Entities;
 
 public class TimerTests {
     private Timer timer;
-
-    [SetUp]
-    public void Setup() {
-    }
     
     [Test]
     public void ConstructorTest() {

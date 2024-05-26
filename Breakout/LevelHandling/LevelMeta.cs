@@ -1,6 +1,7 @@
 namespace Breakout.LevelHandling;
 
 using Breakout.Entities;
+using Breakout.Entities.Blocks;
 
 public struct LevelMeta {
     public string LevelName;
