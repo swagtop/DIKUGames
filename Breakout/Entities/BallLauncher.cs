@@ -3,6 +3,7 @@ namespace Breakout.Entities;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Utilities;
 
 public class BallLauncher {
     private Ball loadedBall;
@@ -22,6 +23,11 @@ public class BallLauncher {
 
             float directionX = ballMiddle - playerMiddle;
             float directionY = 1.0f;
+
+            // Slight randomization
+            float randomFloatOne = RandomGenerator.Generator.NextSingle() * 0.01f;
+            float randomFloatTwo = RandomGenerator.Generator.NextSingle() * 0.01f;
+            directionX += (randomFloatOne - randomFloatTwo)/2;
 
             // Normalize the vector
             Vec2F normalizedDir = Vec2F.Normalize(new Vec2F(directionX * 10, directionY));

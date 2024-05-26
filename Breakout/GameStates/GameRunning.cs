@@ -131,7 +131,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     ball.ChangeDirection(colCheckBlock.CollisionDir);
                 }
                 if (block.IsDeleted()) {
-                    powerups.AddEntity(PowerupFactory.CreatePowerup(block.Shape.Position, PowerupEffectType.Wide));
+                    powerups.AddEntity(PowerupFactory.CreateRandomPowerup(block.Shape.Position));
                     points.AwardPointsFor(block);
                     currentLevel.BreakableLeft -= 1;
                 }
