@@ -21,10 +21,7 @@ using Breakout.HazardEffects;
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();
-    private Background background = new Background(
-        new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
-    );
-    
+
     private Player player = new Player();
     private Queue<Level> levelQueue = new Queue<Level>();
     private Level currentLevel = new Level();
@@ -35,6 +32,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Hearts hearts= new Hearts();
     private Timer timer = new Timer();
     private Points points = new Points();
+    private Background background = new Background(
+        new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
+    );
 
     private GameRunning() {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
@@ -66,13 +66,12 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void UpdateState() {
-        timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
+        timer.UpdateTimer();
         player.Move();
         IterateBalls();
         IteratePowerups();
         
-        bool timeLimitExceeded = timer.IsTimeUp(StaticTimer.GetElapsedSeconds());
-        if (timeLimitExceeded) {
+        if (timer.TimeLimitExceeded()) {
             EndGame("LOST");
         }
     }

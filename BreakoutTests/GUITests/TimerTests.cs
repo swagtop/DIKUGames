@@ -13,7 +13,7 @@ public class TimerTests {
     public void ConstructorTest() {
         timer = new Timer();
 
-        Assert.AreEqual(timer.GetTimeLeft(100), -100);
+        Assert.AreEqual(timer.GetTimeLeft(), -1);
     }
 
     [Test]
@@ -35,10 +35,10 @@ public class TimerTests {
     [Test]
     public void ResetTimerTest() {
         timer = new Timer();
-        Assert.AreEqual(timer.GetTimeLeft(100), -100);
+        Assert.AreEqual(timer.GetTimeLeft(), -1);
 
         timer.Reset();
-        Assert.AreEqual(timer.GetTimeLeft(100), -101);
+        Assert.AreEqual(timer.GetTimeLeft(), -2);
     }
     
     [Test]
@@ -47,11 +47,11 @@ public class TimerTests {
         timer.SetTimeLimit(100);
 
         for (int i = 0; i < 101; i++) {
-            timer.UpdateTimer(1);
+            timer.UpdateTimer();
         }
 
         timer.SetTimeLimit(100);
-        timer.UpdateTimer(1);
+        timer.UpdateTimer();
 
         Assert.Pass();
     }
@@ -70,9 +70,9 @@ public class TimerTests {
         timer.SetTimeLimit(100);
 
         for (int i = 0; i < 101; i++) {
-            timer.UpdateTimer(1);
+            timer.UpdateTimer();
         }
 
-        Assert.AreEqual(timer.TimeIsUp(100), false);
+        Assert.AreEqual(timer.TimeLimitExceeded(), false);
     }
 }
