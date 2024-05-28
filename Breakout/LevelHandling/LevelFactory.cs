@@ -30,11 +30,11 @@ public static class LevelFactory {
 
         blocks = ParseMapSection(levelFileSections.Map, levelMeta, levelLegend);
                 
-        uint notBreakableAmount = 0;
+        int notBreakableAmount = 0;
         foreach (Block block in blocks) {
             if (block is UnbreakableBlock) notBreakableAmount++;
         }
-        uint breakableLeft = (uint)blocks.CountEntities() - notBreakableAmount;
+        int breakableLeft = blocks.CountEntities() - notBreakableAmount;
 
         return new Level(levelMeta, blocks, breakableLeft);
     }

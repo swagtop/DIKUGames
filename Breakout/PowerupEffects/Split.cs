@@ -6,7 +6,24 @@ using DIKUArcade.Utilities;
 using Breakout.Entities;
 
 public class Split : IPowerupEffect {
+    private static Random rnd = RandomGenerator.Generator;
     private static int multiplier = 3;
+
+    private void Rotate(Ball ball, float amount) {
+        Vec2F dir = ball.Dynamic.Direction;
+
+        ball.Dynamic.ChangeDirection(new Vec2F(
+            dir.X * MathF.Cos(amount) - dir.Y * MathF.Sin(amount),
+            dir.X * MathF.Sin(amount) + dir.Y * MathF.Cos(amount)
+        ));
+    }
+
+    private void GiveRandomDirection(Ball ball) {
+        float randomRotationAmount = rnd.NextSingle();
+        randomRotationAmount *= MathF.PI;
+
+        Rotate(ball, randomRotationAmount);
+    }
     
     public void EngagePowerup(EntityContainer<Ball> balls, Player player) {
         if (balls.CountEntities() > 500) return; // Avoiding crazy amounts of balls.
@@ -15,14 +32,8 @@ public class Split : IPowerupEffect {
         balls.Iterate(ball => {
             for (int i = 0; i < multiplier; i++) {
                 Ball newBall = ball.Clone();
-                Vec2F newDir = newBall.Dynamic.Direction;
-                float randomRotationAmount = RandomGenerator.Generator.NextSingle();
-                randomRotationAmount *= MathF.PI;
-
-                newBall.Dynamic.ChangeDirection(new Vec2F(
-                    newDir.X * MathF.Cos(randomRotationAmount) - newDir.Y * MathF.Sin(randomRotationAmount),
-                    newDir.X * MathF.Sin(randomRotationAmount) + newDir.Y * MathF.Cos(randomRotationAmount)
-                ));
+                
+                GiveRandomDirection(newBall);
 
                 newBalls.Add(newBall);
             }

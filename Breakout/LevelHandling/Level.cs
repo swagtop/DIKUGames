@@ -4,10 +4,10 @@ using DIKUArcade.Entities;
 using Breakout.Entities;
 using Breakout.Entities.Blocks;
 
-public struct Level {
+public class Level {
     public LevelMeta Meta;
     public EntityContainer<Block> Blocks;
-    public uint BreakableLeft;
+    public int BreakableLeft;
 
     public Level() {
         Meta = new LevelMeta(); 
@@ -15,7 +15,7 @@ public struct Level {
         BreakableLeft = 0;
     }
 
-    public Level(LevelMeta meta, EntityContainer<Block> blocks, uint breakableLeft) {
+    public Level(LevelMeta meta, EntityContainer<Block> blocks, int breakableLeft) {
         Meta = meta; 
         Blocks = blocks;
         BreakableLeft = breakableLeft;

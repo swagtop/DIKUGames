@@ -43,8 +43,10 @@ public static class BallIterator {
                     ball.Dynamic, 
                     block.Shape
                 );
+
                 if (colCheckBlock.Collision) {
                     block.Hit();
+                    Console.WriteLine(block.IsDeleted());
                     ball.ChangeDirection(colCheckBlock.CollisionDir);
                 }
                 if (block.IsDeleted()) {
@@ -53,19 +55,17 @@ public static class BallIterator {
                 }
             });
         });
-        
+
+        Console.WriteLine(currentLevel.BreakableLeft);
         if (currentLevel.BreakableLeft == 0) {
-            return "GAME_WON";
+            return "NO_MORE_BLOCKS";
         }
 
         bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
         if (lostAllBalls) {
             BreakoutBus.GetBus().CancelTimedEvent(201);
             BreakoutBus.GetBus().CancelTimedEvent(301);
-
-            bool playerLost = hearts.BreakHeart();
-            if (playerLost) { return "GAME_LOST"; }
-            else { return "LOAD_BALL"; }
+            return "NO_MORE_BALLS";
         }
 
         return "CONTINUE";

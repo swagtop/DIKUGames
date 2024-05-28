@@ -52,7 +52,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ResetState() {
-        eventBus.Flush();       
+        eventBus.CancelTimedEvent(101);
+        eventBus.CancelTimedEvent(201);
+        eventBus.CancelTimedEvent(301);
 
         player.Reset();
         balls.ClearContainer();
@@ -67,12 +69,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void UpdateState() {
         timer.UpdateTimer();
-        player.Move();
-        IterateBalls();
-        IteratePowerups();
-        
-        if (timer.TimeLimitExceeded()) {
-            EndGame("LOST");
+        if (timer.TimeLimitExceeded()) { EndGame("LOST"); }
+        else {
+            player.Move();
+            IterateBalls();
+            IteratePowerups();
         }
     }
 
@@ -94,17 +95,13 @@ public class GameRunning : IGameState, IGameEventProcessor {
         switch (status) {
             case "CONTINUE":
                 break;
-            case "LOAD_BALL":
-                ballLauncher.AddNewBall();
+            case "NO_MORE_BALLS":
+                bool playerLost = hearts.BreakHeart();
+                if (playerLost) { EndGame("LOST"); }
+                else { ballLauncher.AddNewBall(); }
                 break;
-            case "END_LEVEL":
+            case "NO_MORE_BLOCKS":
                 EndLevel();
-                break;
-            case "GAME_WON":
-                EndGame("WON");
-                break;
-            case "GAME_LOST":
-                EndGame("LOST");
                 break;
         }
     }
@@ -183,7 +180,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 break;
             case KeyboardKey.B:
                 Console.WriteLine("DEBUG: All blocks take one hit.");
+                int blockAmount = currentLevel.Blocks.CountEntities();
                 currentLevel.Blocks.Iterate(block => block.Hit());
+                currentLevel.BreakableLeft -= blockAmount - currentLevel.Blocks.CountEntities();
                 break;
             case KeyboardKey.Tab:
                 if (levelQueue.Any()) {

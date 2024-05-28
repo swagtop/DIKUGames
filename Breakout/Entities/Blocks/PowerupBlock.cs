@@ -9,12 +9,15 @@ public class PowerupBlock : Block {
     public PowerupBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape) {}
 
     public override bool Hit() {
-        DeleteEntity();
-        BreakoutBus.GetBus().RegisterEvent(new GameEvent{
-            EventType = GameEventType.StatusEvent,
-            Message = "SPAWN_POWERUP",
-            ObjectArg1 = (object)Shape.Position
-        });
-        return this.IsDeleted();
+        Health -= 1;
+        if (this.IsDeleted()) {
+            BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                EventType = GameEventType.StatusEvent,
+                Message = "SPAWN_POWERUP",
+                ObjectArg1 = (object)Shape.Position
+            });
+            return true;
+        }
+        return false;
     }
 }
