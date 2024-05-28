@@ -1,17 +1,23 @@
-/*
 namespace Breakout.Entities;
 
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
+using Breakout;
+using Breakout.Entities;
+using Breakout.Entities.Blocks;
+using Breakout.LevelHandling;
+using Breakout.GUI;
 
-public static class BallMover {
-    public static bool MoveBalls(EntityContainer<Block> balls, EntityContainer<Block> blocks, Player player) {
+public static class BallIterator {
+    private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
+
+    public static string IterateBalls(Level currentLevel, Player player, EntityContainer<Ball> balls, Points points, Hearts hearts) {
         int ballCount = balls.CountEntities();
 
         balls.Iterate(ball => {
-            movementStrategy.Move(ball);
+            ball.Move();
             CollisionData colCheckPlayer = CollisionDetection.Aabb(
                 ball.Dynamic, 
                 player.Shape.AsDynamicShape()
@@ -43,16 +49,25 @@ public static class BallMover {
                 }
                 if (block.IsDeleted()) {
                     points.AwardPointsFor(block);
+                    currentLevel.BreakableLeft -= 1;
                 }
             });
-
         });
-
-        if (ballCount != 0 && balls.CountEntities() == 0) {
-            bool playerLost = hearts.BreakHeart();
-            if (playerLost) { EndGame(false); }
-            else { ballLauncher.AddNewBall(); }
+        
+        if (currentLevel.BreakableLeft == 0) {
+            return "END_LEVEL";
         }
+
+        bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
+        if (lostAllBalls) {
+            BreakoutBus.GetBus().CancelTimedEvent(201);
+            BreakoutBus.GetBus().CancelTimedEvent(301);
+
+            bool playerLost = hearts.BreakHeart();
+            if (playerLost) { return "GAME_LOST"; }
+            else { return "LOAD_BALL"; }
+        }
+
+        return "CONTINUE";
     }
 }
-*/

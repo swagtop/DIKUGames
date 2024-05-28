@@ -36,9 +36,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Timer timer = new Timer();
     private Points points = new Points();
 
-    private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
-    private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
-
     private GameRunning() {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         eventBus.Subscribe(GameEventType.StatusEvent, this);
@@ -100,59 +97,19 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void IterateBalls() {
-        int ballCount = balls.CountEntities();
-
-        balls.Iterate(ball => {
-            ball.Move();
-            CollisionData colCheckPlayer = CollisionDetection.Aabb(
-                ball.Dynamic, 
-                player.Shape.AsDynamicShape()
-            );
-
-            if (colCheckPlayer.Collision) {
-                float ballMiddle = ball.Shape.Position.X + (ball.Shape.Extent.X / 2.0f);
-                float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2.0f);
-                float relativeRotation = (playerMiddle - ballMiddle) * 12.0f;
-
-                ball.ChangeDirection(colCheckPlayer.CollisionDir);
-
-                Vec2F newDir = defaultBallDirection.Copy();
-
-                ball.Dynamic.ChangeDirection(new Vec2F(
-                    newDir.X * MathF.Cos(relativeRotation) - newDir.Y * MathF.Sin(relativeRotation),
-                    newDir.X * MathF.Sin(relativeRotation) + newDir.Y * MathF.Cos(relativeRotation)
-                ));
-            }
-
-            currentLevel.Blocks.Iterate(block => {
-                CollisionData colCheckBlock = CollisionDetection.Aabb(
-                    ball.Dynamic, 
-                    block.Shape
-                );
-                if (colCheckBlock.Collision) {
-                    block.Hit();
-                    ball.ChangeDirection(colCheckBlock.CollisionDir);
-                }
-                if (block.IsDeleted()) {
-                    points.AwardPointsFor(block);
-                    currentLevel.BreakableLeft -= 1;
-                }
-            });
-        });
-        
-        if (currentLevel.BreakableLeft == 0) {
-            EndLevel();
-            return;
-        }
-
-        bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
-        if (lostAllBalls) {
-            eventBus.CancelTimedEvent(201);
-            eventBus.CancelTimedEvent(301);
-
-            bool playerLost = hearts.BreakHeart();
-            if (playerLost) { EndGame("LOST"); }
-            else { ballLauncher.AddNewBall(); }
+        string status = BallIterator.IterateBalls(currentLevel, player, balls, points, hearts);
+        switch (status) {
+            case "CONTINUE":
+                break;
+            case "LOAD_BALL":
+                ballLauncher.AddNewBall();
+                break;
+            case "END_LEVEL":
+                EndLevel();
+                break;
+            case "GAME_LOST":
+                EndGame("LOST");
+                break;
         }
     }
 
