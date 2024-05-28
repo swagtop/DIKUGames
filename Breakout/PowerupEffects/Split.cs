@@ -6,11 +6,7 @@ using DIKUArcade.Utilities;
 using Breakout.Entities;
 
 public class Split : IPowerupEffect {
-    public int multiplier;
-
-    public Split() {
-        multiplier = 3;
-    }
+    private static int multiplier = 3;
     
     public void EngagePowerup(EntityContainer<Ball> balls, Player player) {
         if (balls.CountEntities() > 500) return;
@@ -36,4 +32,6 @@ public class Split : IPowerupEffect {
             balls.AddEntity(ball);
         }
     }
+
+    public void DisengagePowerup(EntityContainer<Ball> balls, Player player) {}
 }

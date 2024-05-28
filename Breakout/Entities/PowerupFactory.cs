@@ -34,6 +34,18 @@ public static class PowerupFactory {
                     new DynamicShape(spawnPosition, extent, direction),
                     new DoubleSize()
                 );
+            case PowerupEffectType.HardBall:
+                return new Powerup(
+                    new Image(Path.Combine("Assets", "Images", "ToughenUp.png")),
+                    new DynamicShape(spawnPosition, extent, direction),
+                    new HardBall()
+                );
+            case PowerupEffectType.ExtraLife:
+                return new Powerup(
+                    new Image(Path.Combine("Assets", "Images", "LifePickUp.png")),
+                    new DynamicShape(spawnPosition, extent, direction),
+                    new ExtraLife()
+                );
             default:
                 throw new Exception("Powerup type not implemented.");
         }

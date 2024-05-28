@@ -1,12 +1,36 @@
-/*
-namespace Breakout.PowerUpEffects;
+namespace Breakout.PowerupEffects;
 
-public class Hardball : PowerUpEffects {
-    public void ActivateHardBall(List<Ball> balls) {
-        foreach (var ball in balls) {
+using DIKUArcade.Events;
+using DIKUArcade.Graphics;
+using DIKUArcade.Entities;
+using DIKUArcade.Math;
+using DIKUArcade.Timers;
+using Breakout;
+using Breakout.Entities;
+
+public class HardBall : IPowerupEffect {
+    private static IBaseImage normalBall = new Image(Path.Combine("Assets", "Images", "ball.png"));
+    private static IBaseImage hardBall = new Image(Path.Combine("Assets", "Images", "ball2.png"));
+
+    private static GameEvent disengageEvent = new GameEvent {
+        EventType = GameEventType.TimedEvent,
+        Message = "DISENGAGE_POWERUP",
+        Id = 301,
+        ObjectArg1 = new HardBall(),
+    };
+
+    public void EngagePowerup(EntityContainer<Ball> balls, Player player) {
+        foreach (Ball ball in balls) {
             ball.IsHard = true;
+            ball.Image = hardBall;
+        }
+        BreakoutBus.GetBus().AddOrResetTimedEvent(disengageEvent, TimePeriod.NewSeconds(5));
+    }
+
+    public void DisengagePowerup(EntityContainer<Ball> balls, Player player) {
+        foreach (Ball ball in balls) {
+            ball.IsHard = false;
+            ball.Image = normalBall;
         }
     }
-    // implement timer 
 }
-*/

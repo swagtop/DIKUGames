@@ -20,6 +20,7 @@ public class Game : DIKUGame, IGameEventProcessor {
             GameEventType.GameStateEvent,
             GameEventType.PlayerEvent,
             GameEventType.GraphicsEvent,
+            GameEventType.TimedEvent,
         });
         eventBus.Subscribe(GameEventType.WindowEvent, this);
 

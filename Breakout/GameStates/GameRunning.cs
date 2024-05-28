@@ -15,6 +15,7 @@ using Breakout.Entities;
 using Breakout.GUI;
 using Breakout.LevelHandling;
 using Breakout.PowerupEffects;
+using Breakout.HazardEffects;
 
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
@@ -41,6 +42,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         eventBus.Subscribe(GameEventType.StatusEvent, this);
         eventBus.Subscribe(GameEventType.GameStateEvent, this);
+        eventBus.Subscribe(GameEventType.TimedEvent, this);
 
         ballLauncher = new BallLauncher(balls, player);
 
@@ -145,6 +147,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
         bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
         if (lostAllBalls) {
+            eventBus.CancelTimedEvent(201);
+            eventBus.CancelTimedEvent(301);
+
             bool playerLost = hearts.BreakHeart();
             if (playerLost) { EndGame("LOST"); }
             else { ballLauncher.AddNewBall(); }
@@ -261,6 +266,16 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void ProcessEvent(GameEvent gameEvent) {
         switch (gameEvent.Message) {
+            case "DISENGAGE_POWERUP":
+                ((IPowerupEffect)gameEvent.ObjectArg1).DisengagePowerup(balls, player);
+                break;
+            case "DISENGAGE_HAZARD":
+                ((IHazardEffect)gameEvent.ObjectArg1).DisengageHazard(balls, player);
+                break;
+            case "GAIN_LIFE":
+                hearts.MendHeart();
+                break;
+
             case "LOAD_LEVEL":
                 ResetState();
                 currentLevel = (Level)gameEvent.ObjectArg1;
@@ -275,6 +290,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case "FLUSH_QUEUE":
                 FlushQueue();
                 break;
+
             case "CHANGE_STATE":
                 if (gameEvent.StringArg1 == "GAME_RUNNING") return;
                 if (gameEvent.StringArg1 == "GAME_PAUSED") return;

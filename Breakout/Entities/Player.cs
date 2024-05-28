@@ -86,12 +86,6 @@ public class Player : Entity, IGameEventProcessor {
                         break;
                 }
                 break;
-            case "GET_FAT":
-                GetFat();
-                break;
-            case "GET_SKINNY":
-                GetSkinny();
-                break;
             default:
                 break;
         }

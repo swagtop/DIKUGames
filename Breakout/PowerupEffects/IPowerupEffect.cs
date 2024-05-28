@@ -7,4 +7,5 @@ using Breakout.Entities;
 
 public interface IPowerupEffect {
     void EngagePowerup(EntityContainer<Ball> balls, Player player);
+    void DisengagePowerup(EntityContainer<Ball> balls, Player player);
 }
