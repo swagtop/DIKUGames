@@ -52,6 +52,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ResetState() {
+        eventBus.Flush();       
+
         player.Reset();
         balls.ClearContainer();
         ballLauncher.AddNewBall();       
@@ -67,16 +69,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
         player.Move();
         IterateBalls();
-        powerups.Iterate(powerup => {
-            powerup.Move();
-            CollisionData colCheckPlayer = CollisionDetection.Aabb(
-                powerup.Shape.AsDynamicShape(), 
-                player.Shape.AsStationaryShape()
-            );
-            if (colCheckPlayer.Collision) {
-                powerup.Pop().EngagePowerup(balls, player);
-            }
-        });
+        IteratePowerups();
         
         if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
             EndGame("LOST");
@@ -114,6 +107,19 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 EndGame("LOST");
                 break;
         }
+    }
+
+    public void IteratePowerups() {
+        powerups.Iterate(powerup => {
+            powerup.Move();
+            CollisionData colCheckPlayer = CollisionDetection.Aabb(
+                powerup.Shape.AsDynamicShape(), 
+                player.Shape.AsStationaryShape()
+            );
+            if (colCheckPlayer.Collision) {
+                powerup.Pop().EngagePowerup(balls, player);
+            }
+        });
     }
 
     public void FlushQueue() {

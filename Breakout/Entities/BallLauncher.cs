@@ -15,8 +15,9 @@ public class BallLauncher {
     }
 
     public void LaunchBall() {
-        Vec2F launchVector = new Vec2F(0.0f, 0.0f);
+        Vec2F launchVector;
         balls.Iterate(ball => {
+            launchVector = new Vec2F(0.0f, 0.0f);
             float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2);
             float ballMiddle = ball.Shape.Position.X + (ball.Shape.Extent.X / 2);
 

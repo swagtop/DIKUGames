@@ -14,15 +14,11 @@ public class DoubleSize : IPowerupEffect {
     };
 
     public void EngagePowerup(EntityContainer<Ball> balls, Player player) {
-        balls.Iterate(ball => {
-        ball.Shape.Extent *= 2;
-        });
+        balls.Iterate(ball => { ball.Shape.Extent *= 2; });
         BreakoutBus.GetBus().RegisterTimedEvent(disengageEvent, TimePeriod.NewSeconds(5));
     }
     
     public void DisengagePowerup(EntityContainer<Ball> balls, Player player) {
-        balls.Iterate(ball => {
-        ball.Shape.Extent /= 2;
-        });
+        balls.Iterate(ball => { ball.Shape.Extent /= 2; });
     }
 }
