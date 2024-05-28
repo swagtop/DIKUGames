@@ -55,7 +55,7 @@ public static class BallIterator {
         });
         
         if (currentLevel.BreakableLeft == 0) {
-            return "END_LEVEL";
+            return "GAME_WON";
         }
 
         bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);

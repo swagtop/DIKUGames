@@ -107,6 +107,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case "END_LEVEL":
                 EndLevel();
                 break;
+            case "GAME_WON":
+                EndGame("WON");
+                break;
             case "GAME_LOST":
                 EndGame("LOST");
                 break;
