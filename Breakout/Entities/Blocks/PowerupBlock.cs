@@ -15,6 +15,6 @@ public class PowerupBlock : Block {
             Message = "SPAWN_POWERUP",
             ObjectArg1 = (object)Shape.Position
         });
-        return IsDeleted();
+        return this.IsDeleted();
     }
 }

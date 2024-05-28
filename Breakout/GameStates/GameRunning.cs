@@ -71,7 +71,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         IterateBalls();
         IteratePowerups();
         
-        if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
+        bool timeLimitExceeded = timer.IsTimeUp(StaticTimer.GetElapsedSeconds());
+        if (timeLimitExceeded) {
             EndGame("LOST");
         }
     }

@@ -14,7 +14,8 @@ public class Powerup : Entity {
     public void Move() {
         Shape.Move();
 
-        if (Shape.Position.X < 0.0f - Shape.Extent.X) { DeleteEntity(); }
+        bool belowLowerBorder = (Shape.Position.X < 0.0f - Shape.Extent.X);
+        if (belowLowerBorder) { DeleteEntity(); }
     }
 
     public IPowerupEffect Pop() {

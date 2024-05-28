@@ -46,7 +46,7 @@ public class Timer : Text {
         }
     }
 
-    public bool TimeIsUp(double timePassed) {
+    public bool IsTimeUp(double timePassed) {
         return (timeLimit > 0 && timeLimit - timePassed < 0);
     }
 }
