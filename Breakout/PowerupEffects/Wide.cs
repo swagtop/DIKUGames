@@ -10,7 +10,7 @@ using Breakout.Entities;
 public class Wide : IPowerupEffect {
     private static GameEvent disengageEvent = new GameEvent {
         EventType = GameEventType.TimedEvent,
-        Message = "GET_SKINNY",
+        Message = "DISENGAGE_POWERUP",
         Id = 101,
         ObjectArg1 = new Wide(),
     };

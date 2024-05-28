@@ -12,6 +12,7 @@ using DIKUArcade.State;
 using DIKUArcade.Timers;
 using DIKUArcade.Utilities;
 using Breakout.Entities;
+using Breakout.Entities.Blocks;
 using Breakout.GUI;
 using Breakout.LevelHandling;
 using Breakout.PowerupEffects;
@@ -133,7 +134,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
                     ball.ChangeDirection(colCheckBlock.CollisionDir);
                 }
                 if (block.IsDeleted()) {
-                    powerups.AddEntity(PowerupFactory.CreateRandomPowerup(block.Shape.Position));
                     points.AwardPointsFor(block);
                     currentLevel.BreakableLeft -= 1;
                 }
@@ -266,6 +266,12 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void ProcessEvent(GameEvent gameEvent) {
         switch (gameEvent.Message) {
+            case "SPAWN_POWERUP":
+                powerups.AddEntity(PowerupFactory.CreateRandomPowerup((Vec2F)gameEvent.ObjectArg1));
+                break;
+            case "SPAWN_HAZARD":
+                //
+                break;
             case "DISENGAGE_POWERUP":
                 ((IPowerupEffect)gameEvent.ObjectArg1).DisengagePowerup(balls, player);
                 break;
