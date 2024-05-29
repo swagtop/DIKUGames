@@ -46,7 +46,6 @@ public static class BallIterator {
 
                 if (colCheckBlock.Collision) {
                     block.Hit();
-                    Console.WriteLine(block.IsDeleted());
                     ball.ChangeDirection(colCheckBlock.CollisionDir);
                 }
                 if (block.IsDeleted()) {
@@ -56,7 +55,6 @@ public static class BallIterator {
             });
         });
 
-        Console.WriteLine(currentLevel.BreakableLeft);
         if (currentLevel.BreakableLeft == 0) {
             return "NO_MORE_BLOCKS";
         }
