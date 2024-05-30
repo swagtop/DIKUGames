@@ -29,14 +29,13 @@ public class LevelTests {
     public void ConstructedLevelTest() {
         LevelMeta exampleMeta = new LevelMeta("Level name", 100, new Dictionary<char, BlockType>());
         EntityContainer<Block> blocks = new EntityContainer<Block>();
-        level = new Level(exampleMeta, blocks, (uint)blocks.CountEntities());
+        level = new Level(exampleMeta, blocks, blocks.CountEntities());
 
         Assert.AreEqual(level.Blocks.CountEntities(), 0);
         Assert.AreEqual(level.Meta.LevelName, "Level name");
         Assert.AreEqual(level.Meta.TimeLimit, 100);
         Assert.That(level.Meta.CharDictionary is Dictionary<char, BlockType>);
         Assert.AreEqual(level.Meta.CharDictionary.Count, 0);
-        Assert.That(level.BreakableLeft is uint);
         Assert.AreEqual(level.BreakableLeft, 0);
     }
 }

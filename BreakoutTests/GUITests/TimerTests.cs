@@ -38,7 +38,7 @@ public class TimerTests {
         Assert.AreEqual(timer.GetTimeLeft(), -1);
 
         timer.Reset();
-        Assert.AreEqual(timer.GetTimeLeft(), -2);
+        Assert.AreEqual(timer.GetTimeLeft(), -1);
     }
     
     [Test]

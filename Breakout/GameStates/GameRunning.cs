@@ -132,11 +132,13 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void EndGame(string result) {
+        int finalPoints = (int)points.GetPoints();
+
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GraphicsEvent,
             Message = "DISPLAY_STATS",
             StringArg1 = result,
-            IntArg1 = (int)points.GetPoints()
+            IntArg1 = finalPoints
         });
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GameStateEvent,
@@ -268,8 +270,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 break;
 
             case "CHANGE_STATE":
-                if (gameEvent.StringArg1 == "GAME_RUNNING") return;
-                if (gameEvent.StringArg1 == "GAME_PAUSED") return;
+                if (gameEvent.StringArg1 == "GAME_RUNNING" ||
+                    gameEvent.StringArg1 == "GAME_PAUSED"  ||
+                    gameEvent.StringArg1 == "POST_GAME") return;
                 if (levelQueue.Count > 0) { FlushQueue(); }
                 hearts.ResetHearts();
                 points.ResetPoints();
