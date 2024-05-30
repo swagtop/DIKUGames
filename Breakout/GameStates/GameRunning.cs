@@ -70,8 +70,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void UpdateState() {
         timer.UpdateTimer();
-        if (timer.TimeLimitExceeded()) { EndGame("LOST"); }
-        else {
+        if (timer.TimeLimitExceeded()) { 
+            EndGame("LOST");
+        } else {
             player.Move();
             IterateBalls();
             IterateEffects();
@@ -109,9 +110,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void IterateEffects() {
         effects.Iterate(effect => {
-            if (effect.CollidesWith(player)) {
+            if (effect.CollidesWith(player)) { 
                 effect.Pop().EngageEffect(balls, player);
-            } else {
+            } else { 
                 effect.Move();
             }
         });
