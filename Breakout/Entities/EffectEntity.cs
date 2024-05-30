@@ -22,4 +22,23 @@ public class EffectEntity : Entity {
         DeleteEntity();
         return effect;
     }
+
+    public bool CollidesWith(Entity entity) {
+        float effectLeftSide = Shape.Position.X;
+        float effectRightSide = Shape.Position.X + Shape.Extent.X;
+        float effectUpperSide = Shape.Position.Y + Shape.Extent.Y;
+        float effectLowerSide = Shape.Position.Y;
+
+        float entityLeftSide = entity.Shape.Position.X;
+        float entityRightSide = entity.Shape.Position.X + Shape.Extent.X;
+        float entityUpperSide = entity.Shape.Position.Y + Shape.Extent.Y;
+        float entityLowerSide = entity.Shape.Position.Y;
+
+        return (
+            effectLeftSide < entityRightSide &&
+            effectRightSide > entityLeftSide &&
+            effectLowerSide < entityUpperSide &&
+            effectUpperSide > entityLowerSide 
+        );
+    }
 }

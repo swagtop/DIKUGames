@@ -109,13 +109,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void IterateEffects() {
         effects.Iterate(effect => {
-            effect.Move();
-            CollisionData colCheckPlayer = CollisionDetection.Aabb(
-                effect.Shape.AsDynamicShape(), 
-                player.Shape.AsStationaryShape()
-            );
-            if (colCheckPlayer.Collision) {
+            if (effect.CollidesWith(player)) {
                 effect.Pop().EngageEffect(balls, player);
+            } else {
+                effect.Move();
             }
         });
     }
@@ -234,6 +231,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
         switch (gameEvent.Message) {
             case "SPAWN_POWERUP":
                 effects.AddEntity(EffectEntityFactory.CreateRandomPowerup((Vec2F)gameEvent.ObjectArg1));
+                break;
+            case "SPAWN_HAZARD":
+                effects.AddEntity(EffectEntityFactory.CreateRandomHazard((Vec2F)gameEvent.ObjectArg1));
                 break;
             case "DISENGAGE_EFFECT":
                 ((IEffect)gameEvent.ObjectArg1).DisengageEffect(balls, player);
