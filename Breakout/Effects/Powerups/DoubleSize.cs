@@ -5,7 +5,7 @@ using DIKUArcade.Events;
 using DIKUArcade.Timers;
 using Breakout.Entities;
 
-public class DoubleSize : IEffect {
+public class DoubleSize : PowerupEffect, IEffect {
     private static GameEvent disengageEvent = new GameEvent {
         EventType = GameEventType.TimedEvent,
         Message = "DISENGAGE_EFFECT",

@@ -8,7 +8,7 @@ using DIKUArcade.Timers;
 using Breakout;
 using Breakout.Entities;
 
-public class ExtraLife : IEffect {
+public class ExtraLife : PowerupEffect, IEffect {
     public void EngageEffect(EntityContainer<Ball> balls, Player player) {
         BreakoutBus.GetBus().RegisterEvent(new GameEvent {
             EventType = GameEventType.StatusEvent,

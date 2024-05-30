@@ -8,7 +8,7 @@ using DIKUArcade.Timers;
 using Breakout;
 using Breakout.Entities;
 
-public class HardBall : IEffect {
+public class HardBall : PowerupEffect, IEffect {
     private static IBaseImage normalBall = new Image(Path.Combine("Assets", "Images", "ball.png"));
     private static IBaseImage hardBall = new Image(Path.Combine("Assets", "Images", "ball2.png"));
 
