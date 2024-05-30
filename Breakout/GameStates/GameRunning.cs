@@ -44,6 +44,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         eventBus.Subscribe(GameEventType.TimedEvent, this);
 
         ballLauncher = new BallLauncher(balls, player);
+        hearts.SetHearts(3);
 
         ResetState();
     }
@@ -61,8 +62,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
         balls.ClearContainer();
         ballLauncher.AddNewBall();       
         effects.ClearContainer();
-
-        hearts.SetHearts(3);
 
         StaticTimer.RestartTimer();
         timer.Reset();
@@ -245,6 +244,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case "GAIN_LIFE":
                 hearts.MendHeart();
                 break;
+            case "LOSE_LIFE":
+                bool playerLost = hearts.BreakHeart();
+                if (playerLost) { EndGame("LOST"); }
+                break;
 
             case "LOAD_LEVEL":
                 ResetState();
@@ -265,6 +268,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 if (gameEvent.StringArg1 == "GAME_RUNNING") return;
                 if (gameEvent.StringArg1 == "GAME_PAUSED") return;
                 if (levelQueue.Count > 0) { FlushQueue(); }
+                hearts.ResetHearts();
                 points.ResetPoints();
                 break;
             default:

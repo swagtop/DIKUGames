@@ -1,5 +1,6 @@
 namespace Breakout.Effects.Hazards;
 
 public enum HazardEffectType {
-    DoNothingHazard
+    DoNothingHazard,
+    LoseLife
 }

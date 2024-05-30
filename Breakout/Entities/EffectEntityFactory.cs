@@ -78,6 +78,12 @@ public static class EffectEntityFactory {
                     new DynamicShape(spawnPosition, extent, direction),
                     new DoNothingHazard()
                 );
+            case HazardEffectType.LoseLife:
+                return new EffectEntity(
+                    new Image(Path.Combine("Assets", "Images", "LoseLife.png")),
+                    new DynamicShape(spawnPosition, extent, direction),
+                    new LoseLife()
+                );
             default:
                 throw new Exception("Hazard type not implemented.");
         }

@@ -45,6 +45,10 @@ public class Hearts {
         Amount += 1;
     }
 
+    public void ResetHearts() {
+        Amount = startAmount;
+    }
+
     public void RenderHearts() {
         float originalX = renderingShape.Position.X;
         for (int i = 0; i < startAmount; i++) {

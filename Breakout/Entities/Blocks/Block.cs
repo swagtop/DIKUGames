@@ -35,7 +35,7 @@ public class Block : Entity {
         if (this.IsDeleted()) {
             int randomInt = RandomGenerator.Generator.Next(0, 100);
             
-            if (randomInt < 15); {
+            if (randomInt < 15) {
             BreakoutBus.GetBus().RegisterEvent(new GameEvent{
                 EventType = GameEventType.StatusEvent,
                 Message = "SPAWN_HAZARD",
