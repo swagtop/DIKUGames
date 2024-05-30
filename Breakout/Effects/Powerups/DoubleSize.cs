@@ -13,12 +13,12 @@ public class DoubleSize : PowerupEffect, IEffect {
         ObjectArg1 = new DoubleSize(),
     };
 
-    public void EngageEffect(EntityContainer<Ball> balls, Player player) {
+    public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
         balls.Iterate(ball => { ball.Shape.Extent *= 2; });
         BreakoutBus.GetBus().RegisterTimedEvent(disengageEvent, TimePeriod.NewSeconds(5));
     }
     
-    public void DisengageEffect(EntityContainer<Ball> balls, Player player) {
+    public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {
         balls.Iterate(ball => { ball.Shape.Extent /= 2; });
     }
 }

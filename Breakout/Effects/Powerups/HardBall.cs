@@ -19,7 +19,7 @@ public class HardBall : PowerupEffect, IEffect {
         ObjectArg1 = new HardBall(),
     };
 
-    public void EngageEffect(EntityContainer<Ball> balls, Player player) {
+    public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
         foreach (Ball ball in balls) {
             ball.IsHard = true;
             ball.Image = hardBall;
@@ -27,7 +27,7 @@ public class HardBall : PowerupEffect, IEffect {
         BreakoutBus.GetBus().AddOrResetTimedEvent(disengageEvent, TimePeriod.NewSeconds(5));
     }
 
-    public void DisengageEffect(EntityContainer<Ball> balls, Player player) {
+    public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {
         foreach (Ball ball in balls) {
             ball.IsHard = false;
             ball.Image = normalBall;

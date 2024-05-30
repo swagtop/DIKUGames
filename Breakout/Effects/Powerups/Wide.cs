@@ -15,12 +15,12 @@ public class Wide : PowerupEffect, IEffect {
         ObjectArg1 = new Wide(),
     };
 
-    public void EngageEffect(EntityContainer<Ball> balls, Player player) {
+    public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
         player.GetFat();
         BreakoutBus.GetBus().AddOrResetTimedEvent(disengageEvent, TimePeriod.NewSeconds(5));
     }
 
-    public void DisengageEffect(EntityContainer<Ball> balls, Player player) {
+    public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {
         player.GetSkinny();
     }
 }

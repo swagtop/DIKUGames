@@ -25,7 +25,7 @@ public class Split : PowerupEffect, IEffect {
         Rotate(ball, randomRotationAmount);
     }
     
-    public void EngageEffect(EntityContainer<Ball> balls, Player player) {
+    public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
         if (balls.CountEntities() > 500) return; // Avoiding crazy amounts of balls.
 
         List<Ball> newBalls = new List<Ball>();
@@ -45,5 +45,5 @@ public class Split : PowerupEffect, IEffect {
         }
     }
 
-    public void DisengageEffect(EntityContainer<Ball> balls, Player player) {}
+    public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {}
 }
