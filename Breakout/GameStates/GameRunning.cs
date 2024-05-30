@@ -236,6 +236,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case "SPAWN_HAZARD":
                 effects.AddEntity(EffectEntityFactory.CreateRandomHazard((Vec2F)gameEvent.ObjectArg1));
                 break;
+            case "ENGAGE_EFFECT":
+                ((IEffect)gameEvent.ObjectArg1).EngageEffect(balls, player);
+                break;
             case "DISENGAGE_EFFECT":
                 ((IEffect)gameEvent.ObjectArg1).DisengageEffect(balls, player);
                 break;
