@@ -29,6 +29,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private BallLauncher ballLauncher;
     private EntityContainer<EffectEntity> effects = new EntityContainer<EffectEntity>();
+    private bool fogOfWarActive = false;
 
     private Hearts hearts= new Hearts();
     private Timer timer = new Timer();
@@ -54,14 +55,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void ResetState() {
-        eventBus.CancelTimedEvent(101);
-        eventBus.CancelTimedEvent(201);
-        eventBus.CancelTimedEvent(301);
-
         player.Reset();
         balls.ClearContainer();
         ballLauncher.AddNewBall();       
         effects.ClearContainer();
+        fogOfWarActive = false;
 
         StaticTimer.RestartTimer();
         timer.Reset();
@@ -81,7 +79,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void RenderState() {
         background.RenderBackground();
 
-        currentLevel.Blocks.RenderEntities();
+        if (!fogOfWarActive) { currentLevel.Blocks.RenderEntities(); }
         player.RenderEntity();
         balls.RenderEntities();
         effects.RenderEntities();
@@ -122,6 +120,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void EndLevel() {
+        TimedEffectsCanceler.LevelEndCancel();
+
         if (levelQueue.Any()) {
             ResetState();
             currentLevel = levelQueue.Dequeue();
@@ -247,6 +247,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case "LOSE_LIFE":
                 bool playerLost = hearts.BreakHeart();
                 if (playerLost) { EndGame("LOST"); }
+                break;
+            case "SET_FOG_OF_WAR":
+                fogOfWarActive = (gameEvent.StringArg1 == "ENGAGE");
                 break;
 
             case "LOAD_LEVEL":

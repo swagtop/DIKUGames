@@ -72,11 +72,11 @@ public static class EffectEntityFactory {
         Vec2F direction = defaultDirection.Copy();
 
         switch (effectType) {
-            case HazardEffectType.DoNothingHazard:
+            case HazardEffectType.FogOfWar:
                 return new EffectEntity(
                     new Image(Path.Combine("Assets", "Images", "Ghost.png")),
                     new DynamicShape(spawnPosition, extent, direction),
-                    new DoNothingHazard()
+                    new FogOfWar()
                 );
             case HazardEffectType.LoseLife:
                 return new EffectEntity(

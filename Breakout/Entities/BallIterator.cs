@@ -5,6 +5,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using Breakout;
+using Breakout.Effects;
 using Breakout.Entities;
 using Breakout.Entities.Blocks;
 using Breakout.LevelHandling;
@@ -61,9 +62,8 @@ public static class BallIterator {
 
         bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
         if (lostAllBalls) {
-            BreakoutBus.GetBus().CancelTimedEvent(201);
-            BreakoutBus.GetBus().CancelTimedEvent(301);
-            return "NO_MORE_BALLS";
+           TimedEffectsCanceler.BallsLostCancel();
+           return "NO_MORE_BALLS";
         }
 
         return "CONTINUE";
