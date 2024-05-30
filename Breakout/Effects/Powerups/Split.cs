@@ -20,7 +20,7 @@ public class Split : PowerupEffect, IEffect {
 
     private void GiveRandomDirection(Ball ball) {
         float randomRotationAmount = rnd.NextSingle();
-        randomRotationAmount *= MathF.PI;
+        randomRotationAmount *= (MathF.PI * 8);
 
         Rotate(ball, randomRotationAmount);
     }
