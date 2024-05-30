@@ -1,4 +1,4 @@
-namespace Breakout.PowerupEffects;
+namespace Breakout.Effects.Powerups;
 
 using DIKUArcade.Events;
 using DIKUArcade.Graphics;
@@ -8,8 +8,8 @@ using DIKUArcade.Timers;
 using Breakout;
 using Breakout.Entities;
 
-public class ExtraLife : IPowerupEffect {
-    public void EngagePowerup(EntityContainer<Ball> balls, Player player) {
+public class ExtraLife : IEffect {
+    public void EngageEffect(EntityContainer<Ball> balls, Player player) {
         BreakoutBus.GetBus().RegisterEvent(new GameEvent {
             EventType = GameEventType.StatusEvent,
             Message = "GAIN_LIFE",
@@ -17,5 +17,5 @@ public class ExtraLife : IPowerupEffect {
         });
     }
     
-    public void DisengagePowerup(EntityContainer<Ball> balls, Player player) {}
+    public void DisengageEffect(EntityContainer<Ball> balls, Player player) {}
 }

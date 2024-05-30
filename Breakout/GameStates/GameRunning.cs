@@ -15,8 +15,9 @@ using Breakout.Entities;
 using Breakout.Entities.Blocks;
 using Breakout.GUI;
 using Breakout.LevelHandling;
-using Breakout.PowerupEffects;
-using Breakout.HazardEffects;
+using Breakout.Effects;
+using Breakout.Effects.Powerups;
+using Breakout.Effects.Hazards;
 
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
@@ -27,7 +28,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     private Level currentLevel = new Level();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private BallLauncher ballLauncher;
-    private EntityContainer<Powerup> powerups = new EntityContainer<Powerup>();
+    private EntityContainer<EffectEntity> effects = new EntityContainer<EffectEntity>();
 
     private Hearts hearts= new Hearts();
     private Timer timer = new Timer();
@@ -59,7 +60,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.Reset();
         balls.ClearContainer();
         ballLauncher.AddNewBall();       
-        powerups.ClearContainer();
+        effects.ClearContainer();
 
         hearts.SetHearts(3);
 
@@ -73,7 +74,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         else {
             player.Move();
             IterateBalls();
-            IteratePowerups();
+            IterateEffects();
         }
     }
 
@@ -83,7 +84,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         currentLevel.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();
-        powerups.RenderEntities();
+        effects.RenderEntities();
 
         hearts.RenderHearts();
         timer.RenderTimer();
@@ -106,15 +107,15 @@ public class GameRunning : IGameState, IGameEventProcessor {
         }
     }
 
-    public void IteratePowerups() {
-        powerups.Iterate(powerup => {
-            powerup.Move();
+    public void IterateEffects() {
+        effects.Iterate(effect => {
+            effect.Move();
             CollisionData colCheckPlayer = CollisionDetection.Aabb(
-                powerup.Shape.AsDynamicShape(), 
+                effect.Shape.AsDynamicShape(), 
                 player.Shape.AsStationaryShape()
             );
             if (colCheckPlayer.Collision) {
-                powerup.Pop().EngagePowerup(balls, player);
+                effect.Pop().EngageEffect(balls, player);
             }
         });
     }
@@ -232,16 +233,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
     public void ProcessEvent(GameEvent gameEvent) {
         switch (gameEvent.Message) {
             case "SPAWN_POWERUP":
-                powerups.AddEntity(PowerupFactory.CreateRandomPowerup((Vec2F)gameEvent.ObjectArg1));
+                effects.AddEntity(EffectEntityFactory.CreateRandomPowerup((Vec2F)gameEvent.ObjectArg1));
                 break;
-            case "SPAWN_HAZARD":
-                //
-                break;
-            case "DISENGAGE_POWERUP":
-                ((IPowerupEffect)gameEvent.ObjectArg1).DisengagePowerup(balls, player);
-                break;
-            case "DISENGAGE_HAZARD":
-                ((IHazardEffect)gameEvent.ObjectArg1).DisengageHazard(balls, player);
+            case "DISENGAGE_EFFECT":
+                ((IEffect)gameEvent.ObjectArg1).DisengageEffect(balls, player);
                 break;
             case "GAIN_LIFE":
                 hearts.MendHeart();

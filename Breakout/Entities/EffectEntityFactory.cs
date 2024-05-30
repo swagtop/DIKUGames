@@ -4,10 +4,12 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Utilities;
-using Breakout.PowerupEffects;
+using Breakout.Effects;
+using Breakout.Effects.Powerups;
+using Breakout.Effects.Hazards;
 
-public static class PowerupFactory {
-    public static Powerup CreatePowerup(Vec2F position, PowerupEffectType effectType) {
+public static class EffectEntityFactory {
+    public static EffectEntity CreatePowerup(Vec2F position, PowerupEffectType effectType) {
         Vec2F spawnPosition = position;
         spawnPosition.X += RandomGenerator.Generator.NextSingle() * 0.05f;
 
@@ -17,31 +19,31 @@ public static class PowerupFactory {
 
         switch (effectType) {
             case PowerupEffectType.Split:
-                return new Powerup(
+                return new EffectEntity(
                     new Image(Path.Combine("Assets", "Images", "SplitPowerUp.png")),
                     new DynamicShape(spawnPosition, extent, direction),
                     new Split()
                 );
             case PowerupEffectType.Wide:
-                return new Powerup(
+                return new EffectEntity(
                     new Image(Path.Combine("Assets", "Images", "WidePowerUp.png")),
                     new DynamicShape(spawnPosition, extent, direction),
                     new Wide()
                 );
             case PowerupEffectType.DoubleSize:
-                return new Powerup(
+                return new EffectEntity(
                     new Image(Path.Combine("Assets", "Images", "BigPowerUp.png")),
                     new DynamicShape(spawnPosition, extent, direction),
                     new DoubleSize()
                 );
             case PowerupEffectType.HardBall:
-                return new Powerup(
+                return new EffectEntity(
                     new Image(Path.Combine("Assets", "Images", "ToughenUp.png")),
                     new DynamicShape(spawnPosition, extent, direction),
                     new HardBall()
                 );
             case PowerupEffectType.ExtraLife:
-                return new Powerup(
+                return new EffectEntity(
                     new Image(Path.Combine("Assets", "Images", "LifePickUp.png")),
                     new DynamicShape(spawnPosition, extent, direction),
                     new ExtraLife()
@@ -51,11 +53,11 @@ public static class PowerupFactory {
         }
     }
 
-    public static Powerup CreateRandomPowerup(Vec2F position) {
+    public static EffectEntity CreateRandomPowerup(Vec2F position) {
         PowerupEffectType[] powerups = (PowerupEffectType[])Enum.GetValues(typeof(PowerupEffectType));
         int randomIndex = RandomGenerator.Generator.Next(powerups.Length);
         
-        Powerup randomPowerup = CreatePowerup(position, powerups[randomIndex]);
+        EffectEntity randomPowerup = CreatePowerup(position, powerups[randomIndex]);
         
         return randomPowerup;
     }

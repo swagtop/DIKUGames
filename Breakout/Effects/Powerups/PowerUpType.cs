@@ -1,4 +1,4 @@
-namespace Breakout.PowerupEffects;
+namespace Breakout.Effects.Powerups;
 
 public enum PowerupEffectType {
     ExtraLife,

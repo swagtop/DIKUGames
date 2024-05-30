@@ -1,11 +1,11 @@
-namespace Breakout.PowerupEffects;
+namespace Breakout.Effects.Powerups;
 
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Utilities;
 using Breakout.Entities;
 
-public class Split : IPowerupEffect {
+public class Split : IEffect {
     private static Random rnd = RandomGenerator.Generator;
     private static int multiplier = 3;
 
@@ -25,7 +25,7 @@ public class Split : IPowerupEffect {
         Rotate(ball, randomRotationAmount);
     }
     
-    public void EngagePowerup(EntityContainer<Ball> balls, Player player) {
+    public void EngageEffect(EntityContainer<Ball> balls, Player player) {
         if (balls.CountEntities() > 500) return; // Avoiding crazy amounts of balls.
 
         List<Ball> newBalls = new List<Ball>();
@@ -45,5 +45,5 @@ public class Split : IPowerupEffect {
         }
     }
 
-    public void DisengagePowerup(EntityContainer<Ball> balls, Player player) {}
+    public void DisengageEffect(EntityContainer<Ball> balls, Player player) {}
 }

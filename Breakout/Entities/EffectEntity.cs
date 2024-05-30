@@ -2,12 +2,12 @@ namespace Breakout.Entities;
 
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
-using Breakout.PowerupEffects;
+using Breakout.Effects;
 
-public class Powerup : Entity {
-    private IPowerupEffect effect;
+public class EffectEntity : Entity {
+    private IEffect effect;
 
-    public Powerup(IBaseImage image, DynamicShape shape, IPowerupEffect effect) : base(shape, image) {
+    public EffectEntity(IBaseImage image, DynamicShape shape, IEffect effect) : base(shape, image) {
         this.effect = effect;
     }
 
@@ -18,7 +18,7 @@ public class Powerup : Entity {
         if (belowLowerBorder) { DeleteEntity(); }
     }
 
-    public IPowerupEffect Pop() {
+    public IEffect Pop() {
         DeleteEntity();
         return effect;
     }
