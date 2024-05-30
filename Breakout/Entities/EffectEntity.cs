@@ -5,10 +5,10 @@ using DIKUArcade.Graphics;
 using Breakout.Effects;
 
 public class EffectEntity : Entity {
-    private IEffect effect;
+    public readonly IEffect Effect;
 
     public EffectEntity(IBaseImage image, DynamicShape shape, IEffect effect) : base(shape, image) {
-        this.effect = effect;
+        Effect = effect;
     }
 
     public void Move() {
@@ -20,7 +20,7 @@ public class EffectEntity : Entity {
 
     public IEffect Pop() {
         DeleteEntity();
-        return effect;
+        return Effect;
     }
 
     public bool CollidesWith(Entity entity) {
