@@ -9,12 +9,14 @@ using Breakout;
 using Breakout.Entities;
 
 public class ExtraLife : PowerupEffect, IEffect {
+    private static GameEvent engageEvent = new GameEvent {
+        EventType = GameEventType.StatusEvent,
+        Message = "GAIN_LIFE",
+        Id = 400,
+    };
+
     public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
-        BreakoutBus.GetBus().RegisterEvent(new GameEvent {
-            EventType = GameEventType.StatusEvent,
-            Message = "GAIN_LIFE",
-            Id = 400,
-        });
+        BreakoutBus.GetBus().RegisterEvent(engageEvent);
     }
     
     public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {}
