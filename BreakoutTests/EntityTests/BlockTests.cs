@@ -8,7 +8,6 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Breakout;
 using Breakout.Entities;
-using Breakout.Entities.Blocks;
 using Breakout.LevelHandling;
 
 public class BlockTests {

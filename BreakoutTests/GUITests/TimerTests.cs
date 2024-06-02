@@ -8,15 +8,16 @@ using Breakout.Entities;
 
 public class TimerTests {
     private Timer timer;
+
+    [SetUp]
+    public void Setup() {
+    }
     
     [Test]
     public void ConstructorTest() {
-        /*
         timer = new Timer();
 
-        Assert.AreEqual(timer.GetTimeLeft(), -1);
-        */
-        Assert.Inconclusive();
+        Assert.AreEqual(timer.GetTimeLeft(100), -100);
     }
 
     [Test]
@@ -37,14 +38,11 @@ public class TimerTests {
 
     [Test]
     public void ResetTimerTest() {
-        /*
         timer = new Timer();
-        Assert.AreEqual(timer.GetTimeLeft(), -1);
+        Assert.AreEqual(timer.GetTimeLeft(100), -100);
 
         timer.Reset();
-        Assert.AreEqual(timer.GetTimeLeft(), -1);
-        */
-        Assert.Inconclusive();
+        Assert.AreEqual(timer.GetTimeLeft(100), -101);
     }
     
     [Test]
@@ -53,11 +51,11 @@ public class TimerTests {
         timer.SetTimeLimit(100);
 
         for (int i = 0; i < 101; i++) {
-            timer.UpdateTimer();
+            timer.UpdateTimer(1);
         }
 
         timer.SetTimeLimit(100);
-        timer.UpdateTimer();
+        timer.UpdateTimer(1);
 
         Assert.Pass();
     }
@@ -76,9 +74,9 @@ public class TimerTests {
         timer.SetTimeLimit(100);
 
         for (int i = 0; i < 101; i++) {
-            timer.UpdateTimer();
+            timer.UpdateTimer(1);
         }
 
-        Assert.AreEqual(timer.TimeLimitExceeded(), false);
+        Assert.AreEqual(timer.TimeIsUp(100), false);
     }
 }

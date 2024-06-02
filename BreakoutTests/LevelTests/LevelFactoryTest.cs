@@ -11,7 +11,6 @@ using DIKUArcade.Math;
 using DIKUArcade.Utilities;
 using Breakout;
 using Breakout.Entities;
-using Breakout.Entities.Blocks;
 using Breakout.LevelHandling;
 
 public class LevelFactoryTest {
@@ -20,6 +19,10 @@ public class LevelFactoryTest {
     [OneTimeSetUp]
     public void Init() {
         DIKUArcade.GUI.Window.CreateOpenGLContext();
+    }
+
+    [SetUp]
+    public void Setup() {
     }
     
     [Test]

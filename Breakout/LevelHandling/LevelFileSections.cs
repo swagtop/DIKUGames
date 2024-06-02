@@ -1,6 +1,6 @@
 namespace Breakout.LevelHandling;
 
-public struct LevelFileSections {
+public class LevelFileSections {
     public string[] Map;
     public string[] Meta;
     public string[] Legend;

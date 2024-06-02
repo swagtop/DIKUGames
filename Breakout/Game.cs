@@ -20,7 +20,6 @@ public class Game : DIKUGame, IGameEventProcessor {
             GameEventType.GameStateEvent,
             GameEventType.PlayerEvent,
             GameEventType.GraphicsEvent,
-            GameEventType.TimedEvent,
         });
         eventBus.Subscribe(GameEventType.WindowEvent, this);
 
@@ -51,9 +50,11 @@ public class Game : DIKUGame, IGameEventProcessor {
     public void ProcessEvent(GameEvent gameEvent) {
         if (gameEvent.EventType != GameEventType.WindowEvent) return;
         
-        if (gameEvent.Message == "QUIT_GAME") {
-            window.CloseWindow();
-            System.Environment.Exit(0);
+        switch (gameEvent.Message) {
+            case "QUIT_GAME":
+                window.CloseWindow();
+                System.Environment.Exit(0);
+                break;
         }
     }
 }

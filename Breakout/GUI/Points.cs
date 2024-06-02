@@ -3,7 +3,6 @@ namespace Breakout.GUI;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Breakout.Entities;
-using Breakout.Entities.Blocks;
 
 public class Points : Text {
     private uint currentPoints;

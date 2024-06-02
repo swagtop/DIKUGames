@@ -6,6 +6,10 @@ using Breakout.GUI;
 public class MenuTests {
     private Menu menu;
 
+    [SetUp]
+    public void Setup() {
+    }
+    
     [Test]
     public void FirstNewMenuTest() {
         menu = new Menu(0.0f);

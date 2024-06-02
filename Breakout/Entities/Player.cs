@@ -71,7 +71,6 @@ public class Player : Entity, IGameEventProcessor {
         Shape.Position = new Vec2F((1.0f - Shape.Extent.X)/2.0f, 0.0f);
         SetMoveRight(false);
         SetMoveLeft(false);
-        GetSkinny();
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
@@ -85,6 +84,12 @@ public class Player : Entity, IGameEventProcessor {
                         SetMoveRight(gameEvent.StringArg2 == "START");
                         break;
                 }
+                break;
+            case "GET_FAT":
+                GetFat();
+                break;
+            case "GET_SKINNY":
+                GetSkinny();
                 break;
             default:
                 break;

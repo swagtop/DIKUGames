@@ -12,6 +12,10 @@ public class BackgroundTests {
     private Background background;
     private IBaseImage noImage = new NoImage();
 
+    [SetUp]
+    public void Setup() {
+    }
+
     [Test]
     public void BackgroundNoExceptionsTest() {
         background = new Background(noImage);

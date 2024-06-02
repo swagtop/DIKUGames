@@ -29,7 +29,6 @@ Map/
 
 Meta:
 Unbreakable: 0
-Powerup: 1
 Meta/
 
 Legend:

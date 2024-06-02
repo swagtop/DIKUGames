@@ -1,9 +1,8 @@
 namespace Breakout.LevelHandling;
 
 using Breakout.Entities;
-using Breakout.Entities.Blocks;
 
-public struct LevelMeta {
+public class LevelMeta {
     public string LevelName;
     public int TimeLimit;
     public Dictionary<char, BlockType> CharDictionary;

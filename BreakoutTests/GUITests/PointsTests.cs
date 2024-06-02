@@ -5,11 +5,14 @@ using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 using Breakout.GUI;
 using Breakout.Entities;
-using Breakout.Entities.Blocks;
 
 public class PointsTests {
     private Points points;
 
+    [SetUp]
+    public void Setup() {
+    }
+    
     [Test]
     public void ConstructorTest() {
         points = new Points();

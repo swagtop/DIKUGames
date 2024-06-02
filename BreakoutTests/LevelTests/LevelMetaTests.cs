@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using DIKUArcade.Entities;
 using Breakout.Entities;
-using Breakout.Entities.Blocks;
 using Breakout.GUI;
 using Breakout.LevelHandling;
 
 public class LevelMetaTests {
     private LevelMeta levelMeta;
+
+    [SetUp]
+    public void Setup() {
+    }
     
     [Test]
     public void EmptyLevelMetaTest() {

@@ -3,9 +3,9 @@ namespace Breakout.Entities;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
-using DIKUArcade.Utilities;
 
 public class BallLauncher {
+    private Ball loadedBall;
     private readonly EntityContainer<Ball> balls;
     private readonly Player player;
 
@@ -15,19 +15,13 @@ public class BallLauncher {
     }
 
     public void LaunchBall() {
-        Vec2F launchVector;
+        Vec2F launchVector = new Vec2F(0.0f, 0.0f);
         balls.Iterate(ball => {
-            launchVector = new Vec2F(0.0f, 0.0f);
             float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2);
             float ballMiddle = ball.Shape.Position.X + (ball.Shape.Extent.X / 2);
 
             float directionX = ballMiddle - playerMiddle;
             float directionY = 1.0f;
-
-            // Slight randomization
-            float randomFloat = RandomGenerator.Generator.NextSingle() * 0.01f;
-            if (RandomGenerator.Generator.Next(2) == 0) { randomFloat *= -1; }
-            directionX += randomFloat;
 
             // Normalize the vector
             Vec2F normalizedDir = Vec2F.Normalize(new Vec2F(directionX * 10, directionY));

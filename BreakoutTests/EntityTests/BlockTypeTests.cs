@@ -8,10 +8,14 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Breakout;
 using Breakout.Entities;
-using Breakout.Entities.Blocks;
 using Breakout.LevelHandling;
 
 public class BlockTypeTests {
+
+    [SetUp]
+    public void Setup() {
+    }
+    
     [Test]
     public void TransformStringToTypeTest() {
         Assert.AreEqual(BlockTypeTransformer.TransformStringToType("BLOCK"), BlockType.Block);

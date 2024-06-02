@@ -12,40 +12,37 @@ using DIKUArcade.State;
 using DIKUArcade.Timers;
 using DIKUArcade.Utilities;
 using Breakout.Entities;
-using Breakout.Entities.Blocks;
 using Breakout.GUI;
 using Breakout.LevelHandling;
-using Breakout.Effects;
-using Breakout.Effects.Powerups;
-using Breakout.Effects.Hazards;
+using Breakout.PowerupEffects;
 
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();
-
+    private Background background = new Background(
+        new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
+    );
+    
     private Player player = new Player();
     private Queue<Level> levelQueue = new Queue<Level>();
     private Level currentLevel = new Level();
     private EntityContainer<Ball> balls = new EntityContainer<Ball>();
     private BallLauncher ballLauncher;
-    private EntityContainer<EffectEntity> effects = new EntityContainer<EffectEntity>();
-    private bool fogOfWarActive = false;
+    private EntityContainer<Powerup> powerups = new EntityContainer<Powerup>();
 
     private Hearts hearts= new Hearts();
     private Timer timer = new Timer();
     private Points points = new Points();
-    private Background background = new Background(
-        new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
-    );
+
+    private static readonly Vec2F defaultBallExtent = new Vec2F(0.025f, 0.025f);
+    private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
 
     private GameRunning() {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         eventBus.Subscribe(GameEventType.StatusEvent, this);
         eventBus.Subscribe(GameEventType.GameStateEvent, this);
-        eventBus.Subscribe(GameEventType.TimedEvent, this);
 
         ballLauncher = new BallLauncher(balls, player);
-        hearts.SetHearts(3);
 
         ResetState();
     }
@@ -58,31 +55,41 @@ public class GameRunning : IGameState, IGameEventProcessor {
         player.Reset();
         balls.ClearContainer();
         ballLauncher.AddNewBall();       
-        effects.ClearContainer();
-        fogOfWarActive = false;
+        powerups.ClearContainer();
+
+        hearts.SetHearts(3);
 
         StaticTimer.RestartTimer();
         timer.Reset();
     }
 
     public void UpdateState() {
-        timer.UpdateTimer();
-        if (timer.TimeLimitExceeded()) { 
+        timer.UpdateTimer(StaticTimer.GetElapsedSeconds());
+        player.Move();
+        IterateBalls();
+        powerups.Iterate(powerup => {
+            powerup.Move();
+            CollisionData colCheckPlayer = CollisionDetection.Aabb(
+                powerup.Shape.AsDynamicShape(), 
+                player.Shape.AsStationaryShape()
+            );
+            if (colCheckPlayer.Collision) {
+                powerup.Pop().EngagePowerup(balls, player);
+            }
+        });
+        
+        if (timer.TimeIsUp(StaticTimer.GetElapsedSeconds())) {
             EndGame("LOST");
-        } else {
-            player.Move();
-            IterateBalls();
-            IterateEffects();
         }
     }
 
     public void RenderState() {
         background.RenderBackground();
 
-        if (!fogOfWarActive) { currentLevel.Blocks.RenderEntities(); }
+        currentLevel.Blocks.RenderEntities();
         player.RenderEntity();
         balls.RenderEntities();
-        effects.RenderEntities();
+        powerups.RenderEntities();
 
         hearts.RenderHearts();
         timer.RenderTimer();
@@ -90,29 +97,57 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void IterateBalls() {
-        string status = BallIterator.IterateBalls(currentLevel, player, balls, points);
-        switch (status) {
-            case "CONTINUE":
-                break;
-            case "NO_MORE_BALLS":
-                bool playerLost = hearts.BreakHeart();
-                if (playerLost) { EndGame("LOST"); }
-                else { ballLauncher.AddNewBall(); }
-                break;
-            case "NO_MORE_BLOCKS":
-                EndLevel();
-                break;
-        }
-    }
+        int ballCount = balls.CountEntities();
 
-    public void IterateEffects() {
-        effects.Iterate(effect => {
-            if (effect.CollidesWith(player)) { 
-                effect.Pop().EngageEffect(balls, player);
-            } else { 
-                effect.Move();
+        balls.Iterate(ball => {
+            ball.Move();
+            CollisionData colCheckPlayer = CollisionDetection.Aabb(
+                ball.Dynamic, 
+                player.Shape.AsDynamicShape()
+            );
+
+            if (colCheckPlayer.Collision) {
+                float ballMiddle = ball.Shape.Position.X + (ball.Shape.Extent.X / 2.0f);
+                float playerMiddle = player.Shape.Position.X + (player.Shape.Extent.X / 2.0f);
+                float relativeRotation = (playerMiddle - ballMiddle) * 12.0f;
+
+                ball.ChangeDirection(colCheckPlayer.CollisionDir);
+
+                Vec2F newDir = defaultBallDirection.Copy();
+
+                ball.Dynamic.ChangeDirection(new Vec2F(
+                    newDir.X * MathF.Cos(relativeRotation) - newDir.Y * MathF.Sin(relativeRotation),
+                    newDir.X * MathF.Sin(relativeRotation) + newDir.Y * MathF.Cos(relativeRotation)
+                ));
             }
+
+            currentLevel.Blocks.Iterate(block => {
+                CollisionData colCheckBlock = CollisionDetection.Aabb(
+                    ball.Dynamic, 
+                    block.Shape
+                );
+                if (colCheckBlock.Collision) {
+                    block.Hit();
+                    ball.ChangeDirection(colCheckBlock.CollisionDir);
+                }
+                if (block.IsDeleted()) {
+                    powerups.AddEntity(PowerupFactory.CreatePowerup(block.Shape.Position, PowerupEffectType.Split));
+                    points.AwardPointsFor(block);
+                    currentLevel.BreakableLeft -= 1;
+                }
+            });
         });
+        
+        if (currentLevel.BreakableLeft == 0) {
+            EndLevel();
+            return;
+        }
+        bool lostAllBalls = (ballCount != 0 && balls.CountEntities() == 0);
+        if (lostAllBalls) {
+            bool playerLost = hearts.BreakHeart();
+            if (playerLost) { EndGame("LOST"); }
+            else { ballLauncher.AddNewBall(); }
+        }
     }
 
     public void FlushQueue() {
@@ -120,8 +155,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void EndLevel() {
-        TimedEffectsCanceler.LevelEndCancel();
-
         if (levelQueue.Any()) {
             ResetState();
             currentLevel = levelQueue.Dequeue();
@@ -132,13 +165,11 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void EndGame(string result) {
-        int finalPoints = (int)points.GetPoints();
-
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GraphicsEvent,
             Message = "DISPLAY_STATS",
             StringArg1 = result,
-            IntArg1 = finalPoints
+            IntArg1 = (int)points.GetPoints()
         });
         eventBus.RegisterEvent(new GameEvent {
             EventType = GameEventType.GameStateEvent,
@@ -180,9 +211,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
                 break;
             case KeyboardKey.B:
                 Console.WriteLine("DEBUG: All blocks take one hit.");
-                int blockAmount = currentLevel.Blocks.CountEntities();
                 currentLevel.Blocks.Iterate(block => block.Hit());
-                currentLevel.BreakableLeft -= blockAmount - currentLevel.Blocks.CountEntities();
                 break;
             case KeyboardKey.Tab:
                 if (levelQueue.Any()) {
@@ -231,29 +260,6 @@ public class GameRunning : IGameState, IGameEventProcessor {
 
     public void ProcessEvent(GameEvent gameEvent) {
         switch (gameEvent.Message) {
-            case "SPAWN_POWERUP":
-                effects.AddEntity(EffectEntityFactory.CreateRandomPowerup((Vec2F)gameEvent.ObjectArg1));
-                break;
-            case "SPAWN_HAZARD":
-                effects.AddEntity(EffectEntityFactory.CreateRandomHazard((Vec2F)gameEvent.ObjectArg1));
-                break;
-            case "ENGAGE_EFFECT":
-                ((IEffect)gameEvent.ObjectArg1).EngageEffect(balls, player);
-                break;
-            case "DISENGAGE_EFFECT":
-                ((IEffect)gameEvent.ObjectArg1).DisengageEffect(balls, player);
-                break;
-            case "GAIN_LIFE":
-                hearts.MendHeart();
-                break;
-            case "LOSE_LIFE":
-                bool playerLost = hearts.BreakHeart();
-                if (playerLost) { EndGame("LOST"); }
-                break;
-            case "SET_FOG_OF_WAR":
-                fogOfWarActive = (gameEvent.StringArg1 == "ENGAGE");
-                break;
-
             case "LOAD_LEVEL":
                 ResetState();
                 currentLevel = (Level)gameEvent.ObjectArg1;
@@ -268,13 +274,10 @@ public class GameRunning : IGameState, IGameEventProcessor {
             case "FLUSH_QUEUE":
                 FlushQueue();
                 break;
-
             case "CHANGE_STATE":
-                if (gameEvent.StringArg1 == "GAME_RUNNING" ||
-                    gameEvent.StringArg1 == "GAME_PAUSED"  ||
-                    gameEvent.StringArg1 == "POST_GAME") return;
+                if (gameEvent.StringArg1 == "GAME_RUNNING") return;
+                if (gameEvent.StringArg1 == "GAME_PAUSED") return;
                 if (levelQueue.Count > 0) { FlushQueue(); }
-                hearts.ResetHearts();
                 points.ResetPoints();
                 break;
             default:
