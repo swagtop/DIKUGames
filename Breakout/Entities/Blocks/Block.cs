@@ -25,12 +25,11 @@ public class Block : Entity {
     }
 
     public virtual bool Hit() {
+        Health -= 1;
+
         if (this.GetType().IsSubclassOf(typeof(Block))) {
-            Health -= 1;
             return this.IsDeleted();
         }
-        
-        Health -= 1;
 
         if (this.IsDeleted()) {
             int randomInt = RandomGenerator.Generator.Next(0, 100);
@@ -41,9 +40,8 @@ public class Block : Entity {
                 Message = "SPAWN_HAZARD",
                 ObjectArg1 = (object)Shape.Position
             });}
-            return true;
         }
 
-        return false;
+        return this.IsDeleted();
     }
 }
