@@ -9,16 +9,13 @@ using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using Breakout;
 using Breakout.Entities;
+using Breakout.Entities.Blocks;
 using Breakout.LevelHandling;
 
 public class BallTests {
     private Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
     private Ball ball;
     private IBaseImage noImage = new NoImage();
-
-    [SetUp]
-    public void Setup() {
-    }
     
     [Test]
     public void XOutOfBoundsTest() {

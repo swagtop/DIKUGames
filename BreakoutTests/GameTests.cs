@@ -12,16 +12,16 @@ using Breakout;
 using Breakout.GameStates;
 
 public class GameTests {
-    private WindowArgs windowArgs = new WindowArgs() { Title = "Breakout v3" };
+    private WindowArgs windowArgs = new WindowArgs() { Title = "Breakout Tests" };
     private Game game;
 
-    [OneTimeSetUp]
+    [OneTimeSetUp, Order(1)]
     public void Init() {
         DIKUArcade.GUI.Window.CreateOpenGLContext(); 
         game = new Game(windowArgs);
     }
 
-    [Test]
+    [Test, Order(2)]
     public void MethodsDontThrowExceptionTest() {
         game.Render();
         game.Update();
@@ -30,7 +30,7 @@ public class GameTests {
         Assert.Pass();
     }
 
-    [Test]
+    [Test, Order(3)]
     public void UpdateStateManyTimesTest() {
         for (int i = 0; i < 1000; i++) {
             game.Update();

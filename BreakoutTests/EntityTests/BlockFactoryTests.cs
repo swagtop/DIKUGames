@@ -5,17 +5,13 @@ using NUnit.Framework;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using Breakout.Entities;
+using Breakout.Entities.Blocks;
 using Breakout.GUI;
 using Breakout.LevelHandling;
 
 public class BlockFactoryTests {
-
     private Block block;
     private IBaseImage noImgae = new NoImage();
-
-    [SetUp]
-    public void Setup() {
-    }
     
     [Test]
     public void CorrectBlockTypesTest() {

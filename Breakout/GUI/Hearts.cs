@@ -38,6 +38,16 @@ public class Hearts {
         Amount -= 1;
         return false;
     }
+    
+    public void MendHeart() {
+        if (Amount + 1 > startAmount) return;
+        
+        Amount += 1;
+    }
+
+    public void ResetHearts() {
+        Amount = startAmount;
+    }
 
     public void RenderHearts() {
         float originalX = renderingShape.Position.X;

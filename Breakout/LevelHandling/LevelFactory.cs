@@ -4,6 +4,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using Breakout.Entities;
+using Breakout.Entities.Blocks;
 
 public static class LevelFactory {
     public static Level LoadFromFile(string filepath) {
@@ -29,11 +30,11 @@ public static class LevelFactory {
 
         blocks = ParseMapSection(levelFileSections.Map, levelMeta, levelLegend);
                 
-        uint notBreakableAmount = 0;
+        int notBreakableAmount = 0;
         foreach (Block block in blocks) {
             if (block is UnbreakableBlock) notBreakableAmount++;
         }
-        uint breakableLeft = (uint)blocks.CountEntities() - notBreakableAmount;
+        int breakableLeft = blocks.CountEntities() - notBreakableAmount;
 
         return new Level(levelMeta, blocks, breakableLeft);
     }
@@ -87,7 +88,6 @@ public static class LevelFactory {
                         levelMeta.TimeLimit = Int32.Parse(itemPair[1]);
                         break;
                     case "POWERUP":
-                        break;
                     case "HARDENED":
                     case "UNBREAKABLE":
                         levelMeta.CharDictionary.Add(
