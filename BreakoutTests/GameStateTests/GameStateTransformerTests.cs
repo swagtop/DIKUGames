@@ -17,10 +17,6 @@ public class GameStateTransformerTests {
     string stringGamePaused = "GAME_PAUSED";
     string stringPostGame = "POST_GAME";
 
-    [SetUp]
-    public void Setup() {
-    }
-
     [Test]
     public void TestStringToGameState() {
         Assert.AreEqual(mainMenu, GameStateTransformer.TransformStringToState(stringMainMenu));

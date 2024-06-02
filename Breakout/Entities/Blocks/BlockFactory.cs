@@ -1,4 +1,4 @@
-namespace Breakout.Entities;
+namespace Breakout.Entities.Blocks;
 
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
@@ -21,6 +21,8 @@ public static class BlockFactory {
                 return new HardenedBlock(normalImage, damagedImage, shape);
             case BlockType.UnbreakableBlock:
                 return new UnbreakableBlock(normalImage, damagedImage, shape);
+            case BlockType.PowerupBlock:
+                return new PowerupBlock(normalImage, damagedImage, shape);
             default:
                 throw new Exception("Block type not implemented");
         }

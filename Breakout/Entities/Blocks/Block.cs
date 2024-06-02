@@ -1,7 +1,9 @@
-namespace Breakout.Entities;
+namespace Breakout.Entities.Blocks;
 
 using DIKUArcade.Entities;
+using DIKUArcade.Events;
 using DIKUArcade.Graphics;
+using DIKUArcade.Utilities;
 
 public class Block : Entity {
     private IBaseImage damagedImage;
@@ -24,6 +26,22 @@ public class Block : Entity {
 
     public virtual bool Hit() {
         Health -= 1;
+
+        if (this.GetType().IsSubclassOf(typeof(Block))) {
+            return this.IsDeleted();
+        }
+
+        if (this.IsDeleted()) {
+            int randomInt = RandomGenerator.Generator.Next(0, 100);
+            
+            if (randomInt < 15) {
+            BreakoutBus.GetBus().RegisterEvent(new GameEvent{
+                EventType = GameEventType.StatusEvent,
+                Message = "SPAWN_HAZARD",
+                ObjectArg1 = (object)Shape.Position
+            });}
+        }
+
         return this.IsDeleted();
     }
 }

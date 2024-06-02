@@ -10,9 +10,6 @@ using Breakout.GameStates;
 public class MainMenuTests {
     private MainMenu mainMenu = MainMenu.GetInstance();
 
-    [OneTimeSetUp]
-    public void Setup() {}
-
     [Test]
     public void MethodsDontThrowExceptionTest() {
         MainMenu.GetInstance();

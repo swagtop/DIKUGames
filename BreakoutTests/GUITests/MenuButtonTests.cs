@@ -12,10 +12,6 @@ public class MenuButtonTests {
     private Vec2F position = new Vec2F(0.0f, 0.0f);
     private MenuButton menuButton;
 
-    [SetUp]
-    public void Setup() {
-    }
-    
     [Test]
     public void ConstructorTest() {
         menuButton = new MenuButton(

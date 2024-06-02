@@ -14,10 +14,6 @@ public class StateMachineTests {
     private GamePaused gamePaused = GamePaused.GetInstance();
     private PostGame postGame = PostGame.GetInstance();
 
-    [OneTimeSetUp]
-    public void Setup() {
-    }
-
     [Test]
     public void StateMachineStartsWithMainMenuTest() {
         Assert.AreEqual(stateMachine.ActiveState, mainMenu);
