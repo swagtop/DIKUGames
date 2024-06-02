@@ -14,7 +14,7 @@ using Breakout.GUI;
 public static class BallIterator {
     private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
 
-    public static string IterateBalls(Level currentLevel, Player player, EntityContainer<Ball> balls, Points points, Hearts hearts) {
+    public static string IterateBalls(Level currentLevel, Player player, EntityContainer<Ball> balls, Points points) {
         int ballCount = balls.CountEntities();
 
         balls.Iterate(ball => {

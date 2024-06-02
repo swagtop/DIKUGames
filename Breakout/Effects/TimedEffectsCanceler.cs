@@ -7,17 +7,26 @@ using DIKUArcade.Events;
 using Breakout.Entities;
 
 public static class TimedEffectsCanceler {
+    private static readonly GameEventBus eventBus = BreakoutBus.GetBus();
+    private static void CancelEvents(params uint[] eventIds) {
+        foreach (uint eventId in eventIds) {
+            if (eventBus.HasTimedEvent(eventId)) { eventBus.CancelTimedEvent(eventId); }
+        }
+    }
+
     public static void LevelEndCancel() {
-        GameEventBus eventBus = BreakoutBus.GetBus();
-        
-        eventBus.CancelTimedEvent(101);
-        eventBus.CancelTimedEvent(201);
-        eventBus.CancelTimedEvent(301);
-        eventBus.CancelTimedEvent(701);
+        CancelEvents(
+            101, // (Powerup) Wide
+            201, // (Powerup) DoubleSize
+            301, // (Powerup) HardBall
+            701  // (Hazard) Fog of War
+        );
     }
 
     public static void BallsLostCancel() {
-        BreakoutBus.GetBus().CancelTimedEvent(201);
-        BreakoutBus.GetBus().CancelTimedEvent(301);
+        CancelEvents(
+            201, // (Powerup) Wide
+            301  // (Powerup) DoubleSize
+        );
     }
 }

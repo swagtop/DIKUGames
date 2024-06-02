@@ -90,7 +90,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
     }
 
     public void IterateBalls() {
-        string status = BallIterator.IterateBalls(currentLevel, player, balls, points, hearts);
+        string status = BallIterator.IterateBalls(currentLevel, player, balls, points);
         switch (status) {
             case "CONTINUE":
                 break;
