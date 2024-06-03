@@ -4,6 +4,10 @@ using DIKUArcade.Events;
 using DIKUArcade.Input;
 using DIKUArcade.State;
 
+/// <summary> 
+/// The StateMachine class, responsible for switching the gamestate, and supplying
+/// the active state to the Game class, to be rendered and interacted with. 
+/// </summary>
 public class StateMachine : IGameEventProcessor {
     private static StateMachine instance = new StateMachine();
     private Dictionary<GameStateType, IGameState> gameStateDictionary = new Dictionary<GameStateType, IGameState>();
