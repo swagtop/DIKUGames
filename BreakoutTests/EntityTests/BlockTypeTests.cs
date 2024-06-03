@@ -17,6 +17,7 @@ public class BlockTypeTests {
         Assert.AreEqual(BlockTypeTransformer.TransformStringToType("BLOCK"), BlockType.Block);
         Assert.AreEqual(BlockTypeTransformer.TransformStringToType("UNBREAKABLE"), BlockType.UnbreakableBlock);
         Assert.AreEqual(BlockTypeTransformer.TransformStringToType("HARDENED"), BlockType.HardenedBlock);
+        Assert.AreEqual(BlockTypeTransformer.TransformStringToType("POWERUP"), BlockType.PowerupBlock);
     }
     
     [Test]
@@ -24,5 +25,6 @@ public class BlockTypeTests {
         Assert.AreEqual(BlockTypeTransformer.TransformTypeToString(BlockType.Block), "BLOCK");
         Assert.AreEqual(BlockTypeTransformer.TransformTypeToString(BlockType.UnbreakableBlock), "UNBREAKABLE");
         Assert.AreEqual(BlockTypeTransformer.TransformTypeToString(BlockType.HardenedBlock), "HARDENED");
+        Assert.AreEqual(BlockTypeTransformer.TransformTypeToString(BlockType.PowerupBlock), "POWERUP");
     }
 }
