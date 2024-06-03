@@ -92,4 +92,46 @@ public class PlayerTests {
     public void ResetNoExceptionTest() {
         player.Reset();
     }
+
+    [Test]
+    public void GetFatTest() {
+        Vec2F beforeExtent = player.Shape.Extent.Copy();
+
+        player.GetFat();
+
+        Assert.That(beforeExtent.X < player.Shape.Extent.X);
+    }
+    
+    [Test]
+    public void GetSkinnyTest() {
+        player.GetFat();
+
+        Vec2F fatExtent = player.Shape.Extent.Copy();
+
+        player.GetSkinny();
+
+        Assert.That(fatExtent.X > player.Shape.Extent.X);
+    }
+
+    [Test]
+    public void GetFatTwiceTest() {
+        player.GetFat();
+
+        Vec2F fatExtent = player.Shape.Extent.Copy();
+
+        player.GetFat();
+
+        Assert.That(fatExtent.X == player.Shape.Extent.X);
+    }
+
+    [Test]
+    public void GetSkinnyTwiceTest() {
+        player.GetSkinny();
+
+        Vec2F skinnyExtent = player.Shape.Extent.Copy();
+
+        player.GetSkinny();
+
+        Assert.That(skinnyExtent.X == player.Shape.Extent.X);
+    }
 }
