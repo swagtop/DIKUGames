@@ -77,4 +77,29 @@ public class BallTests {
 
         Assert.Pass();
     }
+
+    [Test]
+    public void CloneBallTest() {
+        Vec2F ballPosition = new Vec2F(0.5f, 0.0f);
+        Vec2F ballDirection = new Vec2F(0.0f, 0.1f);
+        ball = new Ball(
+            noImage,
+            new DynamicShape(
+                ballPosition,
+                ballExtent, 
+                ballDirection
+            )
+        );
+
+        Ball clonedBall = ball.Clone();
+
+        Assert.AreEqual(ball.Shape.Position.X, ball.Shape.Position.X);
+        Assert.AreEqual(ball.Shape.Position.Y, ball.Shape.Position.Y);
+
+        Assert.AreEqual(ball.Shape.Extent.X, ball.Shape.Extent.X);
+        Assert.AreEqual(ball.Shape.Extent.Y, ball.Shape.Extent.Y);
+
+        Assert.AreEqual(ball.Dynamic.Direction.X, ball.Dynamic.Direction.X);
+        Assert.AreEqual(ball.Dynamic.Direction.Y, ball.Dynamic.Direction.Y);
+    }
 }
