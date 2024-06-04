@@ -32,6 +32,23 @@ public class PostGameTests {
         postGame.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Escape);
         postGame.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.R);
         postGame.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.R);
+        
+        postGame.ProcessEvent(new GameEvent {
+            EventType = GameEventType.GraphicsEvent,
+            Message = "DISPLAY_STATS",
+            StringArg1 = "WON",
+            IntArg1 = 0,
+        });
+        postGame.RenderState();
+        
+        postGame.ProcessEvent(new GameEvent {
+            EventType = GameEventType.GraphicsEvent,
+            Message = "DISPLAY_STATS",
+            StringArg1 = "LOST",
+            IntArg1 = 100,
+        });
+        postGame.RenderState();
+        
         Assert.Pass();
     }
 

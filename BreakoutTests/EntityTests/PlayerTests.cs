@@ -43,14 +43,14 @@ public class PlayerTests {
     [Test]
     public void OutOfBoundsLeftTest() {
         player.ProcessEvent(moveLeftStart);
-        for (int i = 0; i > 900; i++) player.Move();
+        for (int i = 0; i > 900; i++) { player.Move(); }
         Assert.True(player.Shape.Position.X >= 0.0f);
     }
 
     [Test]
     public void OutOfBoundsRightTest() {
         player.ProcessEvent(moveRightStart);
-        for (int i = 0; i > 900; i++) player.Move();
+        for (int i = 0; i > 900; i++) { player.Move(); }
         Assert.True(player.Shape.Position.X + player.Shape.Extent.X  <= 1.0f);
     }
     
@@ -59,11 +59,11 @@ public class PlayerTests {
         var originalY = player.Shape.Position.Y;
 
         player.ProcessEvent(moveLeftStart);
-        for (int i = 0; i > 70; i++) player.Move();
+        for (int i = 0; i > 70; i++) { player.Move(); }
         player.ProcessEvent(moveLeftStop);
         
         player.ProcessEvent(moveRightStart);
-        for (int i = 0; i > 20; i++) player.Move();
+        for (int i = 0; i > 20; i++) { player.Move(); }
         player.ProcessEvent(moveLeftStart);
         for (int i = 0; i > 5; i++) player.Move();
         player.ProcessEvent(moveRightStop);
