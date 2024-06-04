@@ -52,6 +52,32 @@ public class HeartsTests {
     }
 
     [Test]
+    public void MendHeartTest() {
+        hearts = new Hearts(1);
+
+        hearts.BreakHeart();
+        Assert.AreEqual(hearts.Amount, 0);
+
+        hearts.MendHeart();
+        Assert.AreEqual(hearts.Amount, 1);
+
+        hearts.MendHeart();
+        Assert.AreEqual(hearts.Amount, 1);
+    }
+
+    [Test]
+    public void ResetHeartTest() {
+        hearts = new Hearts(10);
+
+        hearts.BreakHeart();
+        hearts.BreakHeart();
+        hearts.BreakHeart();
+
+        hearts.ResetHearts();
+        Assert.AreEqual(hearts.Amount, 10);
+    }
+
+    [Test]
     public void RenderHeartsTest() {
         hearts = new Hearts(2);
         hearts.BreakHeart();
