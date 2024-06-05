@@ -44,6 +44,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
     );
 
+    /// <summary> Private constructor that sets up base conditions for class. </summary>
     private GameRunning() {
         eventBus.Subscribe(GameEventType.PlayerEvent, player);
         eventBus.Subscribe(GameEventType.StatusEvent, this);
@@ -56,10 +57,12 @@ public class GameRunning : IGameState, IGameEventProcessor {
         ResetState();
     }
 
+    /// <summary> GetInstance for Singleton purposes. </summary>
     public static GameRunning GetInstance() {
         return GameRunning.instance;
     }
 
+    /// <summary> Resets everything except points, health and levelQueue </summary>
     public void ResetState() {
         player.Reset();
         balls.ClearContainer();
@@ -71,6 +74,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         timer.Reset();
     }
 
+    /// <summary> Updates state, if time limit exceeded, ends the game as a loss. </summary>
     public void UpdateState() {
         timer.UpdateTimer();
         if (timer.TimeLimitExceeded()) { 
@@ -82,6 +86,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         }
     }
 
+    /// <summary> Renders all game objects. </summary>
     public void RenderState() {
         background.RenderBackground();
 
@@ -95,6 +100,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         points.RenderPoints();
     }
 
+    /// <summary> Moves all balls and makes them interact with player and blocks. </summary>
     public void IterateBalls() {
         string status = BallIterator.IterateBalls(currentLevel, player, balls, points);
         switch (status) {
@@ -111,6 +117,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         }
     }
 
+    /// <summary> Moves all effects and engages them if they collide with the player. </summary>
     public void IterateEffects() {
         effects.Iterate(effect => {
             if (effect.CollidesWith(player)) { 
@@ -121,10 +128,12 @@ public class GameRunning : IGameState, IGameEventProcessor {
         });
     }
 
+    /// <summary> Empties the levelQueue. </summary>
     public void FlushQueue() {
         levelQueue.Clear();
     }
-
+    
+    /// <summary> Ends level and switches to the next if there is one, ends game if not. </summary>
     public void EndLevel() {
         TimedEffectsCanceler.LevelEndCancel();
 
@@ -137,6 +146,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         }
     }
 
+    /// <summary> Collects stats of game, sends them to and switches to PostGame. </summary>
     public void EndGame(string result) {
         int finalPoints = (int)points.GetPoints();
 
@@ -153,6 +163,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         });
     }
 
+    /// <summary> Interprets behaviour from keypress. </summary>
+    /// <param name="key"> The keyboard key pressed. </param>
     private void KeyPress(KeyboardKey key) {
         switch (key) {
             case KeyboardKey.Escape:
@@ -201,6 +213,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         }
     }
 
+    /// <summary> Interprets behaviour from key release. </summary>
+    /// <param name="key"> The keyboard key released. </param>
     private void KeyRelease(KeyboardKey key) {
         switch (key) {
             case KeyboardKey.Left:
@@ -224,6 +238,9 @@ public class GameRunning : IGameState, IGameEventProcessor {
         }
     }
 
+    /// <summary> Handles key events by sending them off to respective methods. </summary>
+    /// <param name="action"> Has the key been pressed or released?. </param>
+    /// <param name="key"> The keyboard key in question. </param>
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         switch (action) {
             case KeyboardAction.KeyPress:
@@ -235,6 +252,8 @@ public class GameRunning : IGameState, IGameEventProcessor {
         }
     }
 
+    /// <summary> Interprets behaviour from game events. </summary>
+    /// <param name="gameEvent"> The game event received from event bus. </param>
     public void ProcessEvent(GameEvent gameEvent) {
         switch (gameEvent.Message) {
             case "SPAWN_POWERUP":
