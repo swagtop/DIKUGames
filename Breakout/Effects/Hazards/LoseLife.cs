@@ -7,7 +7,7 @@ using DIKUArcade.Events;
 using Breakout.Entities;
 
 /// <summary>
-///
+/// This hazard tells the GameRunning game state to decrement the players health when engaged.
 /// </summary>
 public class LoseLife : HazardEffect, IEffect {
     private static GameEvent engageEffect = new GameEvent {

@@ -6,7 +6,7 @@ using DIKUArcade.Utilities;
 using Breakout.Entities;
 
 /// <summary>
-///
+/// This powerup splits each existing ball into three new balls, traveling in random directions.
 /// </summary>
 public class Split : PowerupEffect, IEffect {
     private static Random rnd = RandomGenerator.Generator;

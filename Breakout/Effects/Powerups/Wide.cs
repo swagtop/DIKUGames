@@ -8,7 +8,7 @@ using Breakout;
 using Breakout.Entities;
 
 /// <summary>
-///
+/// This powerup makes the player fat when engaged, and skinny again when disengaged.
 /// </summary>
 public class Wide : PowerupEffect, IEffect {
     private static GameEvent disengageEvent = new GameEvent {

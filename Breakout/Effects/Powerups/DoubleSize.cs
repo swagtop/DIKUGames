@@ -6,7 +6,7 @@ using DIKUArcade.Timers;
 using Breakout.Entities;
 
 /// <summary>
-///
+/// This powerup doubles the size of the balls when engaged, and halves them when disengaged.
 /// </summary>
 public class DoubleSize : PowerupEffect, IEffect {
     private static GameEvent disengageEvent = new GameEvent {

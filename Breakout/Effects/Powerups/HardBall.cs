@@ -9,7 +9,8 @@ using Breakout;
 using Breakout.Entities;
 
 /// <summary>
-///
+/// This powerup changes every existing ball to be hard when engaged, and changes them back to
+/// normal when disengaged.
 /// </summary>
 public class HardBall : PowerupEffect, IEffect {
     private static IBaseImage normalBall = new Image(Path.Combine("Assets", "Images", "ball.png"));
