@@ -10,7 +10,8 @@ using Breakout;
 using Breakout.GameStates;
 
 /// <summary>
-///
+/// The Timer class is both responsible for rendering the timer, and keeping track of time spent
+/// in levels with time limits.
 /// </summary>
 public class Timer : Text {
     private GameEventBus eventBus = BreakoutBus.GetBus();

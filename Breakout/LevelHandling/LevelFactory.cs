@@ -7,7 +7,7 @@ using Breakout.Entities;
 using Breakout.Entities.Blocks;
 
 /// <summary>
-///
+/// The LevelFactory is responsible for parsing level files, and turning them into Level instances.
 /// </summary>
 public static class LevelFactory {
     public static Level LoadFromFile(string filepath) {

@@ -7,7 +7,9 @@ using DIKUArcade.Input;
 using Breakout.GameStates;
 
 /// <summary>
-///
+/// The main Game class. This class initializes the event bus and state machine.
+/// After this initialization, it renders the active state, and sends off the player inputs to
+/// said state. This class is also responsible for handling the quitting of the game.
 /// </summary>
 public class Game : DIKUGame, IGameEventProcessor {  
     private GameEventBus eventBus;

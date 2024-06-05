@@ -6,7 +6,8 @@ using Breakout.Entities;
 using Breakout.Entities.Blocks;
 
 /// <summary>
-///
+/// The Points class is responsible for rendering of points, and keeping track of the amount of
+/// points earned by the player.
 /// </summary>
 public class Points : Text {
     private uint currentPoints;
