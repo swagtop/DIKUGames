@@ -57,7 +57,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         ResetState();
     }
 
-    /// <summary> GetInstance for Singleton purposes. </summary>
+    /// <summary> GetInstance method for Singleton purposes. </summary>
     public static GameRunning GetInstance() {
         return GameRunning.instance;
     }

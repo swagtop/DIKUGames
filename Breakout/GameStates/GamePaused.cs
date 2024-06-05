@@ -24,26 +24,34 @@ public class GamePaused : IGameState {
         ("Main Menu", "MAIN_MENU")
     );
 
+    /// <summary> Private constructor that sets up base conditions for class. </summary>
     private GamePaused() {
         gamePausedText.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));
     }
 
+    /// <summary> GetInstance method for Singleton purposes. </summary>
     public static GamePaused GetInstance() {
         return GamePaused.instance;
     }
     
+    /// <summary> Resets the menu </summary>
     public void ResetState() {
         menu.Reset();
     }
 
+    /// <summary> Nothing to update, does nothing. </summary>
     public void UpdateState() {}
 
+    /// <summary> Renders paused GameRunning state, behind menu and paused text. </summary>
     public void RenderState() {
         GameRunning.GetInstance().RenderState();
         gamePausedText.RenderText();
         menu.RenderMenu();
     }
 
+    /// <summary> Handles key events by sending them off to respective methods. </summary>
+    /// <param name="action"> Has the key been pressed or released?. </param>
+    /// <param name="key"> The keyboard key in question. </param>
     public void SelectMenuItem(string value) {
         switch (value) {
             case "RESUME_GAME":

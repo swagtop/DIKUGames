@@ -23,14 +23,17 @@ public class ChooseLevel : IGameState {
     );
     private Menu menu = new Menu(0.6f);
 
+    /// <summary> Private constructor that sets up base conditions for class. </summary>
     private ChooseLevel() {
         ResetState();
     }
 
+    /// <summary> GetInstance method for Singleton purposes. </summary>
     public static ChooseLevel GetInstance() {
         return ChooseLevel.instance;
     }
     
+    /// <summary> Clears the menu, and loads all levelfiles into it </summary>
     public void ResetState() {
         menu.Clear();
         menu.AddButton("Main Menu", "MAIN_MENU");
@@ -48,13 +51,17 @@ public class ChooseLevel : IGameState {
         menu.Reset();
     }
     
+    /// <summary> Nothing to update, does nothing. </summary>
     public void UpdateState() {}
 
+    /// <summary> Renders background and menu </summary>
     public void RenderState() {
         background.RenderBackground();
         menu.RenderMenu();
     }
     
+    /// <summary> Acts on value taken from active menu button </summary>
+    /// <param name="value"=> Value string representing button selected </param>
     public void SelectMenuItem(string value) {
         switch (value) {
             case ("MAIN_MENU"):
@@ -87,6 +94,9 @@ public class ChooseLevel : IGameState {
         }
     }
 
+    /// <summary> Interprets behaviour based on keyboard inputs. </summary>
+    /// <param name="action"> Has the key been pressed or released?. </param>
+    /// <param name="key"> The keyboard key in question. </param>
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         if (action != KeyboardAction.KeyPress) return;
 
