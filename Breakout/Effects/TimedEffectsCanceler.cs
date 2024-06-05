@@ -7,7 +7,9 @@ using DIKUArcade.Events;
 using Breakout.Entities;
 
 /// <summary>
-///
+/// Some powerups and hazards have timed events, that when triggered revert effects. When levels
+/// end or new ball instances are introduced, these effects could trigger, causing unwanted
+/// effects. This class is the tool that should be used to cancel these events.
 /// </summary>
 public static class TimedEffectsCanceler {
     private static readonly GameEventBus eventBus = BreakoutBus.GetBus();

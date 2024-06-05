@@ -6,7 +6,7 @@ using DIKUArcade.Entities;
 using Breakout.Entities;
 
 /// <summary>
-///
+/// An abstract class, made such that 'effect is PowerupEffect' behaviour can exist.
 /// </summary>
 public abstract class PowerupEffect : IEffect {
     public abstract void EngageEffect(EntityContainer<Ball> balls, Player player);
