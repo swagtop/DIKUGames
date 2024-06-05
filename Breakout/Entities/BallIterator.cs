@@ -52,6 +52,7 @@ public static class BallIterator {
 
                 if (colCheckBlock.Collision) {
                     block.Hit();
+                    if (ball.IsHard) { block.Hit(); } // Double damage for hard balls.
                     ball.ChangeDirection(colCheckBlock.CollisionDir);
                 }
                 if (block.IsDeleted()) {
