@@ -42,9 +42,9 @@ public class GameRunningTests {
         });
 
         gameRunning.ResetState();
-        //gameRunning.UpdateState();
+        //gameRunning.UpdateState();   Cannot be tested because of timer.
         gameRunning.RenderState();
-        //gameRunning.IterateBalls();
+        //gameRunning.IterateBalls();  Cannot be tested because of timer.
 
         //gameRunning.EndLevel();
         gameRunning.EndGame("WON");
@@ -85,6 +85,7 @@ public class GameRunningTests {
         }
         Assert.Pass();
         */
+        // Cannot be tested because of timer.
         Assert.Inconclusive();
     }
 }
