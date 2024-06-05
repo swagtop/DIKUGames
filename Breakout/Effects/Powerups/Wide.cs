@@ -18,11 +18,17 @@ public class Wide : PowerupEffect, IEffect {
         ObjectArg1 = new Wide(),
     };
 
+    /// <summary> Calls the GetFat() method of Player class. </param>
+    /// <param name="balls"=> Not used here. </param>
+    /// <param name="player"=> The Player we wish to get fat </param>
     public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
         player.GetFat();
         BreakoutBus.GetBus().AddOrResetTimedEvent(disengageEvent, TimePeriod.NewSeconds(5));
     }
 
+    /// <summary> Calls the GetSkinny() method of Player class. </param>
+    /// <param name="balls"=> Not used here. </param>
+    /// <param name="player"=> The Player we wish to get skinny </param>
     public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {
         player.GetSkinny();
     }

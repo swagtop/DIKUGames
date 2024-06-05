@@ -32,6 +32,7 @@ public class Block : Entity {
         this.health = this.maxHealth;
     }
 
+    /// <summary> Decrements health, might tell GameRunning to spawn hazard if broken. </summary>
     public virtual bool Hit() {
         Health -= 1;
 

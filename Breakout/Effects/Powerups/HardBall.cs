@@ -23,6 +23,9 @@ public class HardBall : PowerupEffect, IEffect {
         ObjectArg1 = new HardBall(),
     };
 
+    /// <summary> Makes balls hard, adds timed event to return them to normal. </param>
+    /// <param name="balls"=> The ball container of balls we wish to make hard </param>
+    /// <param name="player"=> Not used here. </param>
     public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
         foreach (Ball ball in balls) {
             ball.IsHard = true;
@@ -31,6 +34,9 @@ public class HardBall : PowerupEffect, IEffect {
         BreakoutBus.GetBus().AddOrResetTimedEvent(disengageEvent, TimePeriod.NewSeconds(5));
     }
 
+    /// <summary> Returns balls to normal </param>
+    /// <param name="balls"=> The ball container of balls we wish to make normal </param>
+    /// <param name="player"=> Not used here. </param>
     public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {
         foreach (Ball ball in balls) {
             ball.IsHard = false;

@@ -18,9 +18,11 @@ public class ExtraLife : PowerupEffect, IEffect {
         Id = 400,
     };
 
+    /// <summary> Sends off game event to GameRunning, asking for player to gain a life </param>
     public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
         BreakoutBus.GetBus().RegisterEvent(engageEvent);
     }
     
+    /// <summary> Nothing to disengage. </param>
     public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {}
 }

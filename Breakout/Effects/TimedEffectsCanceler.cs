@@ -13,12 +13,15 @@ using Breakout.Entities;
 /// </summary>
 public static class TimedEffectsCanceler {
     private static readonly GameEventBus eventBus = BreakoutBus.GetBus();
+
+    /// <summary> Cancels list of events by their ID's </param>
     private static void CancelEvents(params uint[] eventIds) {
         foreach (uint eventId in eventIds) {
             if (eventBus.HasTimedEvent(eventId)) { eventBus.CancelTimedEvent(eventId); }
         }
     }
 
+    /// <summary> Cancels all timed effects that should end with the level </param>
     public static void LevelEndCancel() {
         CancelEvents(
             101, // (Powerup) Wide
@@ -28,6 +31,7 @@ public static class TimedEffectsCanceler {
         );
     }
 
+    /// <summary> Cancels all timed effects that should when all balls are lost </param>
     public static void BallsLostCancel() {
         CancelEvents(
             201, // (Powerup) Wide

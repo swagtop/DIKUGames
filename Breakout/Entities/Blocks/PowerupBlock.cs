@@ -11,6 +11,7 @@ using Breakout;
 public class PowerupBlock : Block {
     public PowerupBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape) {}
 
+    /// <summary> Decrements health, tells GameRunning to spawn powerup if broken. </summary>
     public override bool Hit() {
         Health -= 1;
         if (this.IsDeleted()) {

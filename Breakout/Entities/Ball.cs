@@ -17,6 +17,9 @@ public class Ball : Entity {
         Dynamic = shape.AsDynamicShape();
     }
 
+    /// <summary> 
+    /// Moves ball, flips direction if it is going out of bounds. Deletes if out of bounds below.
+    ///</summary>
     public void Move() {
         bool belowLowerBound = (Shape.Position.Y + Dynamic.Direction.Y < 0.0f - Shape.Extent.Y);
         
@@ -33,6 +36,8 @@ public class Ball : Entity {
         else { Dynamic.ChangeDirection(new Vec2F(Dynamic.Direction.X, -Dynamic.Direction.Y)); }
     }
 
+    /// <summary> Flips direction based on input direction </summary>
+    /// <param name="direction"> Direction given by collision detection data. </param>
     public void ChangeDirection(CollisionDirection direction) {
         switch (direction) {
             case CollisionDirection.CollisionDirUp:
@@ -48,6 +53,7 @@ public class Ball : Entity {
         }
     }
 
+    /// <summary> Creates exact copy of ball in a different instance. </summary>
     public Ball Clone() {
         return new Ball(
             this.Image, 

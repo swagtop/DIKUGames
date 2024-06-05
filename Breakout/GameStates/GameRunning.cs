@@ -146,7 +146,7 @@ public class GameRunning : IGameState, IGameEventProcessor {
         }
     }
 
-    /// <summary> Collects stats of game, sends them to and switches to PostGame. </summary>
+    /// <summary> Collects final stats of game, sends them to and switches to PostGame. </summary>
     public void EndGame(string result) {
         int finalPoints = (int)points.GetPoints();
 

@@ -28,6 +28,8 @@ public class EffectEntity : Entity {
         return Effect;
     }
 
+    /// <summary> Checks if there is a collision with an entity </summary>
+    /// <param name="entity"> Any entity, but usually the player </param>
     public bool CollidesWith(Entity entity) {
         float effectLeftSide = Shape.Position.X;
         float effectRightSide = Shape.Position.X + Shape.Extent.X;

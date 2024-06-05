@@ -6,17 +6,24 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Utilities;
 
 /// <summary>
-/// 
+/// This is the BallLauncher class. Adds a new ball to the GameRunning game state when asked to,
+/// and launches this ball when prompted by the GameRunning game state aswell.
+/// The direction of the ball when launched, is based on its relation to the player, such that
+/// the player can aim which direction they would like the ball to go.
 /// </summary>
 public class BallLauncher {
     private readonly EntityContainer<Ball> balls;
     private readonly Player player;
 
+    /// <summary> Constructor, fetching the ball container and player instance. </summary>
+    /// <param name="balls"> A ball container, should be the one in GameRunning. </param>
+    /// <param name="player"> A player instance, should be the one in GameRunning. </param>
     public BallLauncher(EntityContainer<Ball> balls, Player player) {
         this.balls = balls;
         this.player = player;
     }
 
+    /// <summary> Launches the ball in a slightly, based on player position. </summary>
     public void LaunchBall() {
         Vec2F launchVector;
         balls.Iterate(ball => {
@@ -47,6 +54,7 @@ public class BallLauncher {
         });
     }
 
+    /// <summary> Loads a new ball into the BallLauncher, ready to be launched. </summary>
     public void AddNewBall() {
         Vec2F ballExtent = new Vec2F(0.025f, 0.025f);
         Vec2F ballPosition = new Vec2F(

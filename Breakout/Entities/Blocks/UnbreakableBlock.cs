@@ -9,6 +9,7 @@ using DIKUArcade.Graphics;
 public class UnbreakableBlock : Block {
     public UnbreakableBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape) {}
 
+    /// <summary> Does nothing and returns false always, signifying the block survived. </summary>
     public override bool Hit() {
         return false;
     }

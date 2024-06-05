@@ -26,11 +26,13 @@ public class FogOfWar : HazardEffect, IEffect {
         Id = 701,
     };
 
+    /// <summary> Engaging through eventbus, adds timed event for disengage. </param>
     public override void EngageEffect(EntityContainer<Ball> balls, Player player) {
         BreakoutBus.GetBus().RegisterEvent(engageEvent);
         BreakoutBus.GetBus().AddOrResetTimedEvent(disengageEvent, TimePeriod.NewSeconds(5));
     }
 
+    /// <summary> Nothing to disengage. </param>
     public override void DisengageEffect(EntityContainer<Ball> balls, Player player) {}
 }
 

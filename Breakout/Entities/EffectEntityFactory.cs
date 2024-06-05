@@ -19,6 +19,7 @@ public static class EffectEntityFactory {
     private static readonly Vec2F defaultExtent = new Vec2F(0.05f, 0.05f);
     private static readonly Vec2F defaultDirection = new Vec2F(0.0f, -0.002f);
 
+    /// <summary> Creates EffectEntity around position given, containing effect of effectType. </summary>
     public static EffectEntity CreatePowerup(Vec2F position, PowerupEffectType effectType) {
         Vec2F spawnPosition = position;
         spawnPosition.X += RandomGenerator.Generator.NextSingle() * 0.05f;
@@ -62,6 +63,7 @@ public static class EffectEntityFactory {
         }
     }
 
+    /// <summary> Creates EffectEntity around position given, containing random powerup </summary>
     public static EffectEntity CreateRandomPowerup(Vec2F position) {
         PowerupEffectType[] powerups = (PowerupEffectType[])Enum.GetValues(typeof(PowerupEffectType));
         int randomIndex = RandomGenerator.Generator.Next(powerups.Length);
@@ -71,6 +73,7 @@ public static class EffectEntityFactory {
         return randomPowerup;
     }
 
+    /// <summary> Creates EffectEntity around position given, containing effect of effectType. </summary>
     public static EffectEntity CreateHazard(Vec2F position, HazardEffectType effectType) {
         Vec2F spawnPosition = position;
         spawnPosition.X += RandomGenerator.Generator.NextSingle() * 0.05f;
@@ -96,6 +99,7 @@ public static class EffectEntityFactory {
         }
     }
 
+    /// <summary> Creates EffectEntity around position given, containing random hazard </summary>
     public static EffectEntity CreateRandomHazard(Vec2F position) {
         HazardEffectType[] hazards = (HazardEffectType[])Enum.GetValues(typeof(HazardEffectType));
         int randomIndex = RandomGenerator.Generator.Next(hazards.Length);
