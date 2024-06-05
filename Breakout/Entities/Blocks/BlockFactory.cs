@@ -5,13 +5,15 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
 /// <summary>
-///
+/// Creates a block based on two coordinates, the i and j integers, and a BlockType. 
+/// The integers should be derived from the level files.
 /// </summary>
 public static class BlockFactory {
+    private static int maxNumberOfBlocksInRow = 12;
+    private static float xRatio = 1.0f / maxNumberOfBlocksInRow;
+    private static float yRatio = xRatio / 3.0f;
+
     public static Block CreateBlock(IBaseImage normalImage, IBaseImage damagedImage, BlockType blockType, int i, int j) {
-        int maxNumberOfBlocksInRow = 12;
-        float xRatio = 1.0f / maxNumberOfBlocksInRow;
-        float yRatio = xRatio / 3.0f;
         Shape shape = new StationaryShape(
             new Vec2F(j * xRatio, 1.0f - ((i + 1) * yRatio)),
             new Vec2F(xRatio, yRatio)

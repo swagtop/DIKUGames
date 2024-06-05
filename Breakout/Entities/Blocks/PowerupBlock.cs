@@ -6,7 +6,7 @@ using DIKUArcade.Graphics;
 using Breakout;
 
 /// <summary>
-///
+/// The PowerupBlock spawns a powerup effect close to its position when broken.
 /// </summary>
 public class PowerupBlock : Block {
     public PowerupBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape) {}

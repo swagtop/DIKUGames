@@ -1,5 +1,9 @@
 namespace Breakout.Entities.Blocks;
 
+/// <summary>
+/// Each of the implemented Block types. If a new block is implemented, it should have an entry in
+/// this enum.
+/// </summary>
 public enum BlockType {
     Block,
     HardenedBlock,
@@ -8,7 +12,8 @@ public enum BlockType {
 }
 
 /// <summary>
-///
+/// This is used for transforming between the string representation and enum representation of a
+/// blocktype. Should be used when parsing level meta information.
 /// </summary>
 public static class BlockTypeTransformer {
     public static BlockType TransformStringToType(string type) {

@@ -5,7 +5,9 @@ using DIKUArcade.Graphics;
 using Breakout.Effects;
 
 /// <summary>
-///
+/// The EffectEntity should contain an IEffect instance. This entity should have a visual
+/// representation of which effect it contains, and whould be popped when colliding with the
+/// player entity. When popped it returns the IEffect it contains, which should then be activated.
 /// </summary>
 public class EffectEntity : Entity {
     public readonly IEffect Effect;

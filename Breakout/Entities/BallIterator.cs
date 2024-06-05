@@ -12,7 +12,9 @@ using Breakout.LevelHandling;
 using Breakout.GUI;
 
 /// <summary>
-///
+/// This class handles the interaction between balls, blocks, and the player. Its main method 
+/// moves all balls, and returns the result of each iteration. This result should be used to 
+/// trigger other in-game events.
 /// </summary>
 public static class BallIterator {
     private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
