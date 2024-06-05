@@ -1,7 +1,8 @@
 namespace Breakout.GameStates;
 
 /// <summary>
-///
+/// This Enum has an entry for each game state. Should a new game state be implemented, an entry
+/// representing it should be added here.
 /// </summary>
 public enum GameStateType {
     GameRunning,
@@ -12,7 +13,8 @@ public enum GameStateType {
 }
 
 /// <summary>
-///
+/// This class is made such that easy conversion between strings and enum values representing the
+/// same game state can be easily converted to eachother.
 /// </summary>
 public static class GameStateTransformer {
     public static GameStateType TransformStringToState(string state) {
