@@ -10,6 +10,11 @@ using DIKUArcade.Utilities;
 using Breakout.LevelHandling;
 using Breakout.GUI;
 
+/// <summary> 
+/// The ChooseLevel class is one of the game states that can be reached from the main menu.
+/// This class loads all the files inside the /Assets/Levels folder, and makes them available for
+/// individual loading into the GameRunning state.
+/// </summary>
 public class ChooseLevel : IGameState {
     private static ChooseLevel instance = new ChooseLevel();
     private GameEventBus eventBus = BreakoutBus.GetBus();

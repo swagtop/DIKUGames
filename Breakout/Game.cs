@@ -6,6 +6,9 @@ using DIKUArcade.GUI;
 using DIKUArcade.Input;
 using Breakout.GameStates;
 
+/// <summary>
+///
+/// </summary>
 public class Game : DIKUGame, IGameEventProcessor {  
     private GameEventBus eventBus;
     private StateMachine stateMachine;

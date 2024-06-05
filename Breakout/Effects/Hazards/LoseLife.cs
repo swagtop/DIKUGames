@@ -6,6 +6,9 @@ using DIKUArcade.Entities;
 using DIKUArcade.Events;
 using Breakout.Entities;
 
+/// <summary>
+///
+/// </summary>
 public class LoseLife : HazardEffect, IEffect {
     private static GameEvent engageEffect = new GameEvent {
         EventType = GameEventType.StatusEvent,

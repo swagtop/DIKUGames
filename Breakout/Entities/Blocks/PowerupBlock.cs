@@ -5,6 +5,9 @@ using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using Breakout;
 
+/// <summary>
+///
+/// </summary>
 public class PowerupBlock : Block {
     public PowerupBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape) {}
 

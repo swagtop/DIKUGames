@@ -4,6 +4,9 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
+/// <summary>
+///
+/// </summary>
 public class Background {
     private IBaseImage image;
     private Shape shape;

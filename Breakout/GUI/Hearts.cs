@@ -4,6 +4,9 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
+/// <summary>
+///
+/// </summary>
 public class Hearts {
     private uint startAmount;
     private IBaseImage fullContainerImage = new Image(

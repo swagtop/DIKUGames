@@ -10,6 +10,10 @@ using DIKUArcade.Utilities;
 using Breakout.GUI;
 using Breakout.LevelHandling;
 
+/// <summary> 
+/// The MainMenu class, should be the first game state the player meets. It is the main entry for
+/// the player to choose what they would like to do inside the program.
+/// </summary>
 public class MainMenu : IGameState {
     private static MainMenu instance = new MainMenu();
     private GameEventBus eventBus = BreakoutBus.GetBus();

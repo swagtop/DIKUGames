@@ -5,6 +5,9 @@ using DIKUArcade.Math;
 using Breakout.Entities;
 using Breakout.Entities.Blocks;
 
+/// <summary>
+///
+/// </summary>
 public class Points : Text {
     private uint currentPoints;
     private const uint POINTS_BASE_AMOUNT = 100;

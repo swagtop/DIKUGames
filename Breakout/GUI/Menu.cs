@@ -3,6 +3,9 @@ namespace Breakout.GUI;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
+/// <summary>
+///
+/// </summary>
 public class Menu {
     private float topButtonPosition;
     private Vec3F activeColor = new Vec3F(1.0f, 1.0f, 1.0f);

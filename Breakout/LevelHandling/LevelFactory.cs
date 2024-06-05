@@ -6,6 +6,9 @@ using DIKUArcade.Math;
 using Breakout.Entities;
 using Breakout.Entities.Blocks;
 
+/// <summary>
+///
+/// </summary>
 public static class LevelFactory {
     public static Level LoadFromFile(string filepath) {
         LevelFileSections levelFileSections;

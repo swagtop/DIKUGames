@@ -5,6 +5,9 @@ using DIKUArcade.Math;
 using DIKUArcade.Utilities;
 using Breakout.Entities;
 
+/// <summary>
+///
+/// </summary>
 public class Split : PowerupEffect, IEffect {
     private static Random rnd = RandomGenerator.Generator;
     private static int multiplier = 3;

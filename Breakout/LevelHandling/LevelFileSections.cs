@@ -1,5 +1,8 @@
 namespace Breakout.LevelHandling;
 
+/// <summary>
+///
+/// </summary>
 public struct LevelFileSections {
     public string[] Map;
     public string[] Meta;

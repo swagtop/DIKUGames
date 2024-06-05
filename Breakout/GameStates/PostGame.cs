@@ -10,6 +10,10 @@ using DIKUArcade.Math;
 using DIKUArcade.State;
 using Breakout.GUI;
 
+/// <summary> 
+/// The PostGame class, is the game state that is switched to when the player has either won or
+/// lost in-game. It receives the final stats of the run through the event bus.
+/// </summary>
 public class PostGame : IGameState, IGameEventProcessor {
     private static PostGame instance = new PostGame();
     private GameEventBus eventBus = BreakoutBus.GetBus();

@@ -7,6 +7,9 @@ using DIKUArcade.Timers;
 using Breakout;
 using Breakout.Entities;
 
+/// <summary>
+///
+/// </summary>
 public class Wide : PowerupEffect, IEffect {
     private static GameEvent disengageEvent = new GameEvent {
         EventType = GameEventType.TimedEvent,

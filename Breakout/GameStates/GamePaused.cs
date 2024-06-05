@@ -9,6 +9,11 @@ using DIKUArcade.State;
 using DIKUArcade.Timers;
 using Breakout.GUI;
 
+/// <summary> 
+/// The GamePaused class is the game state that is switched to, should the player wish to pause
+/// the game while it is running. Here the player can decide to resume the game, or go back to the
+/// main menu, effectively ending the current run.
+/// </summary>
 public class GamePaused : IGameState {
     private static GamePaused instance = new GamePaused();
     private GameEventBus eventBus = BreakoutBus.GetBus();

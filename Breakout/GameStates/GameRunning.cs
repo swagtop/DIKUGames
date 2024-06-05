@@ -19,6 +19,12 @@ using Breakout.Effects;
 using Breakout.Effects.Powerups;
 using Breakout.Effects.Hazards;
 
+/// <summary> 
+/// The GameRunning class is responsible for managing and running the 'Breakout' game itself.
+/// It contains and manages the in-game objects, such as the player, balls, blocks, and effects.
+/// When updating this game state, this class makes these objects interact, and makes descides if
+/// the player has won, lost, or completed a level based off of these interactions.
+/// </summary>
 public class GameRunning : IGameState, IGameEventProcessor {
     private static GameRunning instance = new GameRunning();
     private GameEventBus eventBus = BreakoutBus.GetBus();

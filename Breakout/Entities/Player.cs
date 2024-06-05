@@ -5,6 +5,9 @@ using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
+/// <summary>
+///
+/// </summary>
 public class Player : Entity, IGameEventProcessor {
     private bool fat = false;
     private float moveLeft = 0.0f;

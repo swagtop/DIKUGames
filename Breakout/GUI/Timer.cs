@@ -9,6 +9,9 @@ using DIKUArcade.Timers;
 using Breakout;
 using Breakout.GameStates;
 
+/// <summary>
+///
+/// </summary>
 public class Timer : Text {
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private int timeLeft;

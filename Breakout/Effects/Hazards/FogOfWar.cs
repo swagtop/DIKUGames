@@ -7,6 +7,9 @@ using DIKUArcade.Events;
 using DIKUArcade.Timers;
 using Breakout.Entities;
 
+/// <summary>
+///
+/// </summary>
 public class FogOfWar : HazardEffect, IEffect {
     private static GameEvent engageEvent = new GameEvent {
         EventType = GameEventType.StatusEvent,

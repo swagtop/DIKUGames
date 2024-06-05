@@ -4,6 +4,9 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using Breakout.Effects;
 
+/// <summary>
+///
+/// </summary>
 public class EffectEntity : Entity {
     public readonly IEffect Effect;
 

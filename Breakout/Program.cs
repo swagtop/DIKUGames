@@ -2,6 +2,9 @@
 
 using DIKUArcade.GUI;
 
+/// <summary>
+///
+/// </summary>
 public class Program {
     static void Main(string[] args) {
         var windowArgs = new WindowArgs() { Title = "Breakout v3" };

@@ -6,6 +6,9 @@ using DIKUArcade.Entities;
 using DIKUArcade.Events;
 using Breakout.Entities;
 
+/// <summary>
+///
+/// </summary>
 public static class TimedEffectsCanceler {
     private static readonly GameEventBus eventBus = BreakoutBus.GetBus();
     private static void CancelEvents(params uint[] eventIds) {

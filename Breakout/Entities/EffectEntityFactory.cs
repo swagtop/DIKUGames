@@ -8,6 +8,9 @@ using Breakout.Effects;
 using Breakout.Effects.Powerups;
 using Breakout.Effects.Hazards;
 
+/// <summary>
+///
+/// </summary>
 public static class EffectEntityFactory {
     private static readonly Vec2F defaultExtent = new Vec2F(0.05f, 0.05f);
     private static readonly Vec2F defaultDirection = new Vec2F(0.0f, -0.002f);

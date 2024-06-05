@@ -7,6 +7,9 @@ public enum BlockType {
     PowerupBlock
 }
 
+/// <summary>
+///
+/// </summary>
 public static class BlockTypeTransformer {
     public static BlockType TransformStringToType(string type) {
         switch (type) {

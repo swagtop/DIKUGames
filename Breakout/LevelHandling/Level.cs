@@ -4,6 +4,9 @@ using DIKUArcade.Entities;
 using Breakout.Entities;
 using Breakout.Entities.Blocks;
 
+/// <summary>
+///
+/// </summary>
 public class Level {
     public LevelMeta Meta;
     public EntityContainer<Block> Blocks;

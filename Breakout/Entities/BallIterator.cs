@@ -11,6 +11,9 @@ using Breakout.Entities.Blocks;
 using Breakout.LevelHandling;
 using Breakout.GUI;
 
+/// <summary>
+///
+/// </summary>
 public static class BallIterator {
     private static readonly Vec2F defaultBallDirection = new Vec2F(0.0f, 0.0150f);
 

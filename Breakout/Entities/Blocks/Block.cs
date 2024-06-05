@@ -5,6 +5,9 @@ using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using DIKUArcade.Utilities;
 
+/// <summary>
+///
+/// </summary>
 public class Block : Entity {
     private IBaseImage damagedImage;
     private int maxHealth;

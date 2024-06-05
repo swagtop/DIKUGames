@@ -5,6 +5,9 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 
+/// <summary>
+///
+/// </summary>
 public class Ball : Entity {
     public DynamicShape Dynamic;
     public bool IsHard = false;

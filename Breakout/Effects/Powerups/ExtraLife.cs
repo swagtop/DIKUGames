@@ -8,6 +8,9 @@ using DIKUArcade.Timers;
 using Breakout;
 using Breakout.Entities;
 
+/// <summary>
+///
+/// </summary>
 public class ExtraLife : PowerupEffect, IEffect {
     private static GameEvent engageEvent = new GameEvent {
         EventType = GameEventType.StatusEvent,

@@ -5,6 +5,9 @@ using DIKUArcade.Math;
 using DIKUArcade.Graphics;
 using DIKUArcade.Utilities;
 
+/// <summary>
+///
+/// </summary>
 public class BallLauncher {
     private readonly EntityContainer<Ball> balls;
     private readonly Player player;

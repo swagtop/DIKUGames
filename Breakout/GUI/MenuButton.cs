@@ -3,6 +3,9 @@ namespace Breakout.GUI;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
+/// <summary>
+///
+/// </summary>
 public class MenuButton : Text {
     public Vec3F ActiveColor;
     public Vec3F PassiveColor;

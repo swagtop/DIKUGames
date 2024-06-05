@@ -1,5 +1,8 @@
 namespace Breakout.GameStates;
 
+/// <summary>
+///
+/// </summary>
 public enum GameStateType {
     GameRunning,
     GamePaused,
@@ -8,6 +11,9 @@ public enum GameStateType {
     PostGame
 }
 
+/// <summary>
+///
+/// </summary>
 public static class GameStateTransformer {
     public static GameStateType TransformStringToState(string state) {
         switch (state) {

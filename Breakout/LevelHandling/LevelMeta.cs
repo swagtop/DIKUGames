@@ -3,6 +3,9 @@ namespace Breakout.LevelHandling;
 using Breakout.Entities;
 using Breakout.Entities.Blocks;
 
+/// <summary>
+///
+/// </summary>
 public struct LevelMeta {
     public string LevelName;
     public int TimeLimit;
