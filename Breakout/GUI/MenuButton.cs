@@ -23,10 +23,12 @@ public class MenuButton : Text {
         SetColor(passiveColor);
     }
 
+    /// <summary> Changes color of button, only visual. </summary>
     public void Hover() {
         SetColor(ActiveColor);
     }
     
+    /// <summary> Changes color of button, only visual. </summary>
     public void Unhover() {
         SetColor(PassiveColor);
     }

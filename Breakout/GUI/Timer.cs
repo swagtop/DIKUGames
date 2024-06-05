@@ -47,12 +47,14 @@ public class Timer : Text {
         }
     }
 
+    /// <summary> Renders time left, if time limit is sat. </summary>
     public void RenderTimer() {
         if (timeLimit >= 0) {
             RenderText();
         }
     }
 
+    /// <summary> Returns true if player has run out of time. </summary>
     public bool TimeLimitExceeded() {
         double timePassed = StaticTimer.GetElapsedSeconds();
         return (timeLimit > 0 && timeLimit - timePassed < 0);

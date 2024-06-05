@@ -18,6 +18,7 @@ public class Points : Text {
         SetColor(new Vec3F(1.0f, 1.0f, 1.0f));
     }
 
+    /// <summary> Awards points based on block type. </summary>
     public void AwardPointsFor(Block block) {
         if (block is HardenedBlock) {
             currentPoints += POINTS_BASE_AMOUNT * 2;

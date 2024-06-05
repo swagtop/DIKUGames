@@ -53,6 +53,7 @@ public class Hearts {
         Amount = startAmount;
     }
 
+    /// <summary> Renders each heart, based on maximum and current values of lives. </summary>
     public void RenderHearts() {
         float originalX = renderingShape.Position.X;
         for (int i = 0; i < startAmount; i++) {

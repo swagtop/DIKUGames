@@ -11,6 +11,7 @@ using DIKUArcade.Events;
 public static class BreakoutBus {
     private static GameEventBus eventBus = new GameEventBus();
 
+    /// <summary> GetEventBus method for Singleton purposes. </summary>
     public static GameEventBus GetBus() {
         return BreakoutBus.eventBus;
     }

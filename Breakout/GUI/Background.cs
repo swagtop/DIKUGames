@@ -17,6 +17,7 @@ public class Background {
         this.shape = new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f));
     }
 
+    /// <summary> Renders image of background, filling the whole screen </summary>
     public void RenderBackground() {
         image.Render(shape);
     }

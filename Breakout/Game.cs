@@ -15,6 +15,7 @@ public class Game : DIKUGame, IGameEventProcessor {
     private GameEventBus eventBus;
     private StateMachine stateMachine;
     
+    /// <summary> Constructor, initializes event bus and StateMachine </summary>
     public Game(WindowArgs windowArgs) : base(windowArgs) {
         window.SetKeyEventHandler(KeyHandler);
 
@@ -40,19 +41,23 @@ public class Game : DIKUGame, IGameEventProcessor {
         eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
     }
 
+    /// <summary> Renders active state of StateMachine </summary>
     public override void Render() { 
         stateMachine.ActiveState.RenderState();
     }
 
+    /// <summary> Updates event bus, THEN updates active state of StateMachine </summary>
     public override void Update() {
         eventBus.ProcessEvents();
         stateMachine.ActiveState.UpdateState();
     }
 
+    /// <summary> Sends key inputs to active state of StateMachine </summary>
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
         stateMachine.ActiveState.HandleKeyEvent(action, key);
     }
 
+    /// <summary> Quits game when receiving signal from event bus. </summary>
     public void ProcessEvent(GameEvent gameEvent) {
         if (gameEvent.EventType != GameEventType.WindowEvent) return;
         
