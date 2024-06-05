@@ -6,7 +6,11 @@ using DIKUArcade.Math;
 using Breakout.Entities;
 using Breakout.Entities.Blocks;
 
+/// <summary>
+/// The LevelFactory is responsible for parsing level files, and turning them into Level instances.
+/// </summary>
 public static class LevelFactory {
+    /// <summary> Returns a Level from filepath, throws exception on invalid level files </summary>
     public static Level LoadFromFile(string filepath) {
         LevelFileSections levelFileSections;
         LevelMeta levelMeta;
@@ -39,6 +43,7 @@ public static class LevelFactory {
         return new Level(levelMeta, blocks, breakableLeft);
     }
 
+    /// <summary> Splits file contents into map, meta, and legend sections. </summary>
     public static LevelFileSections GetLevelFileSections(string[] lines) {
         int mapStart, mapEnd;
         int metaStart, metaEnd;
@@ -72,6 +77,7 @@ public static class LevelFactory {
         return new LevelFileSections(mapSection, metaSection, legendSection);
     }
 
+    /// <summary> Parses meta section of level file to return a LevelMeta instance </summary>
     public static LevelMeta ParseMetaSection(string[] lines) {
         LevelMeta levelMeta = new LevelMeta();
         string[] itemPair = new string[2]; 
@@ -106,6 +112,7 @@ public static class LevelFactory {
         return levelMeta;
     }
 
+    /// <summary> Parses legend section to return an Image pair dictionary </summary>
     public static Dictionary<char, Image[]> ParseLegendSection(string[] lines) {
         Dictionary<char, Image[]> levelLegend = new Dictionary<char, Image[]>();
         string[] itemPair = new string[2]; 
@@ -128,6 +135,7 @@ public static class LevelFactory {
         return levelLegend;
     }
 
+    /// <summary> Parses map section to return an collection of blocks </summary>
     public static EntityContainer<Block> ParseMapSection(string[] lines, LevelMeta levelMeta, Dictionary<char, Image[]> levelLegend) {
         int maxBlockRows = 30;
         int maxNumberOfBlocksInRow = 12;

@@ -155,10 +155,12 @@ public class BlockTests {
         Block block = new Block(noImage, noImage, shape);
         HardenedBlock hardenedBlock = new HardenedBlock(noImage, noImage, shape);
         UnbreakableBlock unbreakableBlock = new UnbreakableBlock(noImage, noImage, shape);
+        PowerupBlock powerupBlock = new PowerupBlock(noImage, noImage, shape);
         
         Assert.That(block, Is.InstanceOf<Entity>());
         Assert.That(hardenedBlock, Is.InstanceOf<Entity>());
         Assert.That(unbreakableBlock, Is.InstanceOf<Entity>());
+        Assert.That(powerupBlock, Is.InstanceOf<Block>());
     }
 
     [Test]
@@ -171,9 +173,11 @@ public class BlockTests {
         Block block = new Block(noImage, noImage, shape);
         HardenedBlock hardenedBlock = new HardenedBlock(noImage, noImage, shape);
         UnbreakableBlock unbreakableBlock = new UnbreakableBlock(noImage, noImage, shape);
+        PowerupBlock powerupBlock = new PowerupBlock(noImage, noImage, shape);
         
         Assert.That(block, Is.InstanceOf<Block>());
         Assert.That(hardenedBlock, Is.InstanceOf<Block>());
         Assert.That(unbreakableBlock, Is.InstanceOf<Block>());
+        Assert.That(powerupBlock, Is.InstanceOf<Block>());
     }
 }

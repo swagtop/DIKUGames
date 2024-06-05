@@ -5,6 +5,10 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Physics;
 
+/// <summary>
+/// The Ball class represents the 'ball' in the Breakout game. This ball can move, and change 
+/// direction. This behaviour should however be handled by the BallIterator.
+/// </summary>
 public class Ball : Entity {
     public DynamicShape Dynamic;
     public bool IsHard = false;
@@ -13,6 +17,9 @@ public class Ball : Entity {
         Dynamic = shape.AsDynamicShape();
     }
 
+    /// <summary> 
+    /// Moves ball, flips direction if it is going out of bounds. Deletes if out of bounds below.
+    ///</summary>
     public void Move() {
         bool belowLowerBound = (Shape.Position.Y + Dynamic.Direction.Y < 0.0f - Shape.Extent.Y);
         
@@ -29,6 +36,8 @@ public class Ball : Entity {
         else { Dynamic.ChangeDirection(new Vec2F(Dynamic.Direction.X, -Dynamic.Direction.Y)); }
     }
 
+    /// <summary> Flips direction based on input direction </summary>
+    /// <param name="direction"> Direction given by collision detection data. </param>
     public void ChangeDirection(CollisionDirection direction) {
         switch (direction) {
             case CollisionDirection.CollisionDirUp:
@@ -44,6 +53,7 @@ public class Ball : Entity {
         }
     }
 
+    /// <summary> Creates exact copy of ball in a different instance. </summary>
     public Ball Clone() {
         return new Ball(
             this.Image, 

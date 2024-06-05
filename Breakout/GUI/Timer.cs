@@ -9,6 +9,10 @@ using DIKUArcade.Timers;
 using Breakout;
 using Breakout.GameStates;
 
+/// <summary>
+/// The Timer class is both responsible for rendering the timer, and keeping track of time spent
+/// in levels with time limits.
+/// </summary>
 public class Timer : Text {
     private GameEventBus eventBus = BreakoutBus.GetBus();
     private int timeLeft;
@@ -43,12 +47,14 @@ public class Timer : Text {
         }
     }
 
+    /// <summary> Renders time left, if time limit is sat. </summary>
     public void RenderTimer() {
         if (timeLimit >= 0) {
             RenderText();
         }
     }
 
+    /// <summary> Returns true if player has run out of time. </summary>
     public bool TimeLimitExceeded() {
         double timePassed = StaticTimer.GetElapsedSeconds();
         return (timeLimit > 0 && timeLimit - timePassed < 0);

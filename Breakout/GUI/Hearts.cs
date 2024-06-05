@@ -4,6 +4,10 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
+/// <summary>
+/// The Hearts class is both responsible for rendering the player lives, and keeping track of the
+/// amount of lives the player has left.
+/// </summary>
 public class Hearts {
     private uint startAmount;
     private IBaseImage fullContainerImage = new Image(
@@ -49,6 +53,7 @@ public class Hearts {
         Amount = startAmount;
     }
 
+    /// <summary> Renders each heart, based on maximum and current values of lives. </summary>
     public void RenderHearts() {
         float originalX = renderingShape.Position.X;
         for (int i = 0; i < startAmount; i++) {

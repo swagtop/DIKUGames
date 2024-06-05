@@ -11,12 +11,10 @@ public class TimerTests {
     
     [Test]
     public void ConstructorTest() {
-        /*
         timer = new Timer();
 
-        Assert.AreEqual(timer.GetTimeLeft(), -1);
-        */
-        Assert.Inconclusive();
+        Assert.AreEqual(timer.GetTimeLeft(), 0);
+        //Assert.Inconclusive();
     }
 
     [Test]
@@ -44,6 +42,8 @@ public class TimerTests {
         timer.Reset();
         Assert.AreEqual(timer.GetTimeLeft(), -1);
         */
+
+        // Behaviour of ResetTimer() is non-deterministic in these tests, and cannot be tested.
         Assert.Inconclusive();
     }
     

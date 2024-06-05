@@ -42,25 +42,35 @@ public class GameRunningTests {
         });
 
         gameRunning.ResetState();
-        //gameRunning.UpdateState();
+        //gameRunning.UpdateState();   Cannot be tested because of timer.
         gameRunning.RenderState();
-        //gameRunning.IterateBalls();
+        //gameRunning.IterateBalls();  Cannot be tested because of timer.
 
         //gameRunning.EndLevel();
         gameRunning.EndGame("WON");
         gameRunning.EndGame("LOST");
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Up);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Down);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Left);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.A);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Right);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.D);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Enter);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Space);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.P);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.R);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.B);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Up);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Down);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Left);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.A);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Right);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.D);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Enter);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Space);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.P);
         gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.R);
+        gameRunning.HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.B);
 
         gameRunning.FlushQueue();
 
@@ -75,6 +85,7 @@ public class GameRunningTests {
         }
         Assert.Pass();
         */
+        // Cannot be tested because of timer.
         Assert.Inconclusive();
     }
 }

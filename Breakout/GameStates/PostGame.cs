@@ -10,6 +10,10 @@ using DIKUArcade.Math;
 using DIKUArcade.State;
 using Breakout.GUI;
 
+/// <summary> 
+/// The PostGame class, is the game state that is switched to when the player has either won or
+/// lost in-game. It receives the final stats of the run through the event bus.
+/// </summary>
 public class PostGame : IGameState, IGameEventProcessor {
     private static PostGame instance = new PostGame();
     private GameEventBus eventBus = BreakoutBus.GetBus();
@@ -27,6 +31,7 @@ public class PostGame : IGameState, IGameEventProcessor {
         ("Quit Game", "QUIT_GAME")
     );
 
+    /// <summary> Private constructor that sets up base conditions for class. </summary>
     private PostGame() {
         eventBus.Subscribe(GameEventType.GraphicsEvent, this);
 
@@ -35,15 +40,20 @@ public class PostGame : IGameState, IGameEventProcessor {
         finalPointsText.SetColor(new Vec3F(1.0f, 0.0f, 0.0f));
     }
     
+    /// <summary> GetInstance method for Singleton purposes. </summary>
     public static PostGame GetInstance() {
         return PostGame.instance;
     }
+    
+    /// <summary> Resets the menu. </summary>
     public void ResetState() {
         menu.Reset();
     }
     
+    /// <summary> Nothing to update, does nothing. </summary>
     public void UpdateState() {}
-    
+
+    /// <summary> Renders background, game result text, points, and menu. </summary>
     public void RenderState() {
         background.RenderBackground();
         if (playerHasWon) {
@@ -75,6 +85,9 @@ public class PostGame : IGameState, IGameEventProcessor {
         }
     }
     
+    /// <summary> Interprets behaviour based on keyboard inputs. </summary>
+    /// <param name="action"> Has the key been pressed or released?. </param>
+    /// <param name="key"> The keyboard key in question. </param>
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         if (action != KeyboardAction.KeyPress) return;
 
@@ -93,6 +106,8 @@ public class PostGame : IGameState, IGameEventProcessor {
         }
     }
     
+    /// <summary> Receives final game stats from event bus here </summary>
+    /// <param name="gameEvent"> The game event received from event bus. </param>
     public void ProcessEvent(GameEvent gameEvent) {
         switch (gameEvent.Message) {
             case "DISPLAY_STATS":

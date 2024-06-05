@@ -5,6 +5,14 @@ using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using DIKUArcade.Utilities;
 
+/// <summary>
+/// This is the Base Block class. It should be the default block that is created when a level
+/// doesn't specify a specific type of block to be created. This class is made and meant to be
+/// extended by the other special blocks. 
+/// The Hit() method should be called when a ball collides with the block, which decrements its 
+/// Health value. Changing the Health value should only be done through the Hit() method.
+/// The block deletes itself should its Health field be set to zero or below.
+/// </summary>
 public class Block : Entity {
     private IBaseImage damagedImage;
     private int maxHealth;
@@ -24,6 +32,7 @@ public class Block : Entity {
         this.health = this.maxHealth;
     }
 
+    /// <summary> Decrements health, might tell GameRunning to spawn hazard if broken. </summary>
     public virtual bool Hit() {
         Health -= 1;
 

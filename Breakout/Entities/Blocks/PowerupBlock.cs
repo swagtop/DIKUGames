@@ -5,9 +5,13 @@ using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using Breakout;
 
+/// <summary>
+/// The PowerupBlock spawns a powerup effect close to its position when broken.
+/// </summary>
 public class PowerupBlock : Block {
     public PowerupBlock(IBaseImage image, IBaseImage damagedImage, Shape shape) : base(image, damagedImage, shape) {}
 
+    /// <summary> Decrements health, tells GameRunning to spawn powerup if broken. </summary>
     public override bool Hit() {
         Health -= 1;
         if (this.IsDeleted()) {

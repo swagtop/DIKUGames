@@ -10,6 +10,10 @@ using DIKUArcade.Utilities;
 using Breakout.GUI;
 using Breakout.LevelHandling;
 
+/// <summary> 
+/// The MainMenu class, should be the first game state the player meets. It is the main entry for
+/// the player to choose what they would like to do inside the program.
+/// </summary>
 public class MainMenu : IGameState {
     private static MainMenu instance = new MainMenu();
     private GameEventBus eventBus = BreakoutBus.GetBus();
@@ -23,10 +27,12 @@ public class MainMenu : IGameState {
         ("Quit Game", "QUIT_GAME")
     );
 
+    /// <summary> GetInstance method for Singleton purposes. </summary>
     public static MainMenu GetInstance() {
         return MainMenu.instance;
     }
 
+    /// <summary> Resets the menu, and tells GameRunning to flush queue. </summary>
     public void ResetState() {
         menu.Reset();
         eventBus.RegisterEvent(new GameEvent {
@@ -35,13 +41,17 @@ public class MainMenu : IGameState {
         });
     }
     
+    /// <summary> Nothing to update, does nothing. </summary>
     public void UpdateState() {}
 
+    /// <summary> Renders background and menu </summary>
     public void RenderState() {
         background.RenderBackground();
         menu.RenderMenu();
     }
 
+    /// <summary> Acts on value taken from active menu button </summary>
+    /// <param name="value"=> Value string representing button selected </param>
     public void SelectMenuItem(string value) {
         switch (value) {
             case ("PLAY_CAMPAIGN"):
@@ -96,6 +106,9 @@ public class MainMenu : IGameState {
         }
     }
 
+    /// <summary> Interprets behaviour based on keyboard inputs. </summary>
+    /// <param name="action"> Has the key been pressed or released?. </param>
+    /// <param name="key"> The keyboard key in question. </param>
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         if (action != KeyboardAction.KeyPress) return;
 
