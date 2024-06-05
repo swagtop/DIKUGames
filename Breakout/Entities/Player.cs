@@ -6,7 +6,9 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
 /// <summary>
-///
+/// This is the Player class, the entity that the player directly controls. It moves based on
+/// the commands it receives from the event bus, which should be generated on input from the
+/// player when inside the GameRunning game state.
 /// </summary>
 public class Player : Entity, IGameEventProcessor {
     private bool fat = false;

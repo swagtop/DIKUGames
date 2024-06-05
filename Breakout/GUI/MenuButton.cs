@@ -4,7 +4,10 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
 /// <summary>
-///
+/// The MenuButton class is a text class that has a value and text. The text is the text that is
+/// rendered, where the value is a string that can be any value. The value of the MenuButton is
+/// meant to be used in switch cases, dictionaries or whatever it should show to be useful for.
+/// Instances of MenuButton should only ever exist inside Menu instances.
 /// </summary>
 public class MenuButton : Text {
     public Vec3F ActiveColor;

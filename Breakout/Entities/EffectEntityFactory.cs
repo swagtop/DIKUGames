@@ -9,7 +9,11 @@ using Breakout.Effects.Powerups;
 using Breakout.Effects.Hazards;
 
 /// <summary>
-///
+/// This is where the EffectEntities should be created. The EffectEntityFactory creation methods
+/// take in a position and an effect type, which in turn creates an EffectEntity with the correct
+/// image corresponding to the effect it contains.
+/// This class can also create random instances of effects, based on the entries of effects in
+/// their respective enums.
 /// </summary>
 public static class EffectEntityFactory {
     private static readonly Vec2F defaultExtent = new Vec2F(0.05f, 0.05f);

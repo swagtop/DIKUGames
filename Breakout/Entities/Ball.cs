@@ -6,7 +6,8 @@ using DIKUArcade.Math;
 using DIKUArcade.Physics;
 
 /// <summary>
-///
+/// The Ball class represents the 'ball' in the Breakout game. This ball can move, and change 
+/// direction. This behaviour should however be handled by the BallIterator.
 /// </summary>
 public class Ball : Entity {
     public DynamicShape Dynamic;

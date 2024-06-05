@@ -4,7 +4,8 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 
 /// <summary>
-///
+/// The Menu class contains a list of buttons, that can be interacted with. The purpose of this
+/// class is to make menues easy and painless to initialize and iteract with.
 /// </summary>
 public class Menu {
     private float topButtonPosition;
