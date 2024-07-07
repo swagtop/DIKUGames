@@ -19,7 +19,7 @@ public class EffectEntity : Entity {
     public void Move() {
         Shape.Move();
 
-        bool belowLowerBorder = (Shape.Position.X < 0.0f - Shape.Extent.X);
+        bool belowLowerBorder = (Shape.Position.Y < 0.0f - Shape.Extent.Y);
         if (belowLowerBorder) { DeleteEntity(); }
     }
 
@@ -35,9 +35,9 @@ public class EffectEntity : Entity {
         float effectRightSide = Shape.Position.X + Shape.Extent.X;
         float effectLowerSide = Shape.Position.Y;
 
-        float entityRightSide = entity.Shape.Position.X + Shape.Extent.X;
+        float entityRightSide = entity.Shape.Position.X + entity.Shape.Extent.X;
         float entityLeftSide = entity.Shape.Position.X;
-        float entityUpperSide = entity.Shape.Position.Y + Shape.Extent.Y;
+        float entityUpperSide = entity.Shape.Position.Y + entity.Shape.Extent.Y;
 
         return (
             effectLeftSide < entityRightSide &&
